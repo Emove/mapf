@@ -1,0 +1,19 @@
+server:
+  http:
+    addr: 0.0.0.0:8000
+    timeout: 1s
+  grpc:
+    addr: 0.0.0.0:9000
+    timeout: 1s
+data:
+  database:
+    host: 192.168.204.134
+    user: emove
+    password: "668466"
+    port: 5432
+    database: mapf
+  redis:
+    addr: 192.168.204.134:6379
+    password: "668466"
+    read_timeout: 0.2s
+    write_timeout: 0.2s
