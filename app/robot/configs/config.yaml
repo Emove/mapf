@@ -1,0 +1,21 @@
+server:
+  http:
+    addr: 0.0.0.0:8001
+    timeout: 5s
+  grpc:
+    addr: 0.0.0.0:9001
+    timeout: 5s
+data:
+  database:
+    host: 192.168.204.134
+    port: "5432"
+    user: emove
+    password: "668466"
+    database: robot
+  redis:
+    host: 192.168.204.134
+    port: "6379"
+    password: "668466"
+    db: 1
+    read_timeout: 0.5s
+    write_timeout: 0.5s
