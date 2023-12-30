@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package robot.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "mapf/api/robot/v1;v1";
+
+// The Robot service definition.
+service Robot {
+  // Creates a warehouse
+//  rpc CreateWarehouse (CreateWarehouseRequest) returns (CreateWarehouseResponse) {
+//    option (google.api.http) = {
+//      post: "/warehouse",
+//      body: "*",
+//    };
+//  }
+}

@@ -2,6 +2,7 @@ package server
 
 import (
 	v1 "mapf/api/helloworld/v1"
+	warehouse "mapf/api/warehouse/v1"
 	"mapf/app/robot/internal/conf"
 	"mapf/app/robot/internal/service"
 
@@ -11,7 +12,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, warehouseClient warehouse.WarehouseClient, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
