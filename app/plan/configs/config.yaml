@@ -5,6 +5,8 @@ server:
   grpc:
     addr: 0.0.0.0:9002
     timeout: 5s
+  warehouse: 0.0.0.0:8000
+  robot: 0.0.0.0:8001
 data:
   database:
     host: 192.168.204.134

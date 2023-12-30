@@ -23,6 +23,8 @@ message Server {
   }
   HTTP http = 1;
   GRPC grpc = 2;
+  string warehouse = 3;
+  string robot = 4;
 }
 
 message Data {
