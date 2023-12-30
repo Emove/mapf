@@ -10,7 +10,6 @@ import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"mapf/app/robot/internal/biz"
-	"mapf/app/robot/internal/client"
 	"mapf/app/robot/internal/conf"
 	"mapf/app/robot/internal/data"
 	"mapf/app/robot/internal/server"
@@ -25,19 +24,14 @@ import (
 
 // wireApp init kratos application.
 func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*kratos.App, func(), error) {
-	dataData, cleanup, err := data.NewData(confData, logger)
+	dataData, cleanup, err := data.NewData(confServer, confData, logger)
 	if err != nil {
 		return nil, nil, err
 	}
 	greeterRepo := data.NewGreeterRepo(dataData, logger)
 	greeterUsecase := biz.NewGreeterUsecase(greeterRepo, logger)
 	greeterService := service.NewGreeterService(greeterUsecase)
-	warehouseClient, err := client.NewWarehouseClient(confServer, logger)
-	if err != nil {
-		cleanup()
-		return nil, nil, err
-	}
-	grpcServer := server.NewGRPCServer(confServer, greeterService, warehouseClient, logger)
+	grpcServer := server.NewGRPCServer(confServer, greeterService, logger)
 	httpServer := server.NewHTTPServer(confServer, greeterService, logger)
 	app := newApp(logger, grpcServer, httpServer)
 	return app, func() {

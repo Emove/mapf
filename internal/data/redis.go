@@ -20,8 +20,8 @@ type Redis struct {
 func NewRedis(config *Redis, logger *log.Helper) (*redis.Client, error) {
 	rds := redis.NewClient(&redis.Options{
 		Addr:         strings.Join([]string{config.Host, config.Port}, ":"),
-		Password:     config.Password, // no password set
-		DB:           int(config.Db),  // use default DB
+		Password:     config.Password,
+		DB:           int(config.Db),
 		ReadTimeout:  config.ReadTimeout,
 		WriteTimeout: config.WriteTimeout,
 	})
