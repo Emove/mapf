@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
+	"mapf/app/warehouse/internal/biz"
 	"mapf/app/warehouse/internal/conf"
 	"mapf/internal/data"
 
@@ -12,7 +13,14 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewGreeterRepo)
+var ProviderSet = wire.NewSet(NewData, NewWarehouseRepo,
+	NewNodeRepo, NewNodeConfigRepo, NewNodeConfigItemRepo,
+	NewNodeTypeRepo, NewAffixNodeRepo, NewNodeRelationRepo,
+	NewNodeTagRepo, NewNodeDiagramRepo)
+
+var models = []interface{}{&biz.Warehouse{}, &biz.Node{}, &biz.NodeConfig{},
+	&biz.NodeConfigItem{}, &biz.NodeType{}, &biz.AffixNode{},
+	&biz.NodeRelation{}, &biz.NodeTag{}, &biz.NodeDiagram{}}
 
 // Data .
 type Data struct {
@@ -35,6 +43,9 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 	if err != nil {
 		return nil, nil, err
 	}
+	if err = autoMigration(db); err != nil {
+		return nil, nil, err
+	}
 	rdsConfig := c.GetRedis()
 	rds, err := data.NewRedis(&data.Redis{
 		Host:         rdsConfig.GetHost(),
@@ -49,4 +60,14 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 		_ = rds.Close()
 	}
 	return &Data{db: db, rds: rds, ctx: context.Background()}, cleanup, nil
+}
+
+func autoMigration(db *gorm.DB) error {
+	var err error
+	for _, model := range models {
+		if err = db.AutoMigrate(model); err != nil {
+			return err
+		}
+	}
+	return nil
 }

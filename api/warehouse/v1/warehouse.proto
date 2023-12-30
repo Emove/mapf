@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package warehouse.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "mapf/api/warehouse/v1;v1";
+
+// The warehouse service definition.
+service Warehouse {
+  // Creates a warehouse
+  rpc CreateWarehouse (CreateWarehouseRequest) returns (CreateWarehouseResponse) {
+    option (google.api.http) = {
+      post: "/warehouse",
+      body: "*",
+    };
+  }
+}
+
+message CreateWarehouseRequest {
+  string name = 1;
+}
+
+message CreateWarehouseResponse {
+  string message = 1;
+}
