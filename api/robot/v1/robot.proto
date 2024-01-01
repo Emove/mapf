@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package robot.v1;
 
-import "google/api/annotations.proto";
+//import "google/api/annotations.proto";
 
 option go_package = "mapf/api/robot/v1;v1";
 

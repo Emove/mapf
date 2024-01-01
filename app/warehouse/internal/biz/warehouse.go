@@ -7,9 +7,9 @@ import (
 
 type Warehouse struct {
 	*data.Model
-	Name      string `gorm:"type:varchar(64)"`
-	IsDefault int    `gorm:"type:smallint;default:0"`
-	Status    int    `gorm:"type:smallint;default:1"`
+	Name      string `gorm:"type:varchar(64);not null'"`
+	IsDefault int    `gorm:"type:smallint;default:0;not null"`
+	Status    int    `gorm:"type:smallint;default:1;not null"`
 }
 
 type WarehouseRepo interface {
