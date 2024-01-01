@@ -7,8 +7,8 @@ type NodeRelation struct {
 	WarehouseId int `gorm:"index:idx_warehouse_node_affix;not null"`
 	NodeId      int `gorm:"index:idx_warehouse_node_affix;not null"`
 	AffixNodeId int `gorm:"index:idx_warehouse_name_affix;not null"`
-	NodeType    int `gorm:"not null"`
-	Status      int `gorm:"type:smallint;default:1"`
+	NodeType    int `gorm:"default:0;not null"`
+	Status      int `gorm:"type:smallint;default:1;not null"`
 }
 
 type NodeRelationRepo interface {

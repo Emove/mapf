@@ -7,7 +7,7 @@ type NodeTag struct {
 	AffixNodeId int    `gorm:"index:idx_affix;not null"`
 	Name        string `gorm:"type:varchar(63);not null"`
 	Value       string `gorm:"type:varchar(127);not null'"`
-	Status      int    `gorm:"type:smallint;default:1"`
+	Status      int    `gorm:"type:smallint;default:1;not null"`
 }
 
 type NodeTagRepo interface {

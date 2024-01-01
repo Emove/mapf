@@ -23,8 +23,8 @@ const (
 )
 
 type Model struct {
-	ID          uint      `gorm:"primaryKey"`
-	CreatedTime time.Time `gorm:"type:timestamp;autoCreateTime"`
-	UpdatedTime time.Time `gorm:"type:timestamp;autoUpdateTime"`
-	IsDeleted   int       `gorm:"default:0"`
+	ID         uint      `gorm:"primaryKey"`
+	CreateTime time.Time `gorm:"type:timestamp;autoCreateTime;not null"`
+	UpdateTime time.Time `gorm:"type:timestamp;autoUpdateTime;not null"`
+	IsDeleted  int       `gorm:"default:0;not null"`
 }

@@ -11,7 +11,7 @@ type NodeConfigItem struct {
 	Name           string `gorm:"type:varchar(63);not null"`
 	ValueType      string `gorm:"type:varchar(31);not null"`
 	OptionalValues string `gorm:"type:varchar(1023)"`
-	Status         int    `gorm:"type:smallint;default:1"`
+	Status         int    `gorm:"type:smallint;default:1;not null"`
 }
 
 type NodeConfigItemRepo interface {
