@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.32.0
 // 	protoc        v3.21.12
-// source: api/warehouse/v1/warehouse.proto
+// source: warehouse/v1/warehouse.proto
 
 package v1
 
@@ -21,18 +21,65 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type WarehouseStatus int32
+
+const (
+	WarehouseStatus_Disable WarehouseStatus = 0
+	WarehouseStatus_Enable  WarehouseStatus = 1
+)
+
+// Enum value maps for WarehouseStatus.
+var (
+	WarehouseStatus_name = map[int32]string{
+		0: "Disable",
+		1: "Enable",
+	}
+	WarehouseStatus_value = map[string]int32{
+		"Disable": 0,
+		"Enable":  1,
+	}
+)
+
+func (x WarehouseStatus) Enum() *WarehouseStatus {
+	p := new(WarehouseStatus)
+	*p = x
+	return p
+}
+
+func (x WarehouseStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (WarehouseStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_warehouse_v1_warehouse_proto_enumTypes[0].Descriptor()
+}
+
+func (WarehouseStatus) Type() protoreflect.EnumType {
+	return &file_warehouse_v1_warehouse_proto_enumTypes[0]
+}
+
+func (x WarehouseStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use WarehouseStatus.Descriptor instead.
+func (WarehouseStatus) EnumDescriptor() ([]byte, []int) {
+	return file_warehouse_v1_warehouse_proto_rawDescGZIP(), []int{0}
+}
+
 type CreateWarehouseRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Name      string                   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	NodeTypes []*CreateNodeTypeRequest `protobuf:"bytes,2,rep,name=node_types,json=nodeTypes,proto3" json:"node_types,omitempty"`
 }
 
 func (x *CreateWarehouseRequest) Reset() {
 	*x = CreateWarehouseRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_warehouse_v1_warehouse_proto_msgTypes[0]
+		mi := &file_warehouse_v1_warehouse_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -45,7 +92,7 @@ func (x *CreateWarehouseRequest) String() string {
 func (*CreateWarehouseRequest) ProtoMessage() {}
 
 func (x *CreateWarehouseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_warehouse_v1_warehouse_proto_msgTypes[0]
+	mi := &file_warehouse_v1_warehouse_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +105,7 @@ func (x *CreateWarehouseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateWarehouseRequest.ProtoReflect.Descriptor instead.
 func (*CreateWarehouseRequest) Descriptor() ([]byte, []int) {
-	return file_api_warehouse_v1_warehouse_proto_rawDescGZIP(), []int{0}
+	return file_warehouse_v1_warehouse_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *CreateWarehouseRequest) GetName() string {
@@ -68,18 +115,25 @@ func (x *CreateWarehouseRequest) GetName() string {
 	return ""
 }
 
+func (x *CreateWarehouseRequest) GetNodeTypes() []*CreateNodeTypeRequest {
+	if x != nil {
+		return x.NodeTypes
+	}
+	return nil
+}
+
 type CreateWarehouseResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Message string `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Warehouse *Warehouse `protobuf:"bytes,1,opt,name=warehouse,proto3" json:"warehouse,omitempty"`
 }
 
 func (x *CreateWarehouseResponse) Reset() {
 	*x = CreateWarehouseResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_warehouse_v1_warehouse_proto_msgTypes[1]
+		mi := &file_warehouse_v1_warehouse_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -92,7 +146,7 @@ func (x *CreateWarehouseResponse) String() string {
 func (*CreateWarehouseResponse) ProtoMessage() {}
 
 func (x *CreateWarehouseResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_warehouse_v1_warehouse_proto_msgTypes[1]
+	mi := &file_warehouse_v1_warehouse_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -105,77 +159,220 @@ func (x *CreateWarehouseResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateWarehouseResponse.ProtoReflect.Descriptor instead.
 func (*CreateWarehouseResponse) Descriptor() ([]byte, []int) {
-	return file_api_warehouse_v1_warehouse_proto_rawDescGZIP(), []int{1}
+	return file_warehouse_v1_warehouse_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreateWarehouseResponse) GetMessage() string {
+func (x *CreateWarehouseResponse) GetWarehouse() *Warehouse {
 	if x != nil {
-		return x.Message
+		return x.Warehouse
+	}
+	return nil
+}
+
+type CreateNodeTypeRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Code string `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (x *CreateNodeTypeRequest) Reset() {
+	*x = CreateNodeTypeRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_warehouse_v1_warehouse_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateNodeTypeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateNodeTypeRequest) ProtoMessage() {}
+
+func (x *CreateNodeTypeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_warehouse_v1_warehouse_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateNodeTypeRequest.ProtoReflect.Descriptor instead.
+func (*CreateNodeTypeRequest) Descriptor() ([]byte, []int) {
+	return file_warehouse_v1_warehouse_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *CreateNodeTypeRequest) GetCode() string {
+	if x != nil {
+		return x.Code
 	}
 	return ""
 }
 
-var File_api_warehouse_v1_warehouse_proto protoreflect.FileDescriptor
+func (x *CreateNodeTypeRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
 
-var file_api_warehouse_v1_warehouse_proto_rawDesc = []byte{
-	0x0a, 0x20, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x2f,
-	0x76, 0x31, 0x2f, 0x77, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x12, 0x0c, 0x77, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x2e, 0x76, 0x31,
-	0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e,
-	0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x2c,
-	0x0a, 0x16, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73,
-	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x33, 0x0a, 0x17,
+type Warehouse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id     uint32          `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name   string          `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Status WarehouseStatus `protobuf:"varint,3,opt,name=status,proto3,enum=warehouse.v1.WarehouseStatus" json:"status,omitempty"`
+}
+
+func (x *Warehouse) Reset() {
+	*x = Warehouse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_warehouse_v1_warehouse_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Warehouse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Warehouse) ProtoMessage() {}
+
+func (x *Warehouse) ProtoReflect() protoreflect.Message {
+	mi := &file_warehouse_v1_warehouse_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Warehouse.ProtoReflect.Descriptor instead.
+func (*Warehouse) Descriptor() ([]byte, []int) {
+	return file_warehouse_v1_warehouse_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Warehouse) GetId() uint32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Warehouse) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Warehouse) GetStatus() WarehouseStatus {
+	if x != nil {
+		return x.Status
+	}
+	return WarehouseStatus_Disable
+}
+
+var File_warehouse_v1_warehouse_proto protoreflect.FileDescriptor
+
+var file_warehouse_v1_warehouse_proto_rawDesc = []byte{
+	0x0a, 0x1c, 0x77, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x2f, 0x76, 0x31, 0x2f, 0x77,
+	0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0c,
+	0x77, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x1a, 0x1c, 0x67, 0x6f,
+	0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x70, 0x0a, 0x16, 0x43, 0x72,
+	0x65, 0x61, 0x74, 0x65, 0x57, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x42, 0x0a, 0x0a, 0x6e, 0x6f, 0x64, 0x65,
+	0x5f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x77,
+	0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x72, 0x65, 0x61,
+	0x74, 0x65, 0x4e, 0x6f, 0x64, 0x65, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x52, 0x09, 0x6e, 0x6f, 0x64, 0x65, 0x54, 0x79, 0x70, 0x65, 0x73, 0x22, 0x50, 0x0a, 0x17,
 	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61,
-	0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67,
-	0x65, 0x32, 0x82, 0x01, 0x0a, 0x09, 0x57, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x12,
-	0x75, 0x0a, 0x0f, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75,
-	0x73, 0x65, 0x12, 0x24, 0x2e, 0x77, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x2e, 0x76,
-	0x31, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73,
-	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x25, 0x2e, 0x77, 0x61, 0x72, 0x65, 0x68,
-	0x6f, 0x75, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x61,
-	0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x15, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x0f, 0x3a, 0x01, 0x2a, 0x22, 0x0a, 0x2f, 0x77, 0x61, 0x72,
-	0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x42, 0x1a, 0x5a, 0x18, 0x6d, 0x61, 0x70, 0x66, 0x2f, 0x61,
-	0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x2f, 0x76, 0x31, 0x3b,
-	0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x35, 0x0a, 0x09, 0x77, 0x61, 0x72, 0x65, 0x68,
+	0x6f, 0x75, 0x73, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x77, 0x61, 0x72,
+	0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x57, 0x61, 0x72, 0x65, 0x68, 0x6f,
+	0x75, 0x73, 0x65, 0x52, 0x09, 0x77, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x22, 0x3f,
+	0x0a, 0x15, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4e, 0x6f, 0x64, 0x65, 0x54, 0x79, 0x70, 0x65,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6e,
+	0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22,
+	0x66, 0x0a, 0x09, 0x57, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02,
+	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04,
+	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65,
+	0x12, 0x35, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e,
+	0x32, 0x1d, 0x2e, 0x77, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x2e,
+	0x57, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52,
+	0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x2a, 0x2a, 0x0a, 0x0f, 0x57, 0x61, 0x72, 0x65, 0x68,
+	0x6f, 0x75, 0x73, 0x65, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x0b, 0x0a, 0x07, 0x44, 0x69,
+	0x73, 0x61, 0x62, 0x6c, 0x65, 0x10, 0x00, 0x12, 0x0a, 0x0a, 0x06, 0x45, 0x6e, 0x61, 0x62, 0x6c,
+	0x65, 0x10, 0x01, 0x32, 0x74, 0x0a, 0x10, 0x57, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65,
+	0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x60, 0x0a, 0x0f, 0x43, 0x72, 0x65, 0x61, 0x74,
+	0x65, 0x57, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x12, 0x24, 0x2e, 0x77, 0x61, 0x72,
+	0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
+	0x57, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x25, 0x2e, 0x77, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x2e, 0x76, 0x31, 0x2e,
+	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x1a, 0x5a, 0x18, 0x6d, 0x61, 0x70,
+	0x66, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x77, 0x61, 0x72, 0x65, 0x68, 0x6f, 0x75, 0x73, 0x65, 0x2f,
+	0x76, 0x31, 0x3b, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_api_warehouse_v1_warehouse_proto_rawDescOnce sync.Once
-	file_api_warehouse_v1_warehouse_proto_rawDescData = file_api_warehouse_v1_warehouse_proto_rawDesc
+	file_warehouse_v1_warehouse_proto_rawDescOnce sync.Once
+	file_warehouse_v1_warehouse_proto_rawDescData = file_warehouse_v1_warehouse_proto_rawDesc
 )
 
-func file_api_warehouse_v1_warehouse_proto_rawDescGZIP() []byte {
-	file_api_warehouse_v1_warehouse_proto_rawDescOnce.Do(func() {
-		file_api_warehouse_v1_warehouse_proto_rawDescData = protoimpl.X.CompressGZIP(file_api_warehouse_v1_warehouse_proto_rawDescData)
+func file_warehouse_v1_warehouse_proto_rawDescGZIP() []byte {
+	file_warehouse_v1_warehouse_proto_rawDescOnce.Do(func() {
+		file_warehouse_v1_warehouse_proto_rawDescData = protoimpl.X.CompressGZIP(file_warehouse_v1_warehouse_proto_rawDescData)
 	})
-	return file_api_warehouse_v1_warehouse_proto_rawDescData
+	return file_warehouse_v1_warehouse_proto_rawDescData
 }
 
-var file_api_warehouse_v1_warehouse_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_api_warehouse_v1_warehouse_proto_goTypes = []interface{}{
-	(*CreateWarehouseRequest)(nil),  // 0: warehouse.v1.CreateWarehouseRequest
-	(*CreateWarehouseResponse)(nil), // 1: warehouse.v1.CreateWarehouseResponse
+var file_warehouse_v1_warehouse_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_warehouse_v1_warehouse_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_warehouse_v1_warehouse_proto_goTypes = []interface{}{
+	(WarehouseStatus)(0),            // 0: warehouse.v1.WarehouseStatus
+	(*CreateWarehouseRequest)(nil),  // 1: warehouse.v1.CreateWarehouseRequest
+	(*CreateWarehouseResponse)(nil), // 2: warehouse.v1.CreateWarehouseResponse
+	(*CreateNodeTypeRequest)(nil),   // 3: warehouse.v1.CreateNodeTypeRequest
+	(*Warehouse)(nil),               // 4: warehouse.v1.Warehouse
 }
-var file_api_warehouse_v1_warehouse_proto_depIdxs = []int32{
-	0, // 0: warehouse.v1.Warehouse.CreateWarehouse:input_type -> warehouse.v1.CreateWarehouseRequest
-	1, // 1: warehouse.v1.Warehouse.CreateWarehouse:output_type -> warehouse.v1.CreateWarehouseResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+var file_warehouse_v1_warehouse_proto_depIdxs = []int32{
+	3, // 0: warehouse.v1.CreateWarehouseRequest.node_types:type_name -> warehouse.v1.CreateNodeTypeRequest
+	4, // 1: warehouse.v1.CreateWarehouseResponse.warehouse:type_name -> warehouse.v1.Warehouse
+	0, // 2: warehouse.v1.Warehouse.status:type_name -> warehouse.v1.WarehouseStatus
+	1, // 3: warehouse.v1.WarehouseService.CreateWarehouse:input_type -> warehouse.v1.CreateWarehouseRequest
+	2, // 4: warehouse.v1.WarehouseService.CreateWarehouse:output_type -> warehouse.v1.CreateWarehouseResponse
+	4, // [4:5] is the sub-list for method output_type
+	3, // [3:4] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
-func init() { file_api_warehouse_v1_warehouse_proto_init() }
-func file_api_warehouse_v1_warehouse_proto_init() {
-	if File_api_warehouse_v1_warehouse_proto != nil {
+func init() { file_warehouse_v1_warehouse_proto_init() }
+func file_warehouse_v1_warehouse_proto_init() {
+	if File_warehouse_v1_warehouse_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_api_warehouse_v1_warehouse_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_warehouse_v1_warehouse_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateWarehouseRequest); i {
 			case 0:
 				return &v.state
@@ -187,8 +384,32 @@ func file_api_warehouse_v1_warehouse_proto_init() {
 				return nil
 			}
 		}
-		file_api_warehouse_v1_warehouse_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_warehouse_v1_warehouse_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateWarehouseResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_warehouse_v1_warehouse_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateNodeTypeRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_warehouse_v1_warehouse_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Warehouse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -204,18 +425,19 @@ func file_api_warehouse_v1_warehouse_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_api_warehouse_v1_warehouse_proto_rawDesc,
-			NumEnums:      0,
-			NumMessages:   2,
+			RawDescriptor: file_warehouse_v1_warehouse_proto_rawDesc,
+			NumEnums:      1,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_api_warehouse_v1_warehouse_proto_goTypes,
-		DependencyIndexes: file_api_warehouse_v1_warehouse_proto_depIdxs,
-		MessageInfos:      file_api_warehouse_v1_warehouse_proto_msgTypes,
+		GoTypes:           file_warehouse_v1_warehouse_proto_goTypes,
+		DependencyIndexes: file_warehouse_v1_warehouse_proto_depIdxs,
+		EnumInfos:         file_warehouse_v1_warehouse_proto_enumTypes,
+		MessageInfos:      file_warehouse_v1_warehouse_proto_msgTypes,
 	}.Build()
-	File_api_warehouse_v1_warehouse_proto = out.File
-	file_api_warehouse_v1_warehouse_proto_rawDesc = nil
-	file_api_warehouse_v1_warehouse_proto_goTypes = nil
-	file_api_warehouse_v1_warehouse_proto_depIdxs = nil
+	File_warehouse_v1_warehouse_proto = out.File
+	file_warehouse_v1_warehouse_proto_rawDesc = nil
+	file_warehouse_v1_warehouse_proto_goTypes = nil
+	file_warehouse_v1_warehouse_proto_depIdxs = nil
 }

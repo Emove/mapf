@@ -1,9 +1,6 @@
 server:
-  http:
-    addr: 0.0.0.0:8000
-    timeout: 5s
   grpc:
-    addr: 0.0.0.0:9000
+    addr: 0.0.0.0:8001
     timeout: 5s
 data:
   database:
@@ -17,5 +14,5 @@ data:
     port: "6379"
     password: "668466"
     db: 0
-    read_timeout: 0.5s
-    write_timeout: 0.5s
+    read_timeout: 2s
+    write_timeout: 2s

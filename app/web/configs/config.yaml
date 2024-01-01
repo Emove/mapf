@@ -1,0 +1,18 @@
+server:
+  grpc:
+    addr: 0.0.0.0:8000
+    timeout: 1s
+  http:
+    addr: 0.0.0.0:9000
+    timeout: 1s
+data:
+  services:
+    - name: warehouse
+      addr: 0.0.0.0:8001
+      timeout: 3s
+    - name: robot
+      addr: 0.0.0.0:8002
+      timeout: 3s
+    - name: plan
+      addr: 0.0.0.0:8003
+      timeout: 3s

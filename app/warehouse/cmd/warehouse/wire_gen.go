@@ -7,14 +7,17 @@
 package main
 
 import (
+	"github.com/go-kratos/kratos/v2"
+	"github.com/go-kratos/kratos/v2/log"
 	"mapf/app/warehouse/internal/biz"
 	"mapf/app/warehouse/internal/conf"
 	"mapf/app/warehouse/internal/data"
 	"mapf/app/warehouse/internal/server"
 	"mapf/app/warehouse/internal/service"
+)
 
-	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
+import (
+	_ "go.uber.org/automaxprocs"
 )
 
 // Injectors from wire.go:
@@ -25,12 +28,15 @@ func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	if err != nil {
 		return nil, nil, err
 	}
-	greeterRepo := data.NewGreeterRepo(dataData, logger)
-	greeterUsecase := biz.NewGreeterUsecase(greeterRepo, logger)
-	greeterService := service.NewGreeterService(greeterUsecase)
-	grpcServer := server.NewGRPCServer(confServer, greeterService, logger)
-	httpServer := server.NewHTTPServer(confServer, greeterService, logger)
-	app := newApp(logger, grpcServer, httpServer)
+	warehouseRepo, err := data.NewWarehouseRepo(dataData, logger)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	warehouseUsecase := biz.NewWarehouseUsecase(warehouseRepo, logger)
+	warehouseService := service.NewWarehouseService(warehouseUsecase)
+	grpcServer := server.NewGRPCServer(confServer, warehouseService, logger)
+	app := newApp(logger, grpcServer)
 	return app, func() {
 		cleanup()
 	}, nil

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.32.0
 // 	protoc        v3.21.12
-// source: api/robot/v1/robot.proto
+// source: robot/v1/robot.proto
 
 package v1
 
@@ -19,18 +19,18 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-var File_api_robot_v1_robot_proto protoreflect.FileDescriptor
+var File_robot_v1_robot_proto protoreflect.FileDescriptor
 
-var file_api_robot_v1_robot_proto_rawDesc = []byte{
-	0x0a, 0x18, 0x61, 0x70, 0x69, 0x2f, 0x72, 0x6f, 0x62, 0x6f, 0x74, 0x2f, 0x76, 0x31, 0x2f, 0x72,
-	0x6f, 0x62, 0x6f, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x08, 0x72, 0x6f, 0x62, 0x6f,
-	0x74, 0x2e, 0x76, 0x31, 0x32, 0x07, 0x0a, 0x05, 0x52, 0x6f, 0x62, 0x6f, 0x74, 0x42, 0x16, 0x5a,
-	0x14, 0x6d, 0x61, 0x70, 0x66, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x72, 0x6f, 0x62, 0x6f, 0x74, 0x2f,
-	0x76, 0x31, 0x3b, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+var file_robot_v1_robot_proto_rawDesc = []byte{
+	0x0a, 0x14, 0x72, 0x6f, 0x62, 0x6f, 0x74, 0x2f, 0x76, 0x31, 0x2f, 0x72, 0x6f, 0x62, 0x6f, 0x74,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x08, 0x72, 0x6f, 0x62, 0x6f, 0x74, 0x2e, 0x76, 0x31,
+	0x32, 0x0e, 0x0a, 0x0c, 0x52, 0x6f, 0x62, 0x6f, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x42, 0x16, 0x5a, 0x14, 0x6d, 0x61, 0x70, 0x66, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x72, 0x6f, 0x62,
+	0x6f, 0x74, 0x2f, 0x76, 0x31, 0x3b, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
-var file_api_robot_v1_robot_proto_goTypes = []interface{}{}
-var file_api_robot_v1_robot_proto_depIdxs = []int32{
+var file_robot_v1_robot_proto_goTypes = []interface{}{}
+var file_robot_v1_robot_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -38,26 +38,26 @@ var file_api_robot_v1_robot_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_api_robot_v1_robot_proto_init() }
-func file_api_robot_v1_robot_proto_init() {
-	if File_api_robot_v1_robot_proto != nil {
+func init() { file_robot_v1_robot_proto_init() }
+func file_robot_v1_robot_proto_init() {
+	if File_robot_v1_robot_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_api_robot_v1_robot_proto_rawDesc,
+			RawDescriptor: file_robot_v1_robot_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_api_robot_v1_robot_proto_goTypes,
-		DependencyIndexes: file_api_robot_v1_robot_proto_depIdxs,
+		GoTypes:           file_robot_v1_robot_proto_goTypes,
+		DependencyIndexes: file_robot_v1_robot_proto_depIdxs,
 	}.Build()
-	File_api_robot_v1_robot_proto = out.File
-	file_api_robot_v1_robot_proto_rawDesc = nil
-	file_api_robot_v1_robot_proto_goTypes = nil
-	file_api_robot_v1_robot_proto_depIdxs = nil
+	File_robot_v1_robot_proto = out.File
+	file_robot_v1_robot_proto_rawDesc = nil
+	file_robot_v1_robot_proto_goTypes = nil
+	file_robot_v1_robot_proto_depIdxs = nil
 }

@@ -6,51 +6,57 @@ import (
 	"github.com/google/wire"
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
-	v1 "mapf/api/warehouse/v1"
+	warehouse "mapf/api/warehouse/v1"
 	"mapf/app/robot/internal/conf"
 	"mapf/internal/data"
+	"strings"
+	"time"
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewGreeterRepo)
+var ProviderSet = wire.NewSet(NewData, NewRobotRepo)
 
 // Data .
 type Data struct {
 	ctx context.Context
 	db  *gorm.DB
 	rds *redis.Client
-	whc v1.WarehouseClient
+	whc warehouse.WarehouseServiceClient
 }
 
 // NewData .
-func NewData(serverConfig *conf.Server, dataConfig *conf.Data, logger log.Logger) (*Data, func(), error) {
+func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 	helper := log.NewHelper(logger)
-	db, err := data.NewPostgresDB(parse2database(dataConfig), helper)
+	instance := &Data{}
+	var err error
+	instance.db, err = data.NewPostgresDB(parse2database(c), helper)
 	if err != nil {
 		return nil, nil, err
 	}
-	rds, err := data.NewRedis(parse2redis(dataConfig), helper)
+	instance.rds, err = data.NewRedis(parse2redis(c), helper)
 	if err != nil {
 		return nil, nil, err
 	}
-	whc, err := newWarehouseClient(serverConfig, helper)
-	if err != nil {
-		return nil, nil, err
+	for _, service := range c.GetServices() {
+		serviceName, addr, timeout := strings.ToLower(service.Name), service.Addr, service.Timeout.AsDuration()
+		if serviceName == "warehouse" {
+			instance.whc, err = newWarehouseClient(addr, timeout)
+		}
+		if err != nil {
+			return nil, nil, err
+		}
+		helper.Infof("[gRPC] connected to server: %s, addr: %s, timeout: %ds", service.Name, service.Addr, service.Timeout.Seconds)
 	}
 	cleanup := func() {
 		helper.Info("closing the data resources")
-		_ = rds.Close()
+		_ = instance.rds.Close()
 	}
-	return &Data{db: db, rds: rds, ctx: context.Background(), whc: whc}, cleanup, nil
+	return instance, cleanup, nil
 }
 
-func newWarehouseClient(c *conf.Server, logger *log.Helper) (v1.WarehouseClient, error) {
-	conn, err := data.NewClientConnection(c.GetWarehouse(), c.GetGrpc().Timeout.AsDuration())
-	if err != nil {
-		return nil, err
-	}
-	logger.Infof("[gRPC] connected to server: warehouse, addr: %s", c.Warehouse)
-	return v1.NewWarehouseClient(conn), err
+func newWarehouseClient(addr string, timeout time.Duration) (warehouse.WarehouseServiceClient, error) {
+	conn, err := data.NewClientConnection(addr, timeout)
+	return warehouse.NewWarehouseServiceClient(conn), err
 }
 
 func parse2database(dataConfig *conf.Data) *data.Database {

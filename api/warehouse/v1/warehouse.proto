@@ -7,20 +7,33 @@ import "google/api/annotations.proto";
 option go_package = "mapf/api/warehouse/v1;v1";
 
 // The warehouse service definition.
-service Warehouse {
+service WarehouseService {
   // Creates a warehouse
-  rpc CreateWarehouse (CreateWarehouseRequest) returns (CreateWarehouseResponse) {
-    option (google.api.http) = {
-      post: "/warehouse",
-      body: "*",
-    };
-  }
+  rpc CreateWarehouse (CreateWarehouseRequest) returns (CreateWarehouseResponse) {}
 }
 
 message CreateWarehouseRequest {
   string name = 1;
+  repeated CreateNodeTypeRequest node_types = 2;
 }
 
 message CreateWarehouseResponse {
-  string message = 1;
+  Warehouse warehouse = 1;
 }
+
+message CreateNodeTypeRequest {
+  string code = 1;
+  string name = 2;
+}
+
+enum WarehouseStatus {
+  Disable = 0;
+  Enable = 1;
+}
+
+message Warehouse {
+  uint32 id = 1;
+  string name = 2;
+  WarehouseStatus status = 3;
+}
+

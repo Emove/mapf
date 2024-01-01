@@ -17,50 +17,50 @@ const _ = grpc.SupportPackageIsVersion7
 
 const ()
 
-// RobotClient is the client API for Robot service.
+// RobotServiceClient is the client API for RobotService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type RobotClient interface {
+type RobotServiceClient interface {
 }
 
-type robotClient struct {
+type robotServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewRobotClient(cc grpc.ClientConnInterface) RobotClient {
-	return &robotClient{cc}
+func NewRobotServiceClient(cc grpc.ClientConnInterface) RobotServiceClient {
+	return &robotServiceClient{cc}
 }
 
-// RobotServer is the server API for Robot service.
-// All implementations must embed UnimplementedRobotServer
+// RobotServiceServer is the server API for RobotService service.
+// All implementations must embed UnimplementedRobotServiceServer
 // for forward compatibility
-type RobotServer interface {
-	mustEmbedUnimplementedRobotServer()
+type RobotServiceServer interface {
+	mustEmbedUnimplementedRobotServiceServer()
 }
 
-// UnimplementedRobotServer must be embedded to have forward compatible implementations.
-type UnimplementedRobotServer struct {
+// UnimplementedRobotServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedRobotServiceServer struct {
 }
 
-func (UnimplementedRobotServer) mustEmbedUnimplementedRobotServer() {}
+func (UnimplementedRobotServiceServer) mustEmbedUnimplementedRobotServiceServer() {}
 
-// UnsafeRobotServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to RobotServer will
+// UnsafeRobotServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RobotServiceServer will
 // result in compilation errors.
-type UnsafeRobotServer interface {
-	mustEmbedUnimplementedRobotServer()
+type UnsafeRobotServiceServer interface {
+	mustEmbedUnimplementedRobotServiceServer()
 }
 
-func RegisterRobotServer(s grpc.ServiceRegistrar, srv RobotServer) {
-	s.RegisterService(&Robot_ServiceDesc, srv)
+func RegisterRobotServiceServer(s grpc.ServiceRegistrar, srv RobotServiceServer) {
+	s.RegisterService(&RobotService_ServiceDesc, srv)
 }
 
-// Robot_ServiceDesc is the grpc.ServiceDesc for Robot service.
+// RobotService_ServiceDesc is the grpc.ServiceDesc for RobotService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Robot_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "robot.v1.Robot",
-	HandlerType: (*RobotServer)(nil),
+var RobotService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "robot.v1.RobotService",
+	HandlerType: (*RobotServiceServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams:     []grpc.StreamDesc{},
 	Metadata:    "robot/v1/robot.proto",

@@ -7,7 +7,7 @@ package robot.v1;
 option go_package = "mapf/api/robot/v1;v1";
 
 // The Robot service definition.
-service Robot {
+service RobotService {
   // Creates a warehouse
 //  rpc CreateWarehouse (CreateWarehouseRequest) returns (CreateWarehouseResponse) {
 //    option (google.api.http) = {

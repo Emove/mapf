@@ -28,14 +28,14 @@ paths:
     /warehouse:
         post:
             tags:
-                - Warehouse
+                - WebService
             description: Creates a warehouse
-            operationId: Warehouse_CreateWarehouse
+            operationId: WebService_CreateWarehouse
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/warehouse.v1.CreateWarehouseRequest'
+                            $ref: '#/components/schemas/web.v1.CreateWarehouseRequest'
                 required: true
             responses:
                 "200":
@@ -43,7 +43,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/warehouse.v1.CreateWarehouseResponse'
+                                $ref: '#/components/schemas/web.v1.CreateWarehouseResponse'
 components:
     schemas:
         helloworld.v1.HelloReply:
@@ -52,18 +52,15 @@ components:
                 message:
                     type: string
             description: The response message containing the greetings
-        warehouse.v1.CreateWarehouseRequest:
+        web.v1.CreateWarehouseRequest:
             type: object
             properties:
                 name:
                     type: string
-        warehouse.v1.CreateWarehouseResponse:
+        web.v1.CreateWarehouseResponse:
             type: object
-            properties:
-                message:
-                    type: string
+            properties: {}
 tags:
     - name: Greeter
       description: The greeting service definition.
-    - name: Warehouse
-      description: The warehouse service definition.
+    - name: WebService
