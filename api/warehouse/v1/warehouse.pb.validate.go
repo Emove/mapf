@@ -610,7 +610,9 @@ func (m *NodeType) validate(all bool) error {
 
 	// no validation rules for Name
 
-	// no validation rules for IsDefault
+	if m.IsDefault != nil {
+		// no validation rules for IsDefault
+	}
 
 	if len(errors) > 0 {
 		return NodeTypeMultiError(errors)

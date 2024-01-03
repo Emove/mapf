@@ -40,5 +40,5 @@ message NodeType {
   uint32 warehouse_id = 2;
   string code = 3;
   string name = 4;
-  common.data.v1.DefaultStatus is_default = 5;
+  optional common.data.v1.DefaultStatus is_default = 5;
 }
