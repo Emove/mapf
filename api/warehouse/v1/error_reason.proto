@@ -6,5 +6,8 @@ option go_package = "mapf/api/warehouse/v1;v1";
 
 enum ErrorReason {
   option (errors.default_code) = 500;
-  WAREHOUSE_NOT_FOUND = 0;
+  WAREHOUSE_NOT_FOUND = 0 [(errors.code) = 404];
+  WAREHOUSE_EXISTED = 1 [(errors.code) = 409];
+  NODE_TYPE_NOT_FOUND = 3 [(errors.code) = 404];
+  NODE_TYPE_EXISTED = 4[(errors.code) = 409];
 }

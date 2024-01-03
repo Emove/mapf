@@ -10,5 +10,9 @@ type NodeTag struct {
 	Status      int    `gorm:"type:smallint;default:1;not null"`
 }
 
+func (*NodeTag) TableName() string {
+	return "node_tag"
+}
+
 type NodeTagRepo interface {
 }

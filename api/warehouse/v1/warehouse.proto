@@ -3,6 +3,8 @@ syntax = "proto3";
 package warehouse.v1;
 
 import "google/api/annotations.proto";
+import "validate/validate.proto";
+import public "common/data/v1/data.proto";
 
 option go_package = "mapf/api/warehouse/v1;v1";
 
@@ -13,27 +15,30 @@ service WarehouseService {
 }
 
 message CreateWarehouseRequest {
-  string name = 1;
+  string name = 1 [(validate.rules).string = {min_len: 3, max_len: 64}];
   repeated CreateNodeTypeRequest node_types = 2;
 }
 
 message CreateWarehouseResponse {
   Warehouse warehouse = 1;
+  repeated NodeType node_types = 2;
 }
 
 message CreateNodeTypeRequest {
-  string code = 1;
-  string name = 2;
-}
-
-enum WarehouseStatus {
-  Disable = 0;
-  Enable = 1;
+  string code = 1  [(validate.rules).string = {min_len: 3, max_len: 64}];
+  string name = 2  [(validate.rules).string = {min_len: 3, max_len: 64}];
 }
 
 message Warehouse {
   uint32 id = 1;
   string name = 2;
-  WarehouseStatus status = 3;
+  common.data.v1.EnableStatus status = 3;
 }
 
+message NodeType {
+  uint32 id = 1;
+  uint32 warehouse_id = 2;
+  string code = 3;
+  string name = 4;
+  common.data.v1.DefaultStatus is_default = 5;
+}

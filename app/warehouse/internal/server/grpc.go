@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/go-kratos/kratos/v2/middleware/logging"
+	"github.com/go-kratos/kratos/v2/middleware/validate"
 	v1 "mapf/api/warehouse/v1"
 	"mapf/app/warehouse/internal/conf"
 	"mapf/app/warehouse/internal/service"
@@ -16,6 +17,7 @@ func NewGRPCServer(c *conf.Server, warehouseService *service.WarehouseService, l
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
+			validate.Validator(),
 			logging.Server(logger),
 		),
 	}

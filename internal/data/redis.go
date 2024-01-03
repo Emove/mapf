@@ -26,7 +26,7 @@ func NewRedis(config *Redis, logger *log.Helper) (*redis.Client, error) {
 		WriteTimeout: config.WriteTimeout,
 	})
 
-	logger.Infow("redis configuration", config)
+	logger.Infow("redis_configuration", config)
 	resp := rds.Ping(context.Background())
 	if resp.Err() != nil {
 		return nil, resp.Err()

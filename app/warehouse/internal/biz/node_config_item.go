@@ -14,5 +14,9 @@ type NodeConfigItem struct {
 	Status         int    `gorm:"type:smallint;default:1;not null"`
 }
 
+func (*NodeConfigItem) TableName() string {
+	return "node_config_time"
+}
+
 type NodeConfigItemRepo interface {
 }

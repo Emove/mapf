@@ -9,5 +9,9 @@ type Node struct {
 	Y           int `gorm:"uniqueIndex:uidx_warehouse_x_y;not null"`
 }
 
+func (*Node) TableName() string {
+	return "node"
+}
+
 type NodeRepo interface {
 }

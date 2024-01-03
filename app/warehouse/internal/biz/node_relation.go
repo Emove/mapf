@@ -11,5 +11,9 @@ type NodeRelation struct {
 	Status      int `gorm:"type:smallint;default:1;not null"`
 }
 
+func (*NodeRelation) TableName() string {
+	return "node_relation"
+}
+
 type NodeRelationRepo interface {
 }

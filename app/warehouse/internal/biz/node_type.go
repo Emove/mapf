@@ -1,6 +1,9 @@
 package biz
 
-import "mapf/internal/data"
+import (
+	"context"
+	"mapf/internal/data"
+)
 
 type NodeType struct {
 	*data.Model
@@ -10,5 +13,11 @@ type NodeType struct {
 	IsDefault   int    `gorm:"type:smallint;default:0;not null"`
 }
 
+func (*NodeType) TableName() string {
+	return "node_type"
+}
+
 type NodeTypeRepo interface {
+	CreateNodeType(ctx context.Context, nodeType *NodeType) (*NodeType, error)
+	BatchCreateNodeTypes(ctx context.Context, nodeTypes []*NodeType) ([]*NodeType, error)
 }

@@ -16,9 +16,45 @@ func IsWarehouseNotFound(err error) bool {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == ErrorReason_WAREHOUSE_NOT_FOUND.String() && e.Code == 500
+	return e.Reason == ErrorReason_WAREHOUSE_NOT_FOUND.String() && e.Code == 404
 }
 
 func ErrorWarehouseNotFound(format string, args ...interface{}) *errors.Error {
-	return errors.New(500, ErrorReason_WAREHOUSE_NOT_FOUND.String(), fmt.Sprintf(format, args...))
+	return errors.New(404, ErrorReason_WAREHOUSE_NOT_FOUND.String(), fmt.Sprintf(format, args...))
+}
+
+func IsWarehouseExisted(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_WAREHOUSE_EXISTED.String() && e.Code == 409
+}
+
+func ErrorWarehouseExisted(format string, args ...interface{}) *errors.Error {
+	return errors.New(409, ErrorReason_WAREHOUSE_EXISTED.String(), fmt.Sprintf(format, args...))
+}
+
+func IsNodeTypeNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_NODE_TYPE_NOT_FOUND.String() && e.Code == 404
+}
+
+func ErrorNodeTypeNotFound(format string, args ...interface{}) *errors.Error {
+	return errors.New(404, ErrorReason_NODE_TYPE_NOT_FOUND.String(), fmt.Sprintf(format, args...))
+}
+
+func IsNodeTypeExisted(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_NODE_TYPE_EXISTED.String() && e.Code == 409
+}
+
+func ErrorNodeTypeExisted(format string, args ...interface{}) *errors.Error {
+	return errors.New(409, ErrorReason_NODE_TYPE_EXISTED.String(), fmt.Sprintf(format, args...))
 }

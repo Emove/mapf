@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package common.data.v1;
+
+option go_package = "mapf/api/common/data/v1;v1";
+
+enum EnableStatus {
+  DISABLE = 0;
+  ENABLE = 1;
+}
+
+enum DefaultStatus {
+  NOT_DEFAULT = 0;
+  IS_DEFAULT = 1;
+}
+
+enum ValidStatus {
+  INVALID = 0;
+  VALID = 1;
+}

@@ -14,5 +14,9 @@ type NodeDiagram struct {
 	Status          int `gorm:"type:smallint;default:1;not null"`
 }
 
+func (*NodeDiagram) TableName() string {
+	return "node_diagram"
+}
+
 type NodeDiagramRepo interface {
 }

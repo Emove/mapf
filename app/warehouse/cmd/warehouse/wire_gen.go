@@ -28,15 +28,22 @@ func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	if err != nil {
 		return nil, nil, err
 	}
+	transaction := data.NewTransaction(dataData)
 	warehouseRepo, err := data.NewWarehouseRepo(dataData, logger)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
 	}
-	warehouseUsecase := biz.NewWarehouseUsecase(warehouseRepo, logger)
+	nodeTypeRepo, err := data.NewNodeTypeRepo(dataData, logger)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	warehouseUsecase := biz.NewWarehouseUsecase(transaction, warehouseRepo, nodeTypeRepo, logger)
 	warehouseService := service.NewWarehouseService(warehouseUsecase)
 	grpcServer := server.NewGRPCServer(confServer, warehouseService, logger)
-	app := newApp(logger, grpcServer)
+	httpServer := server.NewHTTPServer(confServer, warehouseService, logger)
+	app := newApp(logger, grpcServer, httpServer)
 	return app, func() {
 		cleanup()
 	}, nil

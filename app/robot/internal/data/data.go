@@ -29,7 +29,7 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 	helper := log.NewHelper(logger)
 	instance := &Data{}
 	var err error
-	instance.db, err = data.NewPostgresDB(parse2database(c), helper)
+	instance.db, err = data.NewPostgresDB(parse2database(c), logger, helper)
 	if err != nil {
 		return nil, nil, err
 	}

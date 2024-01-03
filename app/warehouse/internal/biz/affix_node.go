@@ -11,5 +11,9 @@ type AffixNode struct {
 	Status     int    `gorm:"type:smallint;default:1;not null"`
 }
 
+func (*AffixNode) TableName() string {
+	return "affix_node"
+}
+
 type AffixNodeRepo interface {
 }

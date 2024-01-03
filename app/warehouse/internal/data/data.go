@@ -2,18 +2,18 @@ package data
 
 import (
 	"context"
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/google/wire"
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 	"mapf/app/warehouse/internal/biz"
 	"mapf/app/warehouse/internal/conf"
 	"mapf/internal/data"
-
-	"github.com/go-kratos/kratos/v2/log"
-	"github.com/google/wire"
+	"mapf/internal/data/tx"
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewGreeterRepo, NewWarehouseRepo,
+var ProviderSet = wire.NewSet(NewData, NewTransaction, NewWarehouseRepo,
 	NewNodeRepo, NewNodeConfigRepo, NewNodeConfigItemRepo,
 	NewNodeTypeRepo, NewAffixNodeRepo, NewNodeRelationRepo,
 	NewNodeTagRepo, NewNodeDiagramRepo)
@@ -39,7 +39,7 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 		User:         database.GetUser(),
 		Password:     database.GetPassword(),
 		DatabaseName: database.GetDatabase(),
-	}, helper)
+	}, logger, helper)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -60,6 +60,23 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 		_ = rds.Close()
 	}
 	return &Data{db: db, rds: rds, ctx: context.Background()}, cleanup, nil
+}
+
+func NewTransaction(data *Data) tx.Transaction {
+	return data
+}
+
+func (d *Data) DB(ctx context.Context) *gorm.DB {
+	if db := tx.GetTxFromContext(ctx); db != nil {
+		return db
+	}
+	return d.db
+}
+
+func (d *Data) InTx(ctx context.Context, fn func(ctx context.Context) error) error {
+	return d.db.WithContext(ctx).Transaction(func(db *gorm.DB) error {
+		return fn(tx.SetTxToContext(ctx, db))
+	})
 }
 
 func autoMigration(db *gorm.DB) error {
