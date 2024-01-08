@@ -23,6 +23,8 @@ func (*Warehouse) TableName() string {
 
 type WarehouseRepo interface {
 	CreateWarehouse(ctx context.Context, warehouse *Warehouse) (*Warehouse, error)
+	GetWarehouseByName(ctx context.Context, name string) (*Warehouse, error)
+	GetWarehouseById(ctx context.Context, id int) (*Warehouse, error)
 }
 
 type WarehouseUsecase struct {
@@ -64,5 +66,14 @@ func (uc *WarehouseUsecase) CreateWarehouse(ctx context.Context, warehouse *Ware
 		}
 		return nil
 	})
+}
 
+// GetWarehouseByName 根据仓库名获取仓库信息
+func (uc *WarehouseUsecase) GetWarehouseByName(ctx context.Context, name string) (*Warehouse, error) {
+	return uc.repo.GetWarehouseByName(ctx, name)
+}
+
+// GetWarehouseById 根据仓库ID获取仓库信息
+func (uc *WarehouseUsecase) GetWarehouseById(ctx context.Context, id int) (*Warehouse, error) {
+	return uc.repo.GetWarehouseById(ctx, id)
 }

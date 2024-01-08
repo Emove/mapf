@@ -44,6 +44,43 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/web.v1.CreateWarehouseResponse'
+    /warehouse/id/{id}:
+        get:
+            tags:
+                - WarehouseService
+            operationId: WarehouseService_GetWarehouseById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/warehouse.v1.GetWarehouseResponse'
+    /warehouse/{name}:
+        get:
+            tags:
+                - WarehouseService
+            operationId: WarehouseService_GetWarehouseByName
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/warehouse.v1.GetWarehouseResponse'
 components:
     schemas:
         helloworld.v1.HelloReply:
@@ -52,6 +89,63 @@ components:
                 message:
                     type: string
             description: The response message containing the greetings
+        warehouse.v1.CreateNodeTypeRequest:
+            type: object
+            properties:
+                code:
+                    type: string
+                name:
+                    type: string
+        warehouse.v1.CreateWarehouseRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                nodeTypes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/warehouse.v1.CreateNodeTypeRequest'
+        warehouse.v1.CreateWarehouseResponse:
+            type: object
+            properties:
+                warehouse:
+                    $ref: '#/components/schemas/warehouse.v1.Warehouse'
+                nodeTypes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/warehouse.v1.NodeType'
+        warehouse.v1.GetWarehouseResponse:
+            type: object
+            properties:
+                warehouse:
+                    $ref: '#/components/schemas/warehouse.v1.Warehouse'
+        warehouse.v1.NodeType:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+                warehouseId:
+                    type: integer
+                    format: uint32
+                code:
+                    type: string
+                name:
+                    type: string
+                isDefault:
+                    type: integer
+                    format: enum
+        warehouse.v1.Warehouse:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+                name:
+                    type: string
+                status:
+                    type: integer
+                    format: enum
         web.v1.CreateWarehouseRequest:
             type: object
             properties:
@@ -63,4 +157,6 @@ components:
 tags:
     - name: Greeter
       description: The greeting service definition.
+    - name: WarehouseService
+      description: The warehouse service definition.
     - name: WebService

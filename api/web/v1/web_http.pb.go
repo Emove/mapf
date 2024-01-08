@@ -28,10 +28,10 @@ type WebServiceHTTPServer interface {
 
 func RegisterWebServiceHTTPServer(s *http.Server, srv WebServiceHTTPServer) {
 	r := s.Route("/")
-	r.POST("/warehouse", _WebService_CreateWarehouse0_HTTP_Handler(srv))
+	r.POST("/warehouse", _WebService_CreateWarehouse1_HTTP_Handler(srv))
 }
 
-func _WebService_CreateWarehouse0_HTTP_Handler(srv WebServiceHTTPServer) func(ctx http.Context) error {
+func _WebService_CreateWarehouse1_HTTP_Handler(srv WebServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CreateWarehouseRequest
 		if err := ctx.Bind(&in); err != nil {

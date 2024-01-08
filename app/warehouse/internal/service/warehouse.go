@@ -34,13 +34,38 @@ func (s *WarehouseService) CreateWarehouse(ctx context.Context, req *v1.CreateWa
 		}
 	}
 	return &v1.CreateWarehouseResponse{
-		Warehouse: &v1.Warehouse{
-			Id:     uint32(warehouse.ID),
-			Name:   warehouse.Name,
-			Status: ConvertWarehouseStatusToWarehouseStatusEnum(warehouse.Status),
-		},
+		Warehouse: ConvertWarehouseToProtobuf(warehouse),
 		NodeTypes: pbNodeTypes,
 	}, err
+}
+
+func (s *WarehouseService) GetWarehouseByName(ctx context.Context, req *v1.GetWarehouseByNameRequest) (*v1.GetWarehouseResponse, error) {
+	warehouse, err := s.uc.GetWarehouseByName(ctx, req.Name)
+	if err != nil {
+		return nil, err
+	}
+	resp := &v1.GetWarehouseResponse{Warehouse: ConvertWarehouseToProtobuf(warehouse)}
+	return resp, nil
+}
+
+func (s *WarehouseService) GetWarehouseById(ctx context.Context, req *v1.GetWarehouseByIdRequest) (*v1.GetWarehouseResponse, error) {
+	warehouse, err := s.uc.GetWarehouseById(ctx, int(req.Id))
+	if err != nil {
+		return nil, err
+	}
+	resp := &v1.GetWarehouseResponse{Warehouse: ConvertWarehouseToProtobuf(warehouse)}
+	return resp, nil
+}
+
+func ConvertWarehouseToProtobuf(warehouse *biz.Warehouse) *v1.Warehouse {
+	if warehouse == nil {
+		return nil
+	}
+	return &v1.Warehouse{
+		Id:     uint32(warehouse.ID),
+		Name:   warehouse.Name,
+		Status: ConvertWarehouseStatusToWarehouseStatusEnum(warehouse.Status),
+	}
 }
 
 func ConvertWarehouseStatusToWarehouseStatusEnum(warehouseStatus int) v1.EnableStatus {

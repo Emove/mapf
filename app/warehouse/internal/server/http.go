@@ -31,6 +31,6 @@ func NewHTTPServer(c *conf.Server, warehouseService *service.WarehouseService, l
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
-	v1.RegisterWarehouseHTTPServer(srv, warehouseService)
+	v1.RegisterWarehouseServiceHTTPServer(srv, warehouseService)
 	return srv
 }

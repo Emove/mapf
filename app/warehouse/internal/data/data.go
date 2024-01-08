@@ -39,6 +39,7 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 		User:         database.GetUser(),
 		Password:     database.GetPassword(),
 		DatabaseName: database.GetDatabase(),
+		LogLevel:     database.LogLevel,
 	}, logger, helper)
 	if err != nil {
 		return nil, nil, err

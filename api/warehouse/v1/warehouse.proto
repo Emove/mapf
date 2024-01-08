@@ -11,7 +11,23 @@ option go_package = "mapf/api/warehouse/v1;v1";
 // The warehouse service definition.
 service WarehouseService {
   // Creates a warehouse
-  rpc CreateWarehouse (CreateWarehouseRequest) returns (CreateWarehouseResponse) {}
+  rpc CreateWarehouse (CreateWarehouseRequest) returns (CreateWarehouseResponse) {
+    option (google.api.http) = {
+      post: "/warehouse",
+      body: "*",
+    };
+  }
+  rpc GetWarehouseByName(GetWarehouseByNameRequest) returns (GetWarehouseResponse) {
+    option (google.api.http) = {
+      get: "/warehouse/{name}"
+    };
+  }
+  rpc GetWarehouseById(GetWarehouseByIdRequest) returns (GetWarehouseResponse) {
+    option (google.api.http) = {
+      get: "/warehouse/id/{id}"
+    };
+  }
+
 }
 
 message CreateWarehouseRequest {
@@ -22,6 +38,18 @@ message CreateWarehouseRequest {
 message CreateWarehouseResponse {
   Warehouse warehouse = 1;
   repeated NodeType node_types = 2;
+}
+
+message GetWarehouseByNameRequest {
+  string name = 1 [(validate.rules).string = {min_len: 3, max_len: 64}];
+}
+
+message GetWarehouseByIdRequest {
+  uint32 id = 1 [(validate.rules).uint32 = {gte: 1}];
+}
+
+message GetWarehouseResponse {
+  Warehouse warehouse = 1;
 }
 
 message CreateNodeTypeRequest {
