@@ -14,7 +14,7 @@ data:
     user: emove
     password: "668466"
     database: warehouse
-    log_level: Error
+    log_level: Info
   redis:
     host: 192.168.204.134
     port: "6379"

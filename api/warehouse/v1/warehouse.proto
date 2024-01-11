@@ -5,12 +5,13 @@ package warehouse.v1;
 import "google/api/annotations.proto";
 import "validate/validate.proto";
 import public "common/data/v1/data.proto";
+import public "common/v1/common.proto";
 
 option go_package = "mapf/api/warehouse/v1;v1";
 
 // The warehouse service definition.
 service WarehouseService {
-  // Creates a warehouse
+  // -------------------------------------------------  Warehouse  -----------------------------------------------------
   rpc CreateWarehouse (CreateWarehouseRequest) returns (CreateWarehouseResponse) {
     option (google.api.http) = {
       post: "/warehouse",
@@ -19,25 +20,62 @@ service WarehouseService {
   }
   rpc GetWarehouseByName(GetWarehouseByNameRequest) returns (GetWarehouseResponse) {
     option (google.api.http) = {
-      get: "/warehouse/{name}"
+      get: "/warehouse/name/{name}"
     };
   }
   rpc GetWarehouseById(GetWarehouseByIdRequest) returns (GetWarehouseResponse) {
     option (google.api.http) = {
-      get: "/warehouse/id/{id}"
+      get: "/warehouse/{id}"
     };
   }
-
+  rpc UpdateWarehouseById(UpdateWarehouseByIdRequest) returns (common.v1.SimpleResponse) {
+    option (google.api.http) = {
+      put: "/warehouse/{id}",
+      body: "*",
+    };
+  }
+  rpc UpdateWarehouseStatusById(UpdateWarehouseStatusByIdRequest) returns (common.v1.SimpleResponse) {
+    option (google.api.http) = {
+      put: "/warehouse/{id}/status",
+      body: "*",
+    };
+  }
+  rpc DeleteWarehouseById(DeleteWarehouseByIdRequest) returns (common.v1.SimpleResponse) {
+    option (google.api.http) = {
+      delete: "/warehouse/{id}"
+    };
+  }
+  // -------------------------------------------------  NodeType  ------------------------------------------------------
+  rpc CreateNodeType(CreateNodeTypeRequest) returns (CreateNodeTypeResponse) {
+    option (google.api.http) = {
+      post: "/node_type",
+      body: "*",
+    };
+  }
+  rpc GetNodeTypeById(GetNodeTypeByIdRequest) returns (GetNodeTypeResponse) {
+    option (google.api.http) = {
+      get: "/node_type/{id}",
+    };
+  }
+  rpc UpdateNodeTypeById(UpdateNodeTypeByIdRequest) returns (common.v1.SimpleResponse) {
+    option (google.api.http) = {
+      put: "/node_type/{id}",
+      body: "*",
+    };
+  }
+  rpc DeleteNodeTypeById(DeleteNodeTypeByIdRequest) returns (common.v1.SimpleResponse) {
+    option (google.api.http) = {
+      delete: "/node_type/{id}"
+    };
+  }
 }
 
 message CreateWarehouseRequest {
   string name = 1 [(validate.rules).string = {min_len: 3, max_len: 64}];
-  repeated CreateNodeTypeRequest node_types = 2;
 }
 
 message CreateWarehouseResponse {
   Warehouse warehouse = 1;
-  repeated NodeType node_types = 2;
 }
 
 message GetWarehouseByNameRequest {
@@ -52,20 +90,58 @@ message GetWarehouseResponse {
   Warehouse warehouse = 1;
 }
 
+message UpdateWarehouseByIdRequest {
+  uint32 id = 1 [(validate.rules).uint32 = {gte: 1}];
+  string name = 2 [(validate.rules).string = {ignore_empty: true, min_len: 3, max_len: 64}];
+  uint32 is_default = 3 [(validate.rules).uint32 = {gte: 0, lte: 2}];
+}
+
+message UpdateWarehouseStatusByIdRequest {
+  uint32 id = 1 [(validate.rules).uint32 = {gte: 1}];
+  uint32 status = 2 [(validate.rules).uint32 = {gte: 0, lte: 2}];
+}
+
+message DeleteWarehouseByIdRequest {
+  uint32 id = 1 [(validate.rules).uint32 = {gte: 1}];
+}
+
 message CreateNodeTypeRequest {
   string code = 1  [(validate.rules).string = {min_len: 3, max_len: 64}];
   string name = 2  [(validate.rules).string = {min_len: 3, max_len: 64}];
 }
 
+message CreateNodeTypeResponse {
+  NodeType node_type = 1;
+}
+
+message GetNodeTypeByIdRequest {
+  uint32 id = 1 [(validate.rules).uint32 = {gte: 1}];
+}
+
+message GetNodeTypeResponse {
+  NodeType node_type = 1;
+}
+
+message UpdateNodeTypeByIdRequest {
+  uint32 id = 1 [(validate.rules).uint32 = {gte: 1}];
+  optional string code = 2  [(validate.rules).string = {min_len: 3, max_len: 64}];
+  optional string name = 3  [(validate.rules).string = {min_len: 3, max_len: 64}];
+  optional uint32 is_default = 4 [(validate.rules).uint32 = {gte: 0, lte: 2}];
+}
+
+message DeleteNodeTypeByIdRequest {
+  uint32 id = 1 [(validate.rules).uint32 = {gte: 1}];
+}
+
 message Warehouse {
   uint32 id = 1;
   string name = 2;
-  common.data.v1.EnableStatus status = 3;
+  common.data.v1.DefaultStatus is_default = 3;
+  common.data.v1.EnableStatus status = 4;
 }
 
 message NodeType {
   uint32 id = 1;
-  uint32 warehouse_id = 2;
   string code = 3;
   string name = 4;
   optional common.data.v1.DefaultStatus is_default = 5;

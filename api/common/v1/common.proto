@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package common.v1;
+
+option go_package = "mapf/api/common/v1;v1";
+
+message SimpleResponse {
+  string msg = 1;
+}

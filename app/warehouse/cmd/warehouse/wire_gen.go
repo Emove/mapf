@@ -34,13 +34,14 @@ func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 		cleanup()
 		return nil, nil, err
 	}
+	warehouseUsecase := biz.NewWarehouseUsecase(transaction, warehouseRepo, logger)
 	nodeTypeRepo, err := data.NewNodeTypeRepo(dataData, logger)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
 	}
-	warehouseUsecase := biz.NewWarehouseUsecase(transaction, warehouseRepo, nodeTypeRepo, logger)
-	warehouseService := service.NewWarehouseService(warehouseUsecase)
+	nodeTypeUsecase := biz.NewNodeTypeUsecase(transaction, nodeTypeRepo, logger)
+	warehouseService := service.NewWarehouseService(warehouseUsecase, nodeTypeUsecase)
 	grpcServer := server.NewGRPCServer(confServer, warehouseService, logger)
 	httpServer := server.NewHTTPServer(confServer, warehouseService, logger)
 	app := newApp(logger, grpcServer, httpServer)

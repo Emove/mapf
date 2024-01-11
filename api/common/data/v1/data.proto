@@ -5,16 +5,19 @@ package common.data.v1;
 option go_package = "mapf/api/common/data/v1;v1";
 
 enum EnableStatus {
-  DISABLE = 0;
+  PLACEHOLDER_ENABLE_STATUS = 0;
   ENABLE = 1;
+  DISABLE = 2;
 }
 
 enum DefaultStatus {
-  NOT_DEFAULT = 0;
+  PLACEHOLDER_DEFAULT_STATUS = 0;
   IS_DEFAULT = 1;
+  NOT_DEFAULT = 2;
 }
 
 enum ValidStatus {
-  INVALID = 0;
+  PLACEHOLDER_VALID_STATUS = 0;
   VALID = 1;
+  INVALID = 2;
 }

@@ -178,3 +178,184 @@ func Test_warehouseRepo_GetWarehouseById(t *testing.T) {
 		})
 	}
 }
+
+func Test_warehouseRepo_UpdateWarehouseById(t *testing.T) {
+	type args struct {
+		ctx       context.Context
+		id        int
+		warehouse *biz.Warehouse
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    bool
+		wantErr assert.ErrorAssertionFunc
+	}{
+		{
+			name: "update_name",
+			args: args{ctx: context.Background(), id: 9, warehouse: &biz.Warehouse{Name: "test1"}},
+			want: true,
+			wantErr: func(t assert.TestingT, err error, i ...interface{}) bool {
+				if err != nil {
+					t.Errorf(i[0].(string), i[1:]...)
+					return false
+				}
+				return true
+			},
+		},
+		{
+			name: "set_default",
+			args: args{ctx: context.Background(), id: 9, warehouse: &biz.Warehouse{IsDefault: data.IsDefaultTrue}},
+			want: true,
+			wantErr: func(t assert.TestingT, err error, i ...interface{}) bool {
+				if err != nil {
+					t.Errorf(i[0].(string), i[1:]...)
+					return false
+				}
+				return true
+			},
+		},
+		{
+			name: "update_name_and_default",
+			args: args{ctx: context.Background(), id: 9, warehouse: &biz.Warehouse{Name: "test", IsDefault: data.IsDefaultTrue}},
+			want: true,
+			wantErr: func(t assert.TestingT, err error, i ...interface{}) bool {
+				if err != nil {
+					t.Errorf(i[0].(string), i[1:]...)
+					return false
+				}
+				return true
+			},
+		},
+		{
+			name: "set_disable",
+			args: args{ctx: context.Background(), id: 9, warehouse: &biz.Warehouse{Status: data.DisableStatus}},
+			want: false,
+			wantErr: func(t assert.TestingT, err error, i ...interface{}) bool {
+				if err != nil {
+					t.Errorf(i[0].(string), i[1:]...)
+					return false
+				}
+				return true
+			},
+		},
+	}
+	repo := newWarehouseRepo(t)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := repo.UpdateWarehouseById(tt.args.ctx, tt.args.id, tt.args.warehouse)
+			if !tt.wantErr(t, err, fmt.Sprintf("UpdateWarehouseById(%v, %v, %v)", tt.args.ctx, tt.args.id, tt.args.warehouse)) {
+				return
+			}
+			assert.Equalf(t, tt.want, got, "UpdateWarehouseById(%v, %v, %v)", tt.args.ctx, tt.args.id, tt.args.warehouse)
+		})
+	}
+}
+
+func Test_warehouseRepo_EnableWarehouseById(t *testing.T) {
+	type args struct {
+		ctx context.Context
+		id  int
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    bool
+		wantErr assert.ErrorAssertionFunc
+	}{
+		{
+			name: "first",
+			args: args{ctx: context.Background(), id: 9},
+			want: true,
+			wantErr: func(t assert.TestingT, err error, i ...interface{}) bool {
+				if err != nil {
+					t.Errorf(i[0].(string), i[1:]...)
+					return false
+				}
+				return true
+			},
+		},
+	}
+	repo := newWarehouseRepo(t)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := repo.EnableWarehouseById(tt.args.ctx, tt.args.id)
+			if !tt.wantErr(t, err, fmt.Sprintf("EnableWarehouseById(%v, %v)", tt.args.ctx, tt.args.id)) {
+				return
+			}
+			assert.Equalf(t, tt.want, got, "EnableWarehouseById(%v, %v)", tt.args.ctx, tt.args.id)
+		})
+	}
+}
+
+func Test_warehouseRepo_DisableWarehouseById(t *testing.T) {
+	type args struct {
+		ctx context.Context
+		id  int
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    bool
+		wantErr assert.ErrorAssertionFunc
+	}{
+		{
+			name: "first",
+			args: args{ctx: context.Background(), id: 9},
+			want: true,
+			wantErr: func(t assert.TestingT, err error, i ...interface{}) bool {
+				if err != nil {
+					t.Errorf(i[0].(string), i[1:]...)
+					return false
+				}
+				return true
+			},
+		},
+	}
+	repo := newWarehouseRepo(t)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := repo.DisableWarehouseById(tt.args.ctx, tt.args.id)
+			if !tt.wantErr(t, err, fmt.Sprintf("EnableWarehouseById(%v, %v)", tt.args.ctx, tt.args.id)) {
+				return
+			}
+			assert.Equalf(t, tt.want, got, "EnableWarehouseById(%v, %v)", tt.args.ctx, tt.args.id)
+		})
+	}
+}
+
+func Test_warehouseRepo_DeleteWarehouseById(t *testing.T) {
+	type args struct {
+		ctx context.Context
+		id  int
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    bool
+		wantErr assert.ErrorAssertionFunc
+	}{
+		{
+			name: "first",
+			args: args{ctx: context.Background(), id: 9},
+			want: true,
+			wantErr: func(t assert.TestingT, err error, i ...interface{}) bool {
+				if err != nil {
+					t.Errorf(i[0].(string), i[1:]...)
+					return false
+				}
+				return true
+			},
+		},
+	}
+	repo := newWarehouseRepo(t)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := repo.DeleteWarehouseById(tt.args.ctx, tt.args.id)
+			if !tt.wantErr(t, err, fmt.Sprintf("DeleteWarehouseById(%v, %v)", tt.args.ctx, tt.args.id)) {
+				return
+			}
+			assert.Equalf(t, tt.want, got, "DeleteWarehouseById(%v, %v)", tt.args.ctx, tt.args.id)
+		})
+	}
+}
