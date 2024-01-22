@@ -21,10 +21,13 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 const OperationWarehouseServiceCreateNodeType = "/warehouse.v1.WarehouseService/CreateNodeType"
+const OperationWarehouseServiceCreateNodes = "/warehouse.v1.WarehouseService/CreateNodes"
 const OperationWarehouseServiceCreateWarehouse = "/warehouse.v1.WarehouseService/CreateWarehouse"
 const OperationWarehouseServiceDeleteNodeTypeById = "/warehouse.v1.WarehouseService/DeleteNodeTypeById"
 const OperationWarehouseServiceDeleteWarehouseById = "/warehouse.v1.WarehouseService/DeleteWarehouseById"
+const OperationWarehouseServiceGetNodeById = "/warehouse.v1.WarehouseService/GetNodeById"
 const OperationWarehouseServiceGetNodeTypeById = "/warehouse.v1.WarehouseService/GetNodeTypeById"
+const OperationWarehouseServiceGetNodesByWarehouseId = "/warehouse.v1.WarehouseService/GetNodesByWarehouseId"
 const OperationWarehouseServiceGetWarehouseById = "/warehouse.v1.WarehouseService/GetWarehouseById"
 const OperationWarehouseServiceGetWarehouseByName = "/warehouse.v1.WarehouseService/GetWarehouseByName"
 const OperationWarehouseServiceUpdateNodeTypeById = "/warehouse.v1.WarehouseService/UpdateNodeTypeById"
@@ -34,11 +37,15 @@ const OperationWarehouseServiceUpdateWarehouseStatusById = "/warehouse.v1.Wareho
 type WarehouseServiceHTTPServer interface {
 	// CreateNodeType -------------------------------------------------  NodeType  ------------------------------------------------------
 	CreateNodeType(context.Context, *CreateNodeTypeRequest) (*CreateNodeTypeResponse, error)
+	// CreateNodes -------------------------------------------------  Node  ----------------------------------------------------------
+	CreateNodes(context.Context, *CreateNodesRequest) (*v1.SimpleResponse, error)
 	// CreateWarehouse -------------------------------------------------  Warehouse  -----------------------------------------------------
 	CreateWarehouse(context.Context, *CreateWarehouseRequest) (*CreateWarehouseResponse, error)
 	DeleteNodeTypeById(context.Context, *DeleteNodeTypeByIdRequest) (*v1.SimpleResponse, error)
 	DeleteWarehouseById(context.Context, *DeleteWarehouseByIdRequest) (*v1.SimpleResponse, error)
+	GetNodeById(context.Context, *GetNodeByIdRequest) (*GetNodeResponse, error)
 	GetNodeTypeById(context.Context, *GetNodeTypeByIdRequest) (*GetNodeTypeResponse, error)
+	GetNodesByWarehouseId(context.Context, *GetNodesByWarehouseIdRequest) (*GetNodesResponse, error)
 	GetWarehouseById(context.Context, *GetWarehouseByIdRequest) (*GetWarehouseResponse, error)
 	GetWarehouseByName(context.Context, *GetWarehouseByNameRequest) (*GetWarehouseResponse, error)
 	UpdateNodeTypeById(context.Context, *UpdateNodeTypeByIdRequest) (*v1.SimpleResponse, error)
@@ -58,6 +65,9 @@ func RegisterWarehouseServiceHTTPServer(s *http.Server, srv WarehouseServiceHTTP
 	r.GET("/node_type/{id}", _WarehouseService_GetNodeTypeById0_HTTP_Handler(srv))
 	r.PUT("/node_type/{id}", _WarehouseService_UpdateNodeTypeById0_HTTP_Handler(srv))
 	r.DELETE("/node_type/{id}", _WarehouseService_DeleteNodeTypeById0_HTTP_Handler(srv))
+	r.POST("/node", _WarehouseService_CreateNodes0_HTTP_Handler(srv))
+	r.GET("/node/{id}", _WarehouseService_GetNodeById0_HTTP_Handler(srv))
+	r.GET("/warehouse/{warehouse_id}/nodes", _WarehouseService_GetNodesByWarehouseId0_HTTP_Handler(srv))
 }
 
 func _WarehouseService_CreateWarehouse0_HTTP_Handler(srv WarehouseServiceHTTPServer) func(ctx http.Context) error {
@@ -289,12 +299,81 @@ func _WarehouseService_DeleteNodeTypeById0_HTTP_Handler(srv WarehouseServiceHTTP
 	}
 }
 
+func _WarehouseService_CreateNodes0_HTTP_Handler(srv WarehouseServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CreateNodesRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationWarehouseServiceCreateNodes)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.CreateNodes(ctx, req.(*CreateNodesRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*v1.SimpleResponse)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _WarehouseService_GetNodeById0_HTTP_Handler(srv WarehouseServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetNodeByIdRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationWarehouseServiceGetNodeById)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetNodeById(ctx, req.(*GetNodeByIdRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GetNodeResponse)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _WarehouseService_GetNodesByWarehouseId0_HTTP_Handler(srv WarehouseServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetNodesByWarehouseIdRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationWarehouseServiceGetNodesByWarehouseId)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetNodesByWarehouseId(ctx, req.(*GetNodesByWarehouseIdRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GetNodesResponse)
+		return ctx.Result(200, reply)
+	}
+}
+
 type WarehouseServiceHTTPClient interface {
 	CreateNodeType(ctx context.Context, req *CreateNodeTypeRequest, opts ...http.CallOption) (rsp *CreateNodeTypeResponse, err error)
+	CreateNodes(ctx context.Context, req *CreateNodesRequest, opts ...http.CallOption) (rsp *v1.SimpleResponse, err error)
 	CreateWarehouse(ctx context.Context, req *CreateWarehouseRequest, opts ...http.CallOption) (rsp *CreateWarehouseResponse, err error)
 	DeleteNodeTypeById(ctx context.Context, req *DeleteNodeTypeByIdRequest, opts ...http.CallOption) (rsp *v1.SimpleResponse, err error)
 	DeleteWarehouseById(ctx context.Context, req *DeleteWarehouseByIdRequest, opts ...http.CallOption) (rsp *v1.SimpleResponse, err error)
+	GetNodeById(ctx context.Context, req *GetNodeByIdRequest, opts ...http.CallOption) (rsp *GetNodeResponse, err error)
 	GetNodeTypeById(ctx context.Context, req *GetNodeTypeByIdRequest, opts ...http.CallOption) (rsp *GetNodeTypeResponse, err error)
+	GetNodesByWarehouseId(ctx context.Context, req *GetNodesByWarehouseIdRequest, opts ...http.CallOption) (rsp *GetNodesResponse, err error)
 	GetWarehouseById(ctx context.Context, req *GetWarehouseByIdRequest, opts ...http.CallOption) (rsp *GetWarehouseResponse, err error)
 	GetWarehouseByName(ctx context.Context, req *GetWarehouseByNameRequest, opts ...http.CallOption) (rsp *GetWarehouseResponse, err error)
 	UpdateNodeTypeById(ctx context.Context, req *UpdateNodeTypeByIdRequest, opts ...http.CallOption) (rsp *v1.SimpleResponse, err error)
@@ -315,6 +394,19 @@ func (c *WarehouseServiceHTTPClientImpl) CreateNodeType(ctx context.Context, in 
 	pattern := "/node_type"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationWarehouseServiceCreateNodeType))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *WarehouseServiceHTTPClientImpl) CreateNodes(ctx context.Context, in *CreateNodesRequest, opts ...http.CallOption) (*v1.SimpleResponse, error) {
+	var out v1.SimpleResponse
+	pattern := "/node"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationWarehouseServiceCreateNodes))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -362,11 +454,37 @@ func (c *WarehouseServiceHTTPClientImpl) DeleteWarehouseById(ctx context.Context
 	return &out, err
 }
 
+func (c *WarehouseServiceHTTPClientImpl) GetNodeById(ctx context.Context, in *GetNodeByIdRequest, opts ...http.CallOption) (*GetNodeResponse, error) {
+	var out GetNodeResponse
+	pattern := "/node/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationWarehouseServiceGetNodeById))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
 func (c *WarehouseServiceHTTPClientImpl) GetNodeTypeById(ctx context.Context, in *GetNodeTypeByIdRequest, opts ...http.CallOption) (*GetNodeTypeResponse, error) {
 	var out GetNodeTypeResponse
 	pattern := "/node_type/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationWarehouseServiceGetNodeTypeById))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *WarehouseServiceHTTPClientImpl) GetNodesByWarehouseId(ctx context.Context, in *GetNodesByWarehouseIdRequest, opts ...http.CallOption) (*GetNodesResponse, error) {
+	var out GetNodesResponse
+	pattern := "/warehouse/{warehouse_id}/nodes"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationWarehouseServiceGetNodesByWarehouseId))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

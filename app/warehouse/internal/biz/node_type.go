@@ -70,7 +70,7 @@ func (uc *NodeTypeUsecase) DeleteNodeTypeById(ctx context.Context, id int) error
 	if nodeType == nil {
 		return data_errors.NewResourceNotFoundError("node_type id: %d not found", id)
 	}
-	if nodeType.IsDefault == data.IsDefaultTrue {
+	if data.IsDefault(nodeType.IsDefault) {
 		return data_errors.NewDefaultResourceForbiddenError("delete a default NodeType is not allowed")
 	}
 	_, err = uc.repo.DeleteNodeTypeById(ctx, id)

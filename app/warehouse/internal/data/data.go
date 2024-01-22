@@ -2,6 +2,8 @@ package data
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	"github.com/redis/go-redis/v9"
@@ -10,10 +12,12 @@ import (
 	"mapf/app/warehouse/internal/conf"
 	"mapf/internal/data"
 	"mapf/internal/data/tx"
+	"mapf/internal/event"
+	"net/url"
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewTransaction, NewWarehouseRepo,
+var ProviderSet = wire.NewSet(NewData, NewTransaction, NewEventCenterConfiguration, NewWarehouseRepo,
 	NewNodeRepo, NewNodeConfigRepo, NewNodeConfigItemRepo,
 	NewNodeTypeRepo, NewAffixNodeRepo, NewNodeRelationRepo,
 	NewNodeTagRepo, NewNodeDiagramRepo)
@@ -65,6 +69,18 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 
 func NewTransaction(data *Data) tx.Transaction {
 	return data
+}
+
+func NewEventCenterConfiguration(c *conf.Data, logger log.Logger) (event.Configuration, func(), error) {
+	config := c.Event
+	parse, err := url.Parse(c.Event.Addr)
+	if err != nil {
+		return nil, nil, err
+	}
+	if parse.Scheme == event.AmqpScheme {
+		return event.NewRabbitMqConfiguration(config.Addr, logger)
+	}
+	return nil, nil, errors.New(fmt.Sprintf("event center type not supported, addr: %s", config.Addr))
 }
 
 func (d *Data) DB(ctx context.Context) *gorm.DB {

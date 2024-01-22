@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 	"mapf/app/warehouse/internal/biz"
 	"mapf/internal/data"
-	data_errors "mapf/internal/errors"
+	dataerrors "mapf/internal/errors"
 )
 
 var _ biz.WarehouseRepo = (*warehouseRepo)(nil)
@@ -28,7 +28,7 @@ func NewWarehouseRepo(data *Data, logger log.Logger) (biz.WarehouseRepo, error) 
 func (repo *warehouseRepo) CreateWarehouse(ctx context.Context, warehouse *biz.Warehouse) (*biz.Warehouse, error) {
 	err := repo.data.DB(ctx).Create(warehouse).Error
 	if err != nil && errors.Is(err, gorm.ErrDuplicatedKey) {
-		return warehouse, data_errors.NewDuplicatedKeyError("Warehouse Name: [%s] Existed", warehouse.Name)
+		return warehouse, dataerrors.NewDuplicatedKeyError("Warehouse Name: [%s] Existed", warehouse.Name)
 	}
 	return warehouse, err
 }
@@ -68,7 +68,7 @@ func (repo *warehouseRepo) UpdateWarehouseById(ctx context.Context, id int, ware
 	result := stmt.Updates(values)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
-			return false, data_errors.NewDuplicatedKeyError("Warehouse Name: [%s] Existed", warehouse.Name)
+			return false, dataerrors.NewDuplicatedKeyError("Warehouse Name: [%s] Existed", warehouse.Name)
 		}
 		return false, result.Error
 	}

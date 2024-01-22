@@ -21,7 +21,9 @@ func (s *WarehouseService) GetNodeTypeById(ctx context.Context, req *v1.GetNodeT
 		return
 	}
 	resp = &v1.GetNodeTypeResponse{}
-	resp.NodeType = ConvertNodeType2protobuf(nodeType)
+	if nodeType != nil {
+		resp.NodeType = ConvertNodeType2protobuf(nodeType)
+	}
 	return
 }
 

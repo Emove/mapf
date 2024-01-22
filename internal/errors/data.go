@@ -20,3 +20,7 @@ func NewDefaultResourceForbiddenError(format string, values ...interface{}) erro
 func NewResourceNotFoundError(format string, values ...interface{}) error {
 	return errors.NotFound("RESOURCE_NOT_FOUND", fmt.Sprintf(format, values...))
 }
+
+func NewInvalidArgumentError(format string, values ...interface{}) error {
+	return errors.BadRequest("INVALID_ARGUMENT", fmt.Sprintf(format, values...))
+}

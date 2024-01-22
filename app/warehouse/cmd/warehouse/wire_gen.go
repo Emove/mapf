@@ -12,6 +12,8 @@ import (
 	"mapf/app/warehouse/internal/biz"
 	"mapf/app/warehouse/internal/conf"
 	"mapf/app/warehouse/internal/data"
+	"mapf/app/warehouse/internal/event/publisher"
+	"mapf/app/warehouse/internal/event/subscriber"
 	"mapf/app/warehouse/internal/server"
 	"mapf/app/warehouse/internal/service"
 )
@@ -41,11 +43,45 @@ func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 		return nil, nil, err
 	}
 	nodeTypeUsecase := biz.NewNodeTypeUsecase(transaction, nodeTypeRepo, logger)
-	warehouseService := service.NewWarehouseService(warehouseUsecase, nodeTypeUsecase)
+	nodeRepo, err := data.NewNodeRepo(dataData, logger)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	configuration, cleanup2, err := data.NewEventCenterConfiguration(confData, logger)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	eventPublisher, cleanup3, err := publisher.NewCreateNodeEventPublisher(configuration)
+	if err != nil {
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
+	eventSubscriber, cleanup4, err := subscriber.NewCreateNodeEventSubscriber(configuration)
+	if err != nil {
+		cleanup3()
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
+	nodeUsecase, err := biz.NewNodeUsecase(transaction, nodeRepo, warehouseRepo, eventPublisher, eventSubscriber, logger)
+	if err != nil {
+		cleanup4()
+		cleanup3()
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
+	warehouseService := service.NewWarehouseService(warehouseUsecase, nodeTypeUsecase, nodeUsecase)
 	grpcServer := server.NewGRPCServer(confServer, warehouseService, logger)
 	httpServer := server.NewHTTPServer(confServer, warehouseService, logger)
 	app := newApp(logger, grpcServer, httpServer)
 	return app, func() {
+		cleanup4()
+		cleanup3()
+		cleanup2()
 		cleanup()
 	}, nil
 }

@@ -108,11 +108,11 @@ func Test_nodeTypeRepo_BatchCreateNodeTypes(t *testing.T) {
 				ctx: context.Background(),
 				nodeTypes: []*biz.NodeType{
 					{
-						Code: "PASSAGE",
+						Code: "PASSAGE_TEST",
 						Name: "通道节点",
 					},
 					{
-						Code: "WORKSTATION",
+						Code: "WORKSTATION_TEST",
 						Name: "工作站",
 					},
 				},

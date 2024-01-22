@@ -92,7 +92,7 @@ func (uc *WarehouseUsecase) DisableWarehouseById(ctx context.Context, id int) er
 	if err != nil {
 		return err
 	}
-	if warehouse.IsDefault == data.IsDefaultTrue {
+	if data.IsDefault(warehouse.IsDefault) {
 		return errors.Forbidden("DEFAULT_RESOURCE", "disable a default warehouse is not allowed")
 	}
 	succeed, err := uc.repo.DisableWarehouseById(ctx, id)
@@ -110,7 +110,7 @@ func (uc *WarehouseUsecase) DeleteWarehouseById(ctx context.Context, id int) err
 	if err != nil {
 		return err
 	}
-	if warehouse.IsDefault == data.IsDefaultTrue {
+	if data.IsDefault(warehouse.IsDefault) {
 		return data_errors.NewDefaultResourceForbiddenError("delete a default Warehouse is not allowed")
 	}
 	succeed, err := uc.repo.DeleteWarehouseById(ctx, id)

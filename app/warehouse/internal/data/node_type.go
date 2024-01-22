@@ -7,7 +7,8 @@ import (
 	"gorm.io/gorm"
 	"mapf/app/warehouse/internal/biz"
 	"mapf/internal/data"
-	data_errors "mapf/internal/errors"
+	"mapf/internal/data/tx"
+	dataerrors "mapf/internal/errors"
 )
 
 var _ biz.NodeTypeRepo = (*nodeTypeRepo)(nil)
@@ -32,13 +33,15 @@ func (repo *nodeTypeRepo) CreateNodeType(ctx context.Context, nodeType *biz.Node
 
 // BatchCreateNodeTypes 批量创建NodeType
 func (repo *nodeTypeRepo) BatchCreateNodeTypes(ctx context.Context, nodeTypes []*biz.NodeType) ([]*biz.NodeType, error) {
-	db := repo.data.DB(ctx)
-	for i := 0; i < len(nodeTypes); i++ {
-		if err := db.Create(nodeTypes[i]).Error; err != nil {
-			return nodeTypes, err
+	err := repo.data.InTx(ctx, func(ctx context.Context) error {
+		db := tx.GetTxFromContext(ctx)
+		if err := db.Create(nodeTypes).Error; err != nil {
+			return err
 		}
-	}
-	return nodeTypes, nil
+		return nil
+	})
+
+	return nodeTypes, err
 }
 
 // GetNodeTypeById 根据节点类型ID获取节点类型
@@ -76,7 +79,7 @@ func (repo *nodeTypeRepo) UpdateNodeTypeById(ctx context.Context, id int, nodeTy
 	result := stmt.Updates(values)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
-			return false, data_errors.NewDuplicatedKeyError("NodeType Code: [%s] Existed", nodeType.Code)
+			return false, dataerrors.NewDuplicatedKeyError("NodeType Code: [%s] Existed", nodeType.Code)
 		}
 		return false, result.Error
 	}

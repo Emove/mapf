@@ -15,13 +15,15 @@ type WarehouseService struct {
 
 	wuc  *biz.WarehouseUsecase
 	ntuc *biz.NodeTypeUsecase
+	nuc  *biz.NodeUsecase
 }
 
 // NewWarehouseService new a warehouse service.
-func NewWarehouseService(wuc *biz.WarehouseUsecase, ntuc *biz.NodeTypeUsecase) *WarehouseService {
+func NewWarehouseService(wuc *biz.WarehouseUsecase, ntuc *biz.NodeTypeUsecase, nuc *biz.NodeUsecase) *WarehouseService {
 	return &WarehouseService{
 		wuc:  wuc,
 		ntuc: ntuc,
+		nuc:  nuc,
 	}
 }
 

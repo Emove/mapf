@@ -30,6 +30,9 @@ const (
 	WarehouseService_GetNodeTypeById_FullMethodName           = "/warehouse.v1.WarehouseService/GetNodeTypeById"
 	WarehouseService_UpdateNodeTypeById_FullMethodName        = "/warehouse.v1.WarehouseService/UpdateNodeTypeById"
 	WarehouseService_DeleteNodeTypeById_FullMethodName        = "/warehouse.v1.WarehouseService/DeleteNodeTypeById"
+	WarehouseService_CreateNodes_FullMethodName               = "/warehouse.v1.WarehouseService/CreateNodes"
+	WarehouseService_GetNodeById_FullMethodName               = "/warehouse.v1.WarehouseService/GetNodeById"
+	WarehouseService_GetNodesByWarehouseId_FullMethodName     = "/warehouse.v1.WarehouseService/GetNodesByWarehouseId"
 )
 
 // WarehouseServiceClient is the client API for WarehouseService service.
@@ -48,6 +51,10 @@ type WarehouseServiceClient interface {
 	GetNodeTypeById(ctx context.Context, in *GetNodeTypeByIdRequest, opts ...grpc.CallOption) (*GetNodeTypeResponse, error)
 	UpdateNodeTypeById(ctx context.Context, in *UpdateNodeTypeByIdRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error)
 	DeleteNodeTypeById(ctx context.Context, in *DeleteNodeTypeByIdRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error)
+	// -------------------------------------------------  Node  ----------------------------------------------------------
+	CreateNodes(ctx context.Context, in *CreateNodesRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error)
+	GetNodeById(ctx context.Context, in *GetNodeByIdRequest, opts ...grpc.CallOption) (*GetNodeResponse, error)
+	GetNodesByWarehouseId(ctx context.Context, in *GetNodesByWarehouseIdRequest, opts ...grpc.CallOption) (*GetNodesResponse, error)
 }
 
 type warehouseServiceClient struct {
@@ -148,6 +155,33 @@ func (c *warehouseServiceClient) DeleteNodeTypeById(ctx context.Context, in *Del
 	return out, nil
 }
 
+func (c *warehouseServiceClient) CreateNodes(ctx context.Context, in *CreateNodesRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error) {
+	out := new(v1.SimpleResponse)
+	err := c.cc.Invoke(ctx, WarehouseService_CreateNodes_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *warehouseServiceClient) GetNodeById(ctx context.Context, in *GetNodeByIdRequest, opts ...grpc.CallOption) (*GetNodeResponse, error) {
+	out := new(GetNodeResponse)
+	err := c.cc.Invoke(ctx, WarehouseService_GetNodeById_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *warehouseServiceClient) GetNodesByWarehouseId(ctx context.Context, in *GetNodesByWarehouseIdRequest, opts ...grpc.CallOption) (*GetNodesResponse, error) {
+	out := new(GetNodesResponse)
+	err := c.cc.Invoke(ctx, WarehouseService_GetNodesByWarehouseId_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WarehouseServiceServer is the server API for WarehouseService service.
 // All implementations must embed UnimplementedWarehouseServiceServer
 // for forward compatibility
@@ -164,6 +198,10 @@ type WarehouseServiceServer interface {
 	GetNodeTypeById(context.Context, *GetNodeTypeByIdRequest) (*GetNodeTypeResponse, error)
 	UpdateNodeTypeById(context.Context, *UpdateNodeTypeByIdRequest) (*v1.SimpleResponse, error)
 	DeleteNodeTypeById(context.Context, *DeleteNodeTypeByIdRequest) (*v1.SimpleResponse, error)
+	// -------------------------------------------------  Node  ----------------------------------------------------------
+	CreateNodes(context.Context, *CreateNodesRequest) (*v1.SimpleResponse, error)
+	GetNodeById(context.Context, *GetNodeByIdRequest) (*GetNodeResponse, error)
+	GetNodesByWarehouseId(context.Context, *GetNodesByWarehouseIdRequest) (*GetNodesResponse, error)
 	mustEmbedUnimplementedWarehouseServiceServer()
 }
 
@@ -200,6 +238,15 @@ func (UnimplementedWarehouseServiceServer) UpdateNodeTypeById(context.Context, *
 }
 func (UnimplementedWarehouseServiceServer) DeleteNodeTypeById(context.Context, *DeleteNodeTypeByIdRequest) (*v1.SimpleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteNodeTypeById not implemented")
+}
+func (UnimplementedWarehouseServiceServer) CreateNodes(context.Context, *CreateNodesRequest) (*v1.SimpleResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateNodes not implemented")
+}
+func (UnimplementedWarehouseServiceServer) GetNodeById(context.Context, *GetNodeByIdRequest) (*GetNodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetNodeById not implemented")
+}
+func (UnimplementedWarehouseServiceServer) GetNodesByWarehouseId(context.Context, *GetNodesByWarehouseIdRequest) (*GetNodesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetNodesByWarehouseId not implemented")
 }
 func (UnimplementedWarehouseServiceServer) mustEmbedUnimplementedWarehouseServiceServer() {}
 
@@ -394,6 +441,60 @@ func _WarehouseService_DeleteNodeTypeById_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WarehouseService_CreateNodes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateNodesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WarehouseServiceServer).CreateNodes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WarehouseService_CreateNodes_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WarehouseServiceServer).CreateNodes(ctx, req.(*CreateNodesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WarehouseService_GetNodeById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetNodeByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WarehouseServiceServer).GetNodeById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WarehouseService_GetNodeById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WarehouseServiceServer).GetNodeById(ctx, req.(*GetNodeByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WarehouseService_GetNodesByWarehouseId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetNodesByWarehouseIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WarehouseServiceServer).GetNodesByWarehouseId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WarehouseService_GetNodesByWarehouseId_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WarehouseServiceServer).GetNodesByWarehouseId(ctx, req.(*GetNodesByWarehouseIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WarehouseService_ServiceDesc is the grpc.ServiceDesc for WarehouseService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -440,6 +541,18 @@ var WarehouseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteNodeTypeById",
 			Handler:    _WarehouseService_DeleteNodeTypeById_Handler,
+		},
+		{
+			MethodName: "CreateNodes",
+			Handler:    _WarehouseService_CreateNodes_Handler,
+		},
+		{
+			MethodName: "GetNodeById",
+			Handler:    _WarehouseService_GetNodeById_Handler,
+		},
+		{
+			MethodName: "GetNodesByWarehouseId",
+			Handler:    _WarehouseService_GetNodesByWarehouseId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

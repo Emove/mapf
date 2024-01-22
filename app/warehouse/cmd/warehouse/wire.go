@@ -9,6 +9,8 @@ import (
 	"mapf/app/warehouse/internal/biz"
 	"mapf/app/warehouse/internal/conf"
 	"mapf/app/warehouse/internal/data"
+	"mapf/app/warehouse/internal/event/publisher"
+	"mapf/app/warehouse/internal/event/subscriber"
 	"mapf/app/warehouse/internal/server"
 	"mapf/app/warehouse/internal/service"
 
@@ -19,5 +21,13 @@ import (
 
 // wireApp init kratos application.
 func wireApp(*conf.Server, *conf.Data, log.Logger) (*kratos.App, func(), error) {
-	panic(wire.Build(server.ProviderSet, data.ProviderSet, biz.ProviderSet, service.ProviderSet, newApp))
+	panic(wire.Build(
+		server.ProviderSet,
+		data.ProviderSet,
+		publisher.ProviderSet,
+		subscriber.ProviderSet,
+		biz.ProviderSet,
+		service.ProviderSet,
+		newApp),
+	)
 }

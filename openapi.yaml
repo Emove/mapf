@@ -6,6 +6,44 @@ info:
     title: ""
     version: 0.0.1
 paths:
+    /node:
+        post:
+            tags:
+                - WarehouseService
+            description: '-------------------------------------------------  Node  ----------------------------------------------------------'
+            operationId: WarehouseService_CreateNodes
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/warehouse.v1.CreateNodesRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/common.v1.SimpleResponse'
+    /node/{id}:
+        get:
+            tags:
+                - WarehouseService
+            operationId: WarehouseService_GetNodeById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/warehouse.v1.GetNodeResponse'
     /node_type:
         post:
             tags:
@@ -209,6 +247,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/common.v1.SimpleResponse'
+    /warehouse/{warehouseId}/nodes:
+        get:
+            tags:
+                - WarehouseService
+            operationId: WarehouseService_GetNodesByWarehouseId
+            parameters:
+                - name: warehouseId
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/warehouse.v1.GetNodesResponse'
 components:
     schemas:
         common.v1.SimpleResponse:
@@ -228,6 +285,24 @@ components:
             properties:
                 nodeType:
                     $ref: '#/components/schemas/warehouse.v1.NodeType'
+        warehouse.v1.CreateNodesRequest:
+            type: object
+            properties:
+                warehouseId:
+                    type: integer
+                    format: uint32
+                start:
+                    type: integer
+                    format: uint32
+                end:
+                    type: integer
+                    format: uint32
+                auxAix:
+                    type: integer
+                    format: uint32
+                nodeTupleType:
+                    type: integer
+                    format: uint32
         warehouse.v1.CreateWarehouseRequest:
             type: object
             properties:
@@ -238,16 +313,43 @@ components:
             properties:
                 warehouse:
                     $ref: '#/components/schemas/warehouse.v1.Warehouse'
+        warehouse.v1.GetNodeResponse:
+            type: object
+            properties:
+                node:
+                    $ref: '#/components/schemas/warehouse.v1.Node'
         warehouse.v1.GetNodeTypeResponse:
             type: object
             properties:
                 nodeType:
                     $ref: '#/components/schemas/warehouse.v1.NodeType'
+        warehouse.v1.GetNodesResponse:
+            type: object
+            properties:
+                nodes:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/warehouse.v1.Node'
         warehouse.v1.GetWarehouseResponse:
             type: object
             properties:
                 warehouse:
                     $ref: '#/components/schemas/warehouse.v1.Warehouse'
+        warehouse.v1.Node:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+                warehouseId:
+                    type: integer
+                    format: uint32
+                x:
+                    type: integer
+                    format: uint32
+                y:
+                    type: integer
+                    format: uint32
         warehouse.v1.NodeType:
             type: object
             properties:
