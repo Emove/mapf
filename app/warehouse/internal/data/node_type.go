@@ -28,6 +28,9 @@ func NewNodeTypeRepo(data *Data, logger log.Logger) (biz.NodeTypeRepo, error) {
 // CreateNodeType 在创建NodeType
 func (repo *nodeTypeRepo) CreateNodeType(ctx context.Context, nodeType *biz.NodeType) (*biz.NodeType, error) {
 	err := repo.data.DB(ctx).Create(nodeType).Error
+	if err != nil && errors.Is(err, gorm.ErrDuplicatedKey) {
+		return nil, dataerrors.NewDuplicatedKeyError("NodeType Code: [%s] Existed", nodeType.Code)
+	}
 	return nodeType, err
 }
 

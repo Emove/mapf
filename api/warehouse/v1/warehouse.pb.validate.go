@@ -36,7 +36,7 @@ var (
 	_ = anypb.Any{}
 	_ = sort.Sort
 
-	_ = v1.DefaultStatus(0)
+	_ = v1.EnableStatus(0)
 )
 
 // Validate checks the field values on CreateWarehouseRequest with the rules
@@ -152,22 +152,22 @@ var _ interface {
 	ErrorName() string
 } = CreateWarehouseRequestValidationError{}
 
-// Validate checks the field values on CreateWarehouseResponse with the rules
+// Validate checks the field values on SimpleWarehouseResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *CreateWarehouseResponse) Validate() error {
+func (m *SimpleWarehouseResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on CreateWarehouseResponse with the
+// ValidateAll checks the field values on SimpleWarehouseResponse with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// CreateWarehouseResponseMultiError, or nil if none found.
-func (m *CreateWarehouseResponse) ValidateAll() error {
+// SimpleWarehouseResponseMultiError, or nil if none found.
+func (m *SimpleWarehouseResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *CreateWarehouseResponse) validate(all bool) error {
+func (m *SimpleWarehouseResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -178,7 +178,7 @@ func (m *CreateWarehouseResponse) validate(all bool) error {
 		switch v := interface{}(m.GetWarehouse()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, CreateWarehouseResponseValidationError{
+				errors = append(errors, SimpleWarehouseResponseValidationError{
 					field:  "Warehouse",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -186,7 +186,7 @@ func (m *CreateWarehouseResponse) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, CreateWarehouseResponseValidationError{
+				errors = append(errors, SimpleWarehouseResponseValidationError{
 					field:  "Warehouse",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -195,7 +195,7 @@ func (m *CreateWarehouseResponse) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetWarehouse()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return CreateWarehouseResponseValidationError{
+			return SimpleWarehouseResponseValidationError{
 				field:  "Warehouse",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -204,19 +204,19 @@ func (m *CreateWarehouseResponse) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return CreateWarehouseResponseMultiError(errors)
+		return SimpleWarehouseResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// CreateWarehouseResponseMultiError is an error wrapping multiple validation
-// errors returned by CreateWarehouseResponse.ValidateAll() if the designated
+// SimpleWarehouseResponseMultiError is an error wrapping multiple validation
+// errors returned by SimpleWarehouseResponse.ValidateAll() if the designated
 // constraints aren't met.
-type CreateWarehouseResponseMultiError []error
+type SimpleWarehouseResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m CreateWarehouseResponseMultiError) Error() string {
+func (m SimpleWarehouseResponseMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -225,11 +225,11 @@ func (m CreateWarehouseResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m CreateWarehouseResponseMultiError) AllErrors() []error { return m }
+func (m SimpleWarehouseResponseMultiError) AllErrors() []error { return m }
 
-// CreateWarehouseResponseValidationError is the validation error returned by
-// CreateWarehouseResponse.Validate if the designated constraints aren't met.
-type CreateWarehouseResponseValidationError struct {
+// SimpleWarehouseResponseValidationError is the validation error returned by
+// SimpleWarehouseResponse.Validate if the designated constraints aren't met.
+type SimpleWarehouseResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -237,24 +237,24 @@ type CreateWarehouseResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e CreateWarehouseResponseValidationError) Field() string { return e.field }
+func (e SimpleWarehouseResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e CreateWarehouseResponseValidationError) Reason() string { return e.reason }
+func (e SimpleWarehouseResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e CreateWarehouseResponseValidationError) Cause() error { return e.cause }
+func (e SimpleWarehouseResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e CreateWarehouseResponseValidationError) Key() bool { return e.key }
+func (e SimpleWarehouseResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e CreateWarehouseResponseValidationError) ErrorName() string {
-	return "CreateWarehouseResponseValidationError"
+func (e SimpleWarehouseResponseValidationError) ErrorName() string {
+	return "SimpleWarehouseResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e CreateWarehouseResponseValidationError) Error() string {
+func (e SimpleWarehouseResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -266,14 +266,14 @@ func (e CreateWarehouseResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sCreateWarehouseResponse.%s: %s%s",
+		"invalid %sSimpleWarehouseResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = CreateWarehouseResponseValidationError{}
+var _ error = SimpleWarehouseResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -281,7 +281,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = CreateWarehouseResponseValidationError{}
+} = SimpleWarehouseResponseValidationError{}
 
 // Validate checks the field values on GetWarehouseByNameRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -1143,22 +1143,22 @@ var _ interface {
 	ErrorName() string
 } = CreateNodeTypeRequestValidationError{}
 
-// Validate checks the field values on CreateNodeTypeResponse with the rules
+// Validate checks the field values on SimpleNodeTypeResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *CreateNodeTypeResponse) Validate() error {
+func (m *SimpleNodeTypeResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on CreateNodeTypeResponse with the rules
+// ValidateAll checks the field values on SimpleNodeTypeResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// CreateNodeTypeResponseMultiError, or nil if none found.
-func (m *CreateNodeTypeResponse) ValidateAll() error {
+// SimpleNodeTypeResponseMultiError, or nil if none found.
+func (m *SimpleNodeTypeResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *CreateNodeTypeResponse) validate(all bool) error {
+func (m *SimpleNodeTypeResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1169,7 +1169,7 @@ func (m *CreateNodeTypeResponse) validate(all bool) error {
 		switch v := interface{}(m.GetNodeType()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, CreateNodeTypeResponseValidationError{
+				errors = append(errors, SimpleNodeTypeResponseValidationError{
 					field:  "NodeType",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -1177,7 +1177,7 @@ func (m *CreateNodeTypeResponse) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, CreateNodeTypeResponseValidationError{
+				errors = append(errors, SimpleNodeTypeResponseValidationError{
 					field:  "NodeType",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -1186,7 +1186,7 @@ func (m *CreateNodeTypeResponse) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetNodeType()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return CreateNodeTypeResponseValidationError{
+			return SimpleNodeTypeResponseValidationError{
 				field:  "NodeType",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -1195,19 +1195,19 @@ func (m *CreateNodeTypeResponse) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return CreateNodeTypeResponseMultiError(errors)
+		return SimpleNodeTypeResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// CreateNodeTypeResponseMultiError is an error wrapping multiple validation
-// errors returned by CreateNodeTypeResponse.ValidateAll() if the designated
+// SimpleNodeTypeResponseMultiError is an error wrapping multiple validation
+// errors returned by SimpleNodeTypeResponse.ValidateAll() if the designated
 // constraints aren't met.
-type CreateNodeTypeResponseMultiError []error
+type SimpleNodeTypeResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m CreateNodeTypeResponseMultiError) Error() string {
+func (m SimpleNodeTypeResponseMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1216,11 +1216,11 @@ func (m CreateNodeTypeResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m CreateNodeTypeResponseMultiError) AllErrors() []error { return m }
+func (m SimpleNodeTypeResponseMultiError) AllErrors() []error { return m }
 
-// CreateNodeTypeResponseValidationError is the validation error returned by
-// CreateNodeTypeResponse.Validate if the designated constraints aren't met.
-type CreateNodeTypeResponseValidationError struct {
+// SimpleNodeTypeResponseValidationError is the validation error returned by
+// SimpleNodeTypeResponse.Validate if the designated constraints aren't met.
+type SimpleNodeTypeResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1228,24 +1228,24 @@ type CreateNodeTypeResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e CreateNodeTypeResponseValidationError) Field() string { return e.field }
+func (e SimpleNodeTypeResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e CreateNodeTypeResponseValidationError) Reason() string { return e.reason }
+func (e SimpleNodeTypeResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e CreateNodeTypeResponseValidationError) Cause() error { return e.cause }
+func (e SimpleNodeTypeResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e CreateNodeTypeResponseValidationError) Key() bool { return e.key }
+func (e SimpleNodeTypeResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e CreateNodeTypeResponseValidationError) ErrorName() string {
-	return "CreateNodeTypeResponseValidationError"
+func (e SimpleNodeTypeResponseValidationError) ErrorName() string {
+	return "SimpleNodeTypeResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e CreateNodeTypeResponseValidationError) Error() string {
+func (e SimpleNodeTypeResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1257,14 +1257,14 @@ func (e CreateNodeTypeResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sCreateNodeTypeResponse.%s: %s%s",
+		"invalid %sSimpleNodeTypeResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = CreateNodeTypeResponseValidationError{}
+var _ error = SimpleNodeTypeResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -1272,7 +1272,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = CreateNodeTypeResponseValidationError{}
+} = SimpleNodeTypeResponseValidationError{}
 
 // Validate checks the field values on GetNodeTypeByIdRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -2092,6 +2092,35 @@ func (m *GetNodesByWarehouseIdRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if all {
+		switch v := interface{}(m.GetPage()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetNodesByWarehouseIdRequestValidationError{
+					field:  "Page",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetNodesByWarehouseIdRequestValidationError{
+					field:  "Page",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPage()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetNodesByWarehouseIdRequestValidationError{
+				field:  "Page",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return GetNodesByWarehouseIdRequestMultiError(errors)
 	}
@@ -2358,6 +2387,35 @@ func (m *GetNodesResponse) validate(all bool) error {
 
 	}
 
+	if all {
+		switch v := interface{}(m.GetPage()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetNodesResponseValidationError{
+					field:  "Page",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetNodesResponseValidationError{
+					field:  "Page",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPage()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetNodesResponseValidationError{
+				field:  "Page",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return GetNodesResponseMultiError(errors)
 	}
@@ -2435,6 +2493,970 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetNodesResponseValidationError{}
+
+// Validate checks the field values on CreateNodeConfigItemRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateNodeConfigItemRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateNodeConfigItemRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateNodeConfigItemRequestMultiError, or nil if none found.
+func (m *CreateNodeConfigItemRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateNodeConfigItemRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetWarehouseId() < 1 {
+		err := CreateNodeConfigItemRequestValidationError{
+			field:  "WarehouseId",
+			reason: "value must be greater than or equal to 1",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetNodeTypeId() < 1 {
+		err := CreateNodeConfigItemRequestValidationError{
+			field:  "NodeTypeId",
+			reason: "value must be greater than or equal to 1",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if l := utf8.RuneCountInString(m.GetCode()); l < 3 || l > 63 {
+		err := CreateNodeConfigItemRequestValidationError{
+			field:  "Code",
+			reason: "value length must be between 3 and 63 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if l := utf8.RuneCountInString(m.GetName()); l < 3 || l > 63 {
+		err := CreateNodeConfigItemRequestValidationError{
+			field:  "Name",
+			reason: "value length must be between 3 and 63 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if l := utf8.RuneCountInString(m.GetValueType()); l < 3 || l > 31 {
+		err := CreateNodeConfigItemRequestValidationError{
+			field:  "ValueType",
+			reason: "value length must be between 3 and 31 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if l := utf8.RuneCountInString(m.GetDefaultValue()); l < 1 || l > 63 {
+		err := CreateNodeConfigItemRequestValidationError{
+			field:  "DefaultValue",
+			reason: "value length must be between 1 and 63 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(m.GetOptionalValues()) > 0 {
+
+		for idx, item := range m.GetOptionalValues() {
+			_, _ = idx, item
+
+			if l := utf8.RuneCountInString(item); l < 1 || l > 63 {
+				err := CreateNodeConfigItemRequestValidationError{
+					field:  fmt.Sprintf("OptionalValues[%v]", idx),
+					reason: "value length must be between 1 and 63 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return CreateNodeConfigItemRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateNodeConfigItemRequestMultiError is an error wrapping multiple
+// validation errors returned by CreateNodeConfigItemRequest.ValidateAll() if
+// the designated constraints aren't met.
+type CreateNodeConfigItemRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateNodeConfigItemRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateNodeConfigItemRequestMultiError) AllErrors() []error { return m }
+
+// CreateNodeConfigItemRequestValidationError is the validation error returned
+// by CreateNodeConfigItemRequest.Validate if the designated constraints
+// aren't met.
+type CreateNodeConfigItemRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateNodeConfigItemRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateNodeConfigItemRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateNodeConfigItemRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateNodeConfigItemRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateNodeConfigItemRequestValidationError) ErrorName() string {
+	return "CreateNodeConfigItemRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateNodeConfigItemRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateNodeConfigItemRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateNodeConfigItemRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateNodeConfigItemRequestValidationError{}
+
+// Validate checks the field values on SimpleNodeConfigItemResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SimpleNodeConfigItemResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SimpleNodeConfigItemResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SimpleNodeConfigItemResponseMultiError, or nil if none found.
+func (m *SimpleNodeConfigItemResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SimpleNodeConfigItemResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetItem()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, SimpleNodeConfigItemResponseValidationError{
+					field:  "Item",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, SimpleNodeConfigItemResponseValidationError{
+					field:  "Item",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetItem()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return SimpleNodeConfigItemResponseValidationError{
+				field:  "Item",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return SimpleNodeConfigItemResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// SimpleNodeConfigItemResponseMultiError is an error wrapping multiple
+// validation errors returned by SimpleNodeConfigItemResponse.ValidateAll() if
+// the designated constraints aren't met.
+type SimpleNodeConfigItemResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SimpleNodeConfigItemResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SimpleNodeConfigItemResponseMultiError) AllErrors() []error { return m }
+
+// SimpleNodeConfigItemResponseValidationError is the validation error returned
+// by SimpleNodeConfigItemResponse.Validate if the designated constraints
+// aren't met.
+type SimpleNodeConfigItemResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SimpleNodeConfigItemResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SimpleNodeConfigItemResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SimpleNodeConfigItemResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SimpleNodeConfigItemResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SimpleNodeConfigItemResponseValidationError) ErrorName() string {
+	return "SimpleNodeConfigItemResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SimpleNodeConfigItemResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSimpleNodeConfigItemResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SimpleNodeConfigItemResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SimpleNodeConfigItemResponseValidationError{}
+
+// Validate checks the field values on GetNodeConfigItemByIdRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetNodeConfigItemByIdRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetNodeConfigItemByIdRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetNodeConfigItemByIdRequestMultiError, or nil if none found.
+func (m *GetNodeConfigItemByIdRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetNodeConfigItemByIdRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return GetNodeConfigItemByIdRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetNodeConfigItemByIdRequestMultiError is an error wrapping multiple
+// validation errors returned by GetNodeConfigItemByIdRequest.ValidateAll() if
+// the designated constraints aren't met.
+type GetNodeConfigItemByIdRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetNodeConfigItemByIdRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetNodeConfigItemByIdRequestMultiError) AllErrors() []error { return m }
+
+// GetNodeConfigItemByIdRequestValidationError is the validation error returned
+// by GetNodeConfigItemByIdRequest.Validate if the designated constraints
+// aren't met.
+type GetNodeConfigItemByIdRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetNodeConfigItemByIdRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetNodeConfigItemByIdRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetNodeConfigItemByIdRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetNodeConfigItemByIdRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetNodeConfigItemByIdRequestValidationError) ErrorName() string {
+	return "GetNodeConfigItemByIdRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetNodeConfigItemByIdRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetNodeConfigItemByIdRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetNodeConfigItemByIdRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetNodeConfigItemByIdRequestValidationError{}
+
+// Validate checks the field values on SelectNodeConfigItemRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SelectNodeConfigItemRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SelectNodeConfigItemRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SelectNodeConfigItemRequestMultiError, or nil if none found.
+func (m *SelectNodeConfigItemRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SelectNodeConfigItemRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for WarehouseId
+
+	if m.NodeTypeId != nil {
+		// no validation rules for NodeTypeId
+	}
+
+	if m.Code != nil {
+		// no validation rules for Code
+	}
+
+	if m.Name != nil {
+		// no validation rules for Name
+	}
+
+	if m.ValueType != nil {
+		// no validation rules for ValueType
+	}
+
+	if m.Status != nil {
+		// no validation rules for Status
+	}
+
+	if m.Page != nil {
+
+		if all {
+			switch v := interface{}(m.GetPage()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, SelectNodeConfigItemRequestValidationError{
+						field:  "Page",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, SelectNodeConfigItemRequestValidationError{
+						field:  "Page",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetPage()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return SelectNodeConfigItemRequestValidationError{
+					field:  "Page",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return SelectNodeConfigItemRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// SelectNodeConfigItemRequestMultiError is an error wrapping multiple
+// validation errors returned by SelectNodeConfigItemRequest.ValidateAll() if
+// the designated constraints aren't met.
+type SelectNodeConfigItemRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SelectNodeConfigItemRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SelectNodeConfigItemRequestMultiError) AllErrors() []error { return m }
+
+// SelectNodeConfigItemRequestValidationError is the validation error returned
+// by SelectNodeConfigItemRequest.Validate if the designated constraints
+// aren't met.
+type SelectNodeConfigItemRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SelectNodeConfigItemRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SelectNodeConfigItemRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SelectNodeConfigItemRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SelectNodeConfigItemRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SelectNodeConfigItemRequestValidationError) ErrorName() string {
+	return "SelectNodeConfigItemRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SelectNodeConfigItemRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSelectNodeConfigItemRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SelectNodeConfigItemRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SelectNodeConfigItemRequestValidationError{}
+
+// Validate checks the field values on SelectNodeConfigItemResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SelectNodeConfigItemResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SelectNodeConfigItemResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SelectNodeConfigItemResponseMultiError, or nil if none found.
+func (m *SelectNodeConfigItemResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SelectNodeConfigItemResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetItems() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, SelectNodeConfigItemResponseValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, SelectNodeConfigItemResponseValidationError{
+						field:  fmt.Sprintf("Items[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return SelectNodeConfigItemResponseValidationError{
+					field:  fmt.Sprintf("Items[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if m.Page != nil {
+
+		if all {
+			switch v := interface{}(m.GetPage()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, SelectNodeConfigItemResponseValidationError{
+						field:  "Page",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, SelectNodeConfigItemResponseValidationError{
+						field:  "Page",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetPage()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return SelectNodeConfigItemResponseValidationError{
+					field:  "Page",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return SelectNodeConfigItemResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// SelectNodeConfigItemResponseMultiError is an error wrapping multiple
+// validation errors returned by SelectNodeConfigItemResponse.ValidateAll() if
+// the designated constraints aren't met.
+type SelectNodeConfigItemResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SelectNodeConfigItemResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SelectNodeConfigItemResponseMultiError) AllErrors() []error { return m }
+
+// SelectNodeConfigItemResponseValidationError is the validation error returned
+// by SelectNodeConfigItemResponse.Validate if the designated constraints
+// aren't met.
+type SelectNodeConfigItemResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SelectNodeConfigItemResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SelectNodeConfigItemResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SelectNodeConfigItemResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SelectNodeConfigItemResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SelectNodeConfigItemResponseValidationError) ErrorName() string {
+	return "SelectNodeConfigItemResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SelectNodeConfigItemResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSelectNodeConfigItemResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SelectNodeConfigItemResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SelectNodeConfigItemResponseValidationError{}
+
+// Validate checks the field values on UpdateNodeConfigItemRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *UpdateNodeConfigItemRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on UpdateNodeConfigItemRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// UpdateNodeConfigItemRequestMultiError, or nil if none found.
+func (m *UpdateNodeConfigItemRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *UpdateNodeConfigItemRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetId() < 1 {
+		err := UpdateNodeConfigItemRequestValidationError{
+			field:  "Id",
+			reason: "value must be greater than or equal to 1",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(m.GetOptionalValues()) > 0 {
+
+		for idx, item := range m.GetOptionalValues() {
+			_, _ = idx, item
+
+			if l := utf8.RuneCountInString(item); l < 1 || l > 63 {
+				err := UpdateNodeConfigItemRequestValidationError{
+					field:  fmt.Sprintf("OptionalValues[%v]", idx),
+					reason: "value length must be between 1 and 63 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
+	if m.Code != nil {
+
+		if m.GetCode() != "" {
+
+			if l := utf8.RuneCountInString(m.GetCode()); l < 3 || l > 63 {
+				err := UpdateNodeConfigItemRequestValidationError{
+					field:  "Code",
+					reason: "value length must be between 3 and 63 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
+	if m.Name != nil {
+
+		if m.GetName() != "" {
+
+			if l := utf8.RuneCountInString(m.GetName()); l < 3 || l > 63 {
+				err := UpdateNodeConfigItemRequestValidationError{
+					field:  "Name",
+					reason: "value length must be between 3 and 63 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
+	if m.ValueType != nil {
+
+		if m.GetValueType() != "" {
+
+			if l := utf8.RuneCountInString(m.GetValueType()); l < 3 || l > 31 {
+				err := UpdateNodeConfigItemRequestValidationError{
+					field:  "ValueType",
+					reason: "value length must be between 3 and 31 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
+	if m.DefaultValue != nil {
+
+		if m.GetDefaultValue() != "" {
+
+			if l := utf8.RuneCountInString(m.GetDefaultValue()); l < 1 || l > 63 {
+				err := UpdateNodeConfigItemRequestValidationError{
+					field:  "DefaultValue",
+					reason: "value length must be between 1 and 63 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return UpdateNodeConfigItemRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// UpdateNodeConfigItemRequestMultiError is an error wrapping multiple
+// validation errors returned by UpdateNodeConfigItemRequest.ValidateAll() if
+// the designated constraints aren't met.
+type UpdateNodeConfigItemRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UpdateNodeConfigItemRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UpdateNodeConfigItemRequestMultiError) AllErrors() []error { return m }
+
+// UpdateNodeConfigItemRequestValidationError is the validation error returned
+// by UpdateNodeConfigItemRequest.Validate if the designated constraints
+// aren't met.
+type UpdateNodeConfigItemRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UpdateNodeConfigItemRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UpdateNodeConfigItemRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UpdateNodeConfigItemRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UpdateNodeConfigItemRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UpdateNodeConfigItemRequestValidationError) ErrorName() string {
+	return "UpdateNodeConfigItemRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e UpdateNodeConfigItemRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUpdateNodeConfigItemRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UpdateNodeConfigItemRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UpdateNodeConfigItemRequestValidationError{}
 
 // Validate checks the field values on Warehouse with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -2757,3 +3779,119 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = NodeValidationError{}
+
+// Validate checks the field values on NodeConfigItem with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *NodeConfigItem) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on NodeConfigItem with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in NodeConfigItemMultiError,
+// or nil if none found.
+func (m *NodeConfigItem) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *NodeConfigItem) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for WarehouseId
+
+	// no validation rules for NodeTypeId
+
+	// no validation rules for Code
+
+	// no validation rules for Name
+
+	// no validation rules for ValueType
+
+	// no validation rules for DefaultValue
+
+	// no validation rules for Status
+
+	if len(errors) > 0 {
+		return NodeConfigItemMultiError(errors)
+	}
+
+	return nil
+}
+
+// NodeConfigItemMultiError is an error wrapping multiple validation errors
+// returned by NodeConfigItem.ValidateAll() if the designated constraints
+// aren't met.
+type NodeConfigItemMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m NodeConfigItemMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m NodeConfigItemMultiError) AllErrors() []error { return m }
+
+// NodeConfigItemValidationError is the validation error returned by
+// NodeConfigItem.Validate if the designated constraints aren't met.
+type NodeConfigItemValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e NodeConfigItemValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e NodeConfigItemValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e NodeConfigItemValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e NodeConfigItemValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e NodeConfigItemValidationError) ErrorName() string { return "NodeConfigItemValidationError" }
+
+// Error satisfies the builtin error interface
+func (e NodeConfigItemValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sNodeConfigItem.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = NodeConfigItemValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = NodeConfigItemValidationError{}

@@ -7,13 +7,13 @@ import (
 	"mapf/internal/data"
 )
 
-func (s *WarehouseService) CreateWarehouse(ctx context.Context, req *v1.CreateWarehouseRequest) (*v1.CreateWarehouseResponse, error) {
+func (s *WarehouseService) CreateWarehouse(ctx context.Context, req *v1.CreateWarehouseRequest) (*v1.SimpleWarehouseResponse, error) {
 	warehouse := &biz.Warehouse{
 		Name:      req.Name,
 		IsDefault: data.IsDefaultFalse,
 	}
 	warehouse, err := s.wuc.CreateWarehouse(ctx, warehouse)
-	return &v1.CreateWarehouseResponse{
+	return &v1.SimpleWarehouseResponse{
 		Warehouse: ConvertWarehouse2protobuf(warehouse),
 	}, err
 }

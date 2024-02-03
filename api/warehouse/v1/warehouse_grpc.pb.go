@@ -33,6 +33,10 @@ const (
 	WarehouseService_CreateNodes_FullMethodName               = "/warehouse.v1.WarehouseService/CreateNodes"
 	WarehouseService_GetNodeById_FullMethodName               = "/warehouse.v1.WarehouseService/GetNodeById"
 	WarehouseService_GetNodesByWarehouseId_FullMethodName     = "/warehouse.v1.WarehouseService/GetNodesByWarehouseId"
+	WarehouseService_CreateNodeConfigItem_FullMethodName      = "/warehouse.v1.WarehouseService/CreateNodeConfigItem"
+	WarehouseService_GetNodeConfigItemById_FullMethodName     = "/warehouse.v1.WarehouseService/GetNodeConfigItemById"
+	WarehouseService_SelectNodeConfigItems_FullMethodName     = "/warehouse.v1.WarehouseService/SelectNodeConfigItems"
+	WarehouseService_UpdateNodeConfigItem_FullMethodName      = "/warehouse.v1.WarehouseService/UpdateNodeConfigItem"
 )
 
 // WarehouseServiceClient is the client API for WarehouseService service.
@@ -40,21 +44,26 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type WarehouseServiceClient interface {
 	// -------------------------------------------------  Warehouse  -----------------------------------------------------
-	CreateWarehouse(ctx context.Context, in *CreateWarehouseRequest, opts ...grpc.CallOption) (*CreateWarehouseResponse, error)
-	GetWarehouseByName(ctx context.Context, in *GetWarehouseByNameRequest, opts ...grpc.CallOption) (*GetWarehouseResponse, error)
-	GetWarehouseById(ctx context.Context, in *GetWarehouseByIdRequest, opts ...grpc.CallOption) (*GetWarehouseResponse, error)
+	CreateWarehouse(ctx context.Context, in *CreateWarehouseRequest, opts ...grpc.CallOption) (*SimpleWarehouseResponse, error)
+	GetWarehouseByName(ctx context.Context, in *GetWarehouseByNameRequest, opts ...grpc.CallOption) (*SimpleWarehouseResponse, error)
+	GetWarehouseById(ctx context.Context, in *GetWarehouseByIdRequest, opts ...grpc.CallOption) (*SimpleWarehouseResponse, error)
 	UpdateWarehouseById(ctx context.Context, in *UpdateWarehouseByIdRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error)
 	UpdateWarehouseStatusById(ctx context.Context, in *UpdateWarehouseStatusByIdRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error)
 	DeleteWarehouseById(ctx context.Context, in *DeleteWarehouseByIdRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error)
 	// -------------------------------------------------  NodeType  ------------------------------------------------------
-	CreateNodeType(ctx context.Context, in *CreateNodeTypeRequest, opts ...grpc.CallOption) (*CreateNodeTypeResponse, error)
-	GetNodeTypeById(ctx context.Context, in *GetNodeTypeByIdRequest, opts ...grpc.CallOption) (*GetNodeTypeResponse, error)
+	CreateNodeType(ctx context.Context, in *CreateNodeTypeRequest, opts ...grpc.CallOption) (*SimpleNodeTypeResponse, error)
+	GetNodeTypeById(ctx context.Context, in *GetNodeTypeByIdRequest, opts ...grpc.CallOption) (*SimpleNodeTypeResponse, error)
 	UpdateNodeTypeById(ctx context.Context, in *UpdateNodeTypeByIdRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error)
 	DeleteNodeTypeById(ctx context.Context, in *DeleteNodeTypeByIdRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error)
 	// -------------------------------------------------  Node  ----------------------------------------------------------
 	CreateNodes(ctx context.Context, in *CreateNodesRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error)
 	GetNodeById(ctx context.Context, in *GetNodeByIdRequest, opts ...grpc.CallOption) (*GetNodeResponse, error)
 	GetNodesByWarehouseId(ctx context.Context, in *GetNodesByWarehouseIdRequest, opts ...grpc.CallOption) (*GetNodesResponse, error)
+	// -------------------------------------------------  NodeConfigItem  ------------------------------------------------
+	CreateNodeConfigItem(ctx context.Context, in *CreateNodeConfigItemRequest, opts ...grpc.CallOption) (*SimpleNodeConfigItemResponse, error)
+	GetNodeConfigItemById(ctx context.Context, in *GetNodeConfigItemByIdRequest, opts ...grpc.CallOption) (*SimpleNodeConfigItemResponse, error)
+	SelectNodeConfigItems(ctx context.Context, in *SelectNodeConfigItemRequest, opts ...grpc.CallOption) (*SelectNodeConfigItemResponse, error)
+	UpdateNodeConfigItem(ctx context.Context, in *UpdateNodeConfigItemRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error)
 }
 
 type warehouseServiceClient struct {
@@ -65,8 +74,8 @@ func NewWarehouseServiceClient(cc grpc.ClientConnInterface) WarehouseServiceClie
 	return &warehouseServiceClient{cc}
 }
 
-func (c *warehouseServiceClient) CreateWarehouse(ctx context.Context, in *CreateWarehouseRequest, opts ...grpc.CallOption) (*CreateWarehouseResponse, error) {
-	out := new(CreateWarehouseResponse)
+func (c *warehouseServiceClient) CreateWarehouse(ctx context.Context, in *CreateWarehouseRequest, opts ...grpc.CallOption) (*SimpleWarehouseResponse, error) {
+	out := new(SimpleWarehouseResponse)
 	err := c.cc.Invoke(ctx, WarehouseService_CreateWarehouse_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -74,8 +83,8 @@ func (c *warehouseServiceClient) CreateWarehouse(ctx context.Context, in *Create
 	return out, nil
 }
 
-func (c *warehouseServiceClient) GetWarehouseByName(ctx context.Context, in *GetWarehouseByNameRequest, opts ...grpc.CallOption) (*GetWarehouseResponse, error) {
-	out := new(GetWarehouseResponse)
+func (c *warehouseServiceClient) GetWarehouseByName(ctx context.Context, in *GetWarehouseByNameRequest, opts ...grpc.CallOption) (*SimpleWarehouseResponse, error) {
+	out := new(SimpleWarehouseResponse)
 	err := c.cc.Invoke(ctx, WarehouseService_GetWarehouseByName_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -83,8 +92,8 @@ func (c *warehouseServiceClient) GetWarehouseByName(ctx context.Context, in *Get
 	return out, nil
 }
 
-func (c *warehouseServiceClient) GetWarehouseById(ctx context.Context, in *GetWarehouseByIdRequest, opts ...grpc.CallOption) (*GetWarehouseResponse, error) {
-	out := new(GetWarehouseResponse)
+func (c *warehouseServiceClient) GetWarehouseById(ctx context.Context, in *GetWarehouseByIdRequest, opts ...grpc.CallOption) (*SimpleWarehouseResponse, error) {
+	out := new(SimpleWarehouseResponse)
 	err := c.cc.Invoke(ctx, WarehouseService_GetWarehouseById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -119,8 +128,8 @@ func (c *warehouseServiceClient) DeleteWarehouseById(ctx context.Context, in *De
 	return out, nil
 }
 
-func (c *warehouseServiceClient) CreateNodeType(ctx context.Context, in *CreateNodeTypeRequest, opts ...grpc.CallOption) (*CreateNodeTypeResponse, error) {
-	out := new(CreateNodeTypeResponse)
+func (c *warehouseServiceClient) CreateNodeType(ctx context.Context, in *CreateNodeTypeRequest, opts ...grpc.CallOption) (*SimpleNodeTypeResponse, error) {
+	out := new(SimpleNodeTypeResponse)
 	err := c.cc.Invoke(ctx, WarehouseService_CreateNodeType_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -128,8 +137,8 @@ func (c *warehouseServiceClient) CreateNodeType(ctx context.Context, in *CreateN
 	return out, nil
 }
 
-func (c *warehouseServiceClient) GetNodeTypeById(ctx context.Context, in *GetNodeTypeByIdRequest, opts ...grpc.CallOption) (*GetNodeTypeResponse, error) {
-	out := new(GetNodeTypeResponse)
+func (c *warehouseServiceClient) GetNodeTypeById(ctx context.Context, in *GetNodeTypeByIdRequest, opts ...grpc.CallOption) (*SimpleNodeTypeResponse, error) {
+	out := new(SimpleNodeTypeResponse)
 	err := c.cc.Invoke(ctx, WarehouseService_GetNodeTypeById_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -182,26 +191,67 @@ func (c *warehouseServiceClient) GetNodesByWarehouseId(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *warehouseServiceClient) CreateNodeConfigItem(ctx context.Context, in *CreateNodeConfigItemRequest, opts ...grpc.CallOption) (*SimpleNodeConfigItemResponse, error) {
+	out := new(SimpleNodeConfigItemResponse)
+	err := c.cc.Invoke(ctx, WarehouseService_CreateNodeConfigItem_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *warehouseServiceClient) GetNodeConfigItemById(ctx context.Context, in *GetNodeConfigItemByIdRequest, opts ...grpc.CallOption) (*SimpleNodeConfigItemResponse, error) {
+	out := new(SimpleNodeConfigItemResponse)
+	err := c.cc.Invoke(ctx, WarehouseService_GetNodeConfigItemById_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *warehouseServiceClient) SelectNodeConfigItems(ctx context.Context, in *SelectNodeConfigItemRequest, opts ...grpc.CallOption) (*SelectNodeConfigItemResponse, error) {
+	out := new(SelectNodeConfigItemResponse)
+	err := c.cc.Invoke(ctx, WarehouseService_SelectNodeConfigItems_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *warehouseServiceClient) UpdateNodeConfigItem(ctx context.Context, in *UpdateNodeConfigItemRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error) {
+	out := new(v1.SimpleResponse)
+	err := c.cc.Invoke(ctx, WarehouseService_UpdateNodeConfigItem_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WarehouseServiceServer is the server API for WarehouseService service.
 // All implementations must embed UnimplementedWarehouseServiceServer
 // for forward compatibility
 type WarehouseServiceServer interface {
 	// -------------------------------------------------  Warehouse  -----------------------------------------------------
-	CreateWarehouse(context.Context, *CreateWarehouseRequest) (*CreateWarehouseResponse, error)
-	GetWarehouseByName(context.Context, *GetWarehouseByNameRequest) (*GetWarehouseResponse, error)
-	GetWarehouseById(context.Context, *GetWarehouseByIdRequest) (*GetWarehouseResponse, error)
+	CreateWarehouse(context.Context, *CreateWarehouseRequest) (*SimpleWarehouseResponse, error)
+	GetWarehouseByName(context.Context, *GetWarehouseByNameRequest) (*SimpleWarehouseResponse, error)
+	GetWarehouseById(context.Context, *GetWarehouseByIdRequest) (*SimpleWarehouseResponse, error)
 	UpdateWarehouseById(context.Context, *UpdateWarehouseByIdRequest) (*v1.SimpleResponse, error)
 	UpdateWarehouseStatusById(context.Context, *UpdateWarehouseStatusByIdRequest) (*v1.SimpleResponse, error)
 	DeleteWarehouseById(context.Context, *DeleteWarehouseByIdRequest) (*v1.SimpleResponse, error)
 	// -------------------------------------------------  NodeType  ------------------------------------------------------
-	CreateNodeType(context.Context, *CreateNodeTypeRequest) (*CreateNodeTypeResponse, error)
-	GetNodeTypeById(context.Context, *GetNodeTypeByIdRequest) (*GetNodeTypeResponse, error)
+	CreateNodeType(context.Context, *CreateNodeTypeRequest) (*SimpleNodeTypeResponse, error)
+	GetNodeTypeById(context.Context, *GetNodeTypeByIdRequest) (*SimpleNodeTypeResponse, error)
 	UpdateNodeTypeById(context.Context, *UpdateNodeTypeByIdRequest) (*v1.SimpleResponse, error)
 	DeleteNodeTypeById(context.Context, *DeleteNodeTypeByIdRequest) (*v1.SimpleResponse, error)
 	// -------------------------------------------------  Node  ----------------------------------------------------------
 	CreateNodes(context.Context, *CreateNodesRequest) (*v1.SimpleResponse, error)
 	GetNodeById(context.Context, *GetNodeByIdRequest) (*GetNodeResponse, error)
 	GetNodesByWarehouseId(context.Context, *GetNodesByWarehouseIdRequest) (*GetNodesResponse, error)
+	// -------------------------------------------------  NodeConfigItem  ------------------------------------------------
+	CreateNodeConfigItem(context.Context, *CreateNodeConfigItemRequest) (*SimpleNodeConfigItemResponse, error)
+	GetNodeConfigItemById(context.Context, *GetNodeConfigItemByIdRequest) (*SimpleNodeConfigItemResponse, error)
+	SelectNodeConfigItems(context.Context, *SelectNodeConfigItemRequest) (*SelectNodeConfigItemResponse, error)
+	UpdateNodeConfigItem(context.Context, *UpdateNodeConfigItemRequest) (*v1.SimpleResponse, error)
 	mustEmbedUnimplementedWarehouseServiceServer()
 }
 
@@ -209,13 +259,13 @@ type WarehouseServiceServer interface {
 type UnimplementedWarehouseServiceServer struct {
 }
 
-func (UnimplementedWarehouseServiceServer) CreateWarehouse(context.Context, *CreateWarehouseRequest) (*CreateWarehouseResponse, error) {
+func (UnimplementedWarehouseServiceServer) CreateWarehouse(context.Context, *CreateWarehouseRequest) (*SimpleWarehouseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateWarehouse not implemented")
 }
-func (UnimplementedWarehouseServiceServer) GetWarehouseByName(context.Context, *GetWarehouseByNameRequest) (*GetWarehouseResponse, error) {
+func (UnimplementedWarehouseServiceServer) GetWarehouseByName(context.Context, *GetWarehouseByNameRequest) (*SimpleWarehouseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWarehouseByName not implemented")
 }
-func (UnimplementedWarehouseServiceServer) GetWarehouseById(context.Context, *GetWarehouseByIdRequest) (*GetWarehouseResponse, error) {
+func (UnimplementedWarehouseServiceServer) GetWarehouseById(context.Context, *GetWarehouseByIdRequest) (*SimpleWarehouseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWarehouseById not implemented")
 }
 func (UnimplementedWarehouseServiceServer) UpdateWarehouseById(context.Context, *UpdateWarehouseByIdRequest) (*v1.SimpleResponse, error) {
@@ -227,10 +277,10 @@ func (UnimplementedWarehouseServiceServer) UpdateWarehouseStatusById(context.Con
 func (UnimplementedWarehouseServiceServer) DeleteWarehouseById(context.Context, *DeleteWarehouseByIdRequest) (*v1.SimpleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteWarehouseById not implemented")
 }
-func (UnimplementedWarehouseServiceServer) CreateNodeType(context.Context, *CreateNodeTypeRequest) (*CreateNodeTypeResponse, error) {
+func (UnimplementedWarehouseServiceServer) CreateNodeType(context.Context, *CreateNodeTypeRequest) (*SimpleNodeTypeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateNodeType not implemented")
 }
-func (UnimplementedWarehouseServiceServer) GetNodeTypeById(context.Context, *GetNodeTypeByIdRequest) (*GetNodeTypeResponse, error) {
+func (UnimplementedWarehouseServiceServer) GetNodeTypeById(context.Context, *GetNodeTypeByIdRequest) (*SimpleNodeTypeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNodeTypeById not implemented")
 }
 func (UnimplementedWarehouseServiceServer) UpdateNodeTypeById(context.Context, *UpdateNodeTypeByIdRequest) (*v1.SimpleResponse, error) {
@@ -247,6 +297,18 @@ func (UnimplementedWarehouseServiceServer) GetNodeById(context.Context, *GetNode
 }
 func (UnimplementedWarehouseServiceServer) GetNodesByWarehouseId(context.Context, *GetNodesByWarehouseIdRequest) (*GetNodesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNodesByWarehouseId not implemented")
+}
+func (UnimplementedWarehouseServiceServer) CreateNodeConfigItem(context.Context, *CreateNodeConfigItemRequest) (*SimpleNodeConfigItemResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateNodeConfigItem not implemented")
+}
+func (UnimplementedWarehouseServiceServer) GetNodeConfigItemById(context.Context, *GetNodeConfigItemByIdRequest) (*SimpleNodeConfigItemResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetNodeConfigItemById not implemented")
+}
+func (UnimplementedWarehouseServiceServer) SelectNodeConfigItems(context.Context, *SelectNodeConfigItemRequest) (*SelectNodeConfigItemResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SelectNodeConfigItems not implemented")
+}
+func (UnimplementedWarehouseServiceServer) UpdateNodeConfigItem(context.Context, *UpdateNodeConfigItemRequest) (*v1.SimpleResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateNodeConfigItem not implemented")
 }
 func (UnimplementedWarehouseServiceServer) mustEmbedUnimplementedWarehouseServiceServer() {}
 
@@ -495,6 +557,78 @@ func _WarehouseService_GetNodesByWarehouseId_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WarehouseService_CreateNodeConfigItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateNodeConfigItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WarehouseServiceServer).CreateNodeConfigItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WarehouseService_CreateNodeConfigItem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WarehouseServiceServer).CreateNodeConfigItem(ctx, req.(*CreateNodeConfigItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WarehouseService_GetNodeConfigItemById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetNodeConfigItemByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WarehouseServiceServer).GetNodeConfigItemById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WarehouseService_GetNodeConfigItemById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WarehouseServiceServer).GetNodeConfigItemById(ctx, req.(*GetNodeConfigItemByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WarehouseService_SelectNodeConfigItems_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SelectNodeConfigItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WarehouseServiceServer).SelectNodeConfigItems(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WarehouseService_SelectNodeConfigItems_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WarehouseServiceServer).SelectNodeConfigItems(ctx, req.(*SelectNodeConfigItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WarehouseService_UpdateNodeConfigItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateNodeConfigItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WarehouseServiceServer).UpdateNodeConfigItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WarehouseService_UpdateNodeConfigItem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WarehouseServiceServer).UpdateNodeConfigItem(ctx, req.(*UpdateNodeConfigItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WarehouseService_ServiceDesc is the grpc.ServiceDesc for WarehouseService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -553,6 +687,22 @@ var WarehouseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetNodesByWarehouseId",
 			Handler:    _WarehouseService_GetNodesByWarehouseId_Handler,
+		},
+		{
+			MethodName: "CreateNodeConfigItem",
+			Handler:    _WarehouseService_CreateNodeConfigItem_Handler,
+		},
+		{
+			MethodName: "GetNodeConfigItemById",
+			Handler:    _WarehouseService_GetNodeConfigItemById_Handler,
+		},
+		{
+			MethodName: "SelectNodeConfigItems",
+			Handler:    _WarehouseService_SelectNodeConfigItems_Handler,
+		},
+		{
+			MethodName: "UpdateNodeConfigItem",
+			Handler:    _WarehouseService_UpdateNodeConfigItem_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

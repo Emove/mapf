@@ -18,18 +18,18 @@ enum NodeTupleType {
 // The warehouse service definition.
 service WarehouseService {
   // -------------------------------------------------  Warehouse  -----------------------------------------------------
-  rpc CreateWarehouse (CreateWarehouseRequest) returns (CreateWarehouseResponse) {
+  rpc CreateWarehouse (CreateWarehouseRequest) returns (SimpleWarehouseResponse) {
     option (google.api.http) = {
       post: "/warehouse",
       body: "*",
     };
   }
-  rpc GetWarehouseByName(GetWarehouseByNameRequest) returns (GetWarehouseResponse) {
+  rpc GetWarehouseByName(GetWarehouseByNameRequest) returns (SimpleWarehouseResponse) {
     option (google.api.http) = {
       get: "/warehouse/name/{name}"
     };
   }
-  rpc GetWarehouseById(GetWarehouseByIdRequest) returns (GetWarehouseResponse) {
+  rpc GetWarehouseById(GetWarehouseByIdRequest) returns (SimpleWarehouseResponse) {
     option (google.api.http) = {
       get: "/warehouse/{id}"
     };
@@ -52,13 +52,13 @@ service WarehouseService {
     };
   }
   // -------------------------------------------------  NodeType  ------------------------------------------------------
-  rpc CreateNodeType(CreateNodeTypeRequest) returns (CreateNodeTypeResponse) {
+  rpc CreateNodeType(CreateNodeTypeRequest) returns (SimpleNodeTypeResponse) {
     option (google.api.http) = {
       post: "/node_type",
       body: "*",
     };
   }
-  rpc GetNodeTypeById(GetNodeTypeByIdRequest) returns (GetNodeTypeResponse) {
+  rpc GetNodeTypeById(GetNodeTypeByIdRequest) returns (SimpleNodeTypeResponse) {
     option (google.api.http) = {
       get: "/node_type/{id}",
     };
@@ -91,13 +91,37 @@ service WarehouseService {
       get: "/warehouse/{warehouse_id}/nodes"
     };
   }
+  // -------------------------------------------------  NodeConfigItem  ------------------------------------------------
+  rpc CreateNodeConfigItem(CreateNodeConfigItemRequest) returns (SimpleNodeConfigItemResponse) {
+    option (google.api.http) = {
+      post: "/node_config_item",
+      body: "*"
+    };
+  }
+  rpc GetNodeConfigItemById(GetNodeConfigItemByIdRequest) returns (SimpleNodeConfigItemResponse) {
+    option (google.api.http) = {
+      get: "/node_config_item/{id}",
+    };
+  }
+  rpc SelectNodeConfigItems(SelectNodeConfigItemRequest) returns (SelectNodeConfigItemResponse) {
+    option (google.api.http) = {
+      get: "/node_config_items",
+    };
+  }
+  rpc UpdateNodeConfigItem(UpdateNodeConfigItemRequest) returns (common.v1.SimpleResponse){
+    option (google.api.http) = {
+      put: "/node_config_item/{id}"
+      body: "*"
+    };
+  }
+
 }
 
 message CreateWarehouseRequest {
   string name = 1 [(validate.rules).string = {min_len: 3, max_len: 64}];
 }
 
-message CreateWarehouseResponse {
+message SimpleWarehouseResponse {
   Warehouse warehouse = 1;
 }
 
@@ -133,7 +157,7 @@ message CreateNodeTypeRequest {
   string name = 2  [(validate.rules).string = {min_len: 3, max_len: 64}];
 }
 
-message CreateNodeTypeResponse {
+message SimpleNodeTypeResponse {
   NodeType node_type = 1;
 }
 
@@ -157,7 +181,7 @@ message DeleteNodeTypeByIdRequest {
 }
 
 message CreateNodesRequest {
-  uint32 warehouseId = 1 [(validate.rules).uint32 = {gte:1}];
+  uint32 warehouse_id = 1 [(validate.rules).uint32 = {gte:1}];
   uint32 start = 2 [(validate.rules).uint32 = {gte: 1, lte: 1000}];
   uint32 end = 3 [(validate.rules).uint32 = {gte: 1, lte: 1000}];
   uint32 aux_aix = 4 [(validate.rules).uint32 = {gte: 1, lte: 1000}];
@@ -170,6 +194,7 @@ message GetNodeByIdRequest {
 
 message GetNodesByWarehouseIdRequest {
   uint32 warehouse_id = 1 [(validate.rules).uint32 = {gte: 1}];
+  common.v1.Page page = 2;
 }
 
 message GetNodeResponse {
@@ -177,7 +202,50 @@ message GetNodeResponse {
 }
 
 message GetNodesResponse {
-  repeated Node nodes = 2;
+  repeated Node nodes = 1;
+  common.v1.Page page = 2;
+}
+
+message CreateNodeConfigItemRequest {
+  uint32 warehouse_id = 1 [(validate.rules).uint32 = {gte:1}];
+  uint32 node_type_id = 2 [(validate.rules).uint32 = {gte:1}];
+  string code = 3 [(validate.rules).string = {min_len:3, max_len: 63}];
+  string name = 4 [(validate.rules).string = {min_len:3, max_len: 63}];
+  string value_type = 5 [(validate.rules).string = {min_len:3, max_len: 31}];
+  string default_value = 6 [(validate.rules).string = {min_len:1, max_len: 63}];
+  repeated string optional_values = 7 [(validate.rules).repeated = {ignore_empty: true, items: {string: {min_len: 1, max_len: 63}}}];
+}
+
+message SimpleNodeConfigItemResponse {
+  NodeConfigItem item = 1;
+}
+
+message GetNodeConfigItemByIdRequest {
+  uint32 id = 1;
+}
+
+message SelectNodeConfigItemRequest {
+  uint32 warehouse_id = 2;
+  optional uint32 node_type_id = 3;
+  optional string code = 4;
+  optional string name = 5;
+  optional string value_type = 6;
+  optional common.data.v1.EnableStatus status = 7;
+  optional common.v1.Page page = 8;
+}
+
+message SelectNodeConfigItemResponse {
+  repeated NodeConfigItem items = 1;
+  optional common.v1.Page page = 2;
+}
+
+message UpdateNodeConfigItemRequest {
+  uint32 id = 1 [(validate.rules).uint32 = {gte:1}];
+  optional string code = 2 [(validate.rules).string = {ignore_empty: true, min_len:3, max_len: 63}];
+  optional string name = 3 [(validate.rules).string = {ignore_empty: true, min_len:3, max_len: 63}];
+  optional string value_type = 4 [(validate.rules).string = {ignore_empty: true, min_len:3, max_len: 31}];
+  optional string default_value = 5 [(validate.rules).string = {ignore_empty: true, min_len:1, max_len: 63}];
+  repeated string optional_values = 6 [(validate.rules).repeated = {ignore_empty: true, items: {string: {min_len: 1, max_len: 63}}}];
 }
 
 message Warehouse {
@@ -199,4 +267,16 @@ message Node {
   uint32 warehouse_id = 2;
   uint32 x = 3;
   uint32 y = 4;
+}
+
+message NodeConfigItem {
+  uint32 id = 1;
+  uint32 warehouse_id = 2;
+  uint32 node_type_id = 3;
+  string code = 4;
+  string name = 5;
+  string value_type = 6;
+  string default_value = 7;
+  repeated string optional_values = 8;
+  common.data.v1.EnableStatus status = 9;
 }

@@ -11,6 +11,7 @@ import (
 )
 
 type nodeConfigItemRepo struct {
+	*data.Pager
 	data   *Data
 	logger *log.Helper
 }
@@ -25,6 +26,9 @@ func NewNodeConfigItemRepo(data *Data, logger log.Logger) (biz.NodeConfigItemRep
 // CreateNodeConfigItem 创建仓库节点配置项
 func (repo *nodeConfigItemRepo) CreateNodeConfigItem(ctx context.Context, item *biz.NodeConfigItem) (*biz.NodeConfigItem, error) {
 	err := repo.data.DB(ctx).Create(item).Error
+	if err != nil && errors.Is(err, gorm.ErrDuplicatedKey) {
+		return nil, dataerrors.NewDuplicatedKeyError("NodeConfigItem Code: [%s] Existed", item.Code)
+	}
 	return item, err
 }
 
@@ -41,6 +45,15 @@ func (repo *nodeConfigItemRepo) UpdateNodeConfigItem(ctx context.Context, item *
 	return item, nil
 }
 
+// GetNodeConfigItemById 根据ID查询节点配置项
+func (repo *nodeConfigItemRepo) GetNodeConfigItemById(ctx context.Context, id int) (item *biz.NodeConfigItem, err error) {
+	err = repo.data.DB(ctx).Where(biz.NodeConfigItem{Model: &data.Model{ID: id}}).First(&item).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+	return
+}
+
 // GetNodeConfigItemByWarehouseIdAndNodeTypeId 查询仓库节点配置项，节点类型可为空
 func (repo *nodeConfigItemRepo) GetNodeConfigItemByWarehouseIdAndNodeTypeId(ctx context.Context, warehouseId int, nodeTypeId *int) (items []*biz.NodeConfigItem, err error) {
 	query := biz.NodeConfigItem{WarehouseId: warehouseId}
@@ -49,4 +62,16 @@ func (repo *nodeConfigItemRepo) GetNodeConfigItemByWarehouseIdAndNodeTypeId(ctx 
 	}
 	err = repo.data.DB(ctx).Where(query).Find(&items).Error
 	return
+}
+
+// SelectNodeConfigItem 查询节点配置项，可分页
+func (repo *nodeConfigItemRepo) SelectNodeConfigItem(ctx context.Context, query *biz.NodeConfigItem, page *data.Page) ([]*biz.NodeConfigItem, *data.Page, error) {
+	var items []*biz.NodeConfigItem
+	var err error
+	db, page, err := repo.Pager.Prepare(repo.data.DB(ctx), query, page)
+	if err != nil {
+		return nil, nil, err
+	}
+	err = db.Find(&items).Error
+	return items, page, err
 }

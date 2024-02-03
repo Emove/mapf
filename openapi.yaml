@@ -44,6 +44,126 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/warehouse.v1.GetNodeResponse'
+    /node_config_item:
+        post:
+            tags:
+                - WarehouseService
+            description: '-------------------------------------------------  NodeConfigItem  ------------------------------------------------'
+            operationId: WarehouseService_CreateNodeConfigItem
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/warehouse.v1.CreateNodeConfigItemRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/warehouse.v1.SimpleNodeConfigItemResponse'
+    /node_config_item/{id}:
+        get:
+            tags:
+                - WarehouseService
+            operationId: WarehouseService_GetNodeConfigItemById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/warehouse.v1.SimpleNodeConfigItemResponse'
+        put:
+            tags:
+                - WarehouseService
+            operationId: WarehouseService_UpdateNodeConfigItem
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: uint32
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/warehouse.v1.UpdateNodeConfigItemRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/common.v1.SimpleResponse'
+    /node_config_items:
+        get:
+            tags:
+                - WarehouseService
+            operationId: WarehouseService_SelectNodeConfigItems
+            parameters:
+                - name: warehouseId
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: nodeTypeId
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: code
+                  in: query
+                  schema:
+                    type: string
+                - name: name
+                  in: query
+                  schema:
+                    type: string
+                - name: valueType
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+                - name: page.num
+                  in: query
+                  description: 当前页码
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: page.size
+                  in: query
+                  description: 页数据量
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: page.total
+                  in: query
+                  description: 数据总量
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/warehouse.v1.SelectNodeConfigItemResponse'
     /node_type:
         post:
             tags:
@@ -62,7 +182,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/warehouse.v1.CreateNodeTypeResponse'
+                                $ref: '#/components/schemas/warehouse.v1.SimpleNodeTypeResponse'
     /node_type/{id}:
         get:
             tags:
@@ -81,7 +201,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/warehouse.v1.GetNodeTypeResponse'
+                                $ref: '#/components/schemas/warehouse.v1.SimpleNodeTypeResponse'
         put:
             tags:
                 - WarehouseService
@@ -160,7 +280,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/warehouse.v1.GetWarehouseResponse'
+                                $ref: '#/components/schemas/warehouse.v1.SimpleWarehouseResponse'
     /warehouse/{id}:
         get:
             tags:
@@ -179,7 +299,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/warehouse.v1.GetWarehouseResponse'
+                                $ref: '#/components/schemas/warehouse.v1.SimpleWarehouseResponse'
         put:
             tags:
                 - WarehouseService
@@ -259,6 +379,24 @@ paths:
                   schema:
                     type: integer
                     format: uint32
+                - name: page.num
+                  in: query
+                  description: 当前页码
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: page.size
+                  in: query
+                  description: 页数据量
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: page.total
+                  in: query
+                  description: 数据总量
+                  schema:
+                    type: integer
+                    format: uint32
             responses:
                 "200":
                     description: OK
@@ -268,11 +406,47 @@ paths:
                                 $ref: '#/components/schemas/warehouse.v1.GetNodesResponse'
 components:
     schemas:
+        common.v1.Page:
+            type: object
+            properties:
+                num:
+                    type: integer
+                    description: 当前页码
+                    format: uint32
+                size:
+                    type: integer
+                    description: 页数据量
+                    format: uint32
+                total:
+                    type: integer
+                    description: 数据总量
+                    format: uint32
         common.v1.SimpleResponse:
             type: object
             properties:
                 msg:
                     type: string
+        warehouse.v1.CreateNodeConfigItemRequest:
+            type: object
+            properties:
+                warehouseId:
+                    type: integer
+                    format: uint32
+                nodeTypeId:
+                    type: integer
+                    format: uint32
+                code:
+                    type: string
+                name:
+                    type: string
+                valueType:
+                    type: string
+                defaultValue:
+                    type: string
+                optionalValues:
+                    type: array
+                    items:
+                        type: string
         warehouse.v1.CreateNodeTypeRequest:
             type: object
             properties:
@@ -280,11 +454,6 @@ components:
                     type: string
                 name:
                     type: string
-        warehouse.v1.CreateNodeTypeResponse:
-            type: object
-            properties:
-                nodeType:
-                    $ref: '#/components/schemas/warehouse.v1.NodeType'
         warehouse.v1.CreateNodesRequest:
             type: object
             properties:
@@ -308,21 +477,11 @@ components:
             properties:
                 name:
                     type: string
-        warehouse.v1.CreateWarehouseResponse:
-            type: object
-            properties:
-                warehouse:
-                    $ref: '#/components/schemas/warehouse.v1.Warehouse'
         warehouse.v1.GetNodeResponse:
             type: object
             properties:
                 node:
                     $ref: '#/components/schemas/warehouse.v1.Node'
-        warehouse.v1.GetNodeTypeResponse:
-            type: object
-            properties:
-                nodeType:
-                    $ref: '#/components/schemas/warehouse.v1.NodeType'
         warehouse.v1.GetNodesResponse:
             type: object
             properties:
@@ -330,11 +489,8 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/warehouse.v1.Node'
-        warehouse.v1.GetWarehouseResponse:
-            type: object
-            properties:
-                warehouse:
-                    $ref: '#/components/schemas/warehouse.v1.Warehouse'
+                page:
+                    $ref: '#/components/schemas/common.v1.Page'
         warehouse.v1.Node:
             type: object
             properties:
@@ -350,6 +506,33 @@ components:
                 y:
                     type: integer
                     format: uint32
+        warehouse.v1.NodeConfigItem:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+                warehouseId:
+                    type: integer
+                    format: uint32
+                nodeTypeId:
+                    type: integer
+                    format: uint32
+                code:
+                    type: string
+                name:
+                    type: string
+                valueType:
+                    type: string
+                defaultValue:
+                    type: string
+                optionalValues:
+                    type: array
+                    items:
+                        type: string
+                status:
+                    type: integer
+                    format: enum
         warehouse.v1.NodeType:
             type: object
             properties:
@@ -363,6 +546,48 @@ components:
                 isDefault:
                     type: integer
                     format: enum
+        warehouse.v1.SelectNodeConfigItemResponse:
+            type: object
+            properties:
+                items:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/warehouse.v1.NodeConfigItem'
+                page:
+                    $ref: '#/components/schemas/common.v1.Page'
+        warehouse.v1.SimpleNodeConfigItemResponse:
+            type: object
+            properties:
+                item:
+                    $ref: '#/components/schemas/warehouse.v1.NodeConfigItem'
+        warehouse.v1.SimpleNodeTypeResponse:
+            type: object
+            properties:
+                nodeType:
+                    $ref: '#/components/schemas/warehouse.v1.NodeType'
+        warehouse.v1.SimpleWarehouseResponse:
+            type: object
+            properties:
+                warehouse:
+                    $ref: '#/components/schemas/warehouse.v1.Warehouse'
+        warehouse.v1.UpdateNodeConfigItemRequest:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+                code:
+                    type: string
+                name:
+                    type: string
+                valueType:
+                    type: string
+                defaultValue:
+                    type: string
+                optionalValues:
+                    type: array
+                    items:
+                        type: string
         warehouse.v1.UpdateNodeTypeByIdRequest:
             type: object
             properties:

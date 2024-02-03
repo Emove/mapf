@@ -7,3 +7,12 @@ option go_package = "mapf/api/common/v1;v1";
 message SimpleResponse {
   string msg = 1;
 }
+
+message Page {
+  // 当前页码
+  uint32 num = 1;
+  // 页数据量
+  uint32 size = 2;
+  // 数据总量
+  uint32 total = 3;
+}

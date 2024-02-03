@@ -201,3 +201,98 @@ func Test_nodeConfigItemRepo_GetNodeConfigItemByWarehouseIdAndNodeTypeId(t *test
 		})
 	}
 }
+
+func Test_nodeConfigItemRepo_SelectNodeConfigItem(t *testing.T) {
+	type args struct {
+		ctx   context.Context
+		query *biz.NodeConfigItem
+		page  *data.Page
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    func([]*biz.NodeConfigItem)
+		want1   *data.Page
+		wantErr assert.ErrorAssertionFunc
+	}{
+		{
+			name: "select_by_warehouse_id_without_page",
+			args: args{ctx: context.Background(), query: &biz.NodeConfigItem{WarehouseId: 9}, page: nil},
+			want: func(items []*biz.NodeConfigItem) {
+				for _, item := range items {
+					assert.Equal(t, 9, item.WarehouseId)
+				}
+			},
+			want1:   nil,
+			wantErr: defaultWantErrFunc,
+		},
+		{
+			name: "select_by_node_type_id_without_page",
+			args: args{ctx: context.Background(), query: &biz.NodeConfigItem{NodeTypeId: 18}, page: nil},
+			want: func(items []*biz.NodeConfigItem) {
+				for _, item := range items {
+					assert.Equal(t, 18, item.NodeTypeId)
+				}
+			},
+			want1:   nil,
+			wantErr: defaultWantErrFunc,
+		},
+		{
+			name: "select_by_code_without_page",
+			args: args{ctx: context.Background(), query: &biz.NodeConfigItem{Code: "rotatable"}, page: nil},
+			want: func(items []*biz.NodeConfigItem) {
+				for _, item := range items {
+					assert.Equal(t, "rotatable", item.Code)
+				}
+			},
+			want1:   nil,
+			wantErr: defaultWantErrFunc,
+		},
+		{
+			name: "select_by_status_without_page",
+			args: args{ctx: context.Background(), query: &biz.NodeConfigItem{Status: data.EnableStatus}, page: nil},
+			want: func(items []*biz.NodeConfigItem) {
+				for _, item := range items {
+					assert.Equal(t, data.EnableStatus, item.Status)
+				}
+			},
+			want1:   nil,
+			wantErr: defaultWantErrFunc,
+		},
+		{
+			name: "select_by_warehouse_id_and_node_type_id_status_without_page",
+			args: args{ctx: context.Background(), query: &biz.NodeConfigItem{WarehouseId: 9, NodeTypeId: 18, Status: data.EnableStatus}, page: nil},
+			want: func(items []*biz.NodeConfigItem) {
+				for _, item := range items {
+					assert.Equal(t, 9, item.WarehouseId)
+					assert.Equal(t, 18, item.NodeTypeId)
+					assert.Equal(t, data.EnableStatus, item.Status)
+				}
+			},
+			want1:   nil,
+			wantErr: defaultWantErrFunc,
+		},
+		{
+			name: "select_by_warehouse_id_and_page",
+			args: args{ctx: context.Background(), query: &biz.NodeConfigItem{WarehouseId: 9}, page: &data.Page{Size: 10, Num: 2}},
+			want: func(items []*biz.NodeConfigItem) {
+				for _, item := range items {
+					assert.Equal(t, 9, item.WarehouseId)
+				}
+			},
+			want1:   &data.Page{Size: 10, Num: 1},
+			wantErr: defaultWantErrFunc,
+		},
+	}
+	repo := newNodeConfigItemRepo(t)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, got1, err := repo.SelectNodeConfigItem(tt.args.ctx, tt.args.query, tt.args.page)
+			if !tt.wantErr(t, err, fmt.Sprintf("SelectNodeConfigItem(%v, %v, %v), err: %v", tt.args.ctx, tt.args.query, tt.args.page, err)) {
+				return
+			}
+			tt.want(got)
+			assert.Equalf(t, tt.want1, got1, "SelectNodeConfigItem(%v, %v, %v)", tt.args.ctx, tt.args.query, tt.args.page)
+		})
+	}
+}

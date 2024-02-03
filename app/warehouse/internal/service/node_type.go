@@ -6,13 +6,17 @@ import (
 	"mapf/app/warehouse/internal/biz"
 )
 
-func (s *WarehouseService) CreateNodeType(ctx context.Context, req *v1.CreateNodeTypeRequest) (*v1.CreateNodeTypeResponse, error) {
+func (s *WarehouseService) CreateNodeType(ctx context.Context, req *v1.CreateNodeTypeRequest) (*v1.SimpleNodeTypeResponse, error) {
 	nodeType := &biz.NodeType{Code: req.Code, Name: req.Name}
 	nodeType, err := s.ntuc.CreateNodeType(ctx, nodeType)
 	if err != nil {
-		return &v1.CreateNodeTypeResponse{}, err
+		return nil, err
 	}
-	return &v1.CreateNodeTypeResponse{NodeType: ConvertNodeType2protobuf(nodeType)}, nil
+	var resp *v1.SimpleNodeTypeResponse
+	if nodeType != nil {
+		resp.NodeType = ConvertNodeType2protobuf(nodeType)
+	}
+	return resp, nil
 }
 
 func (s *WarehouseService) GetNodeTypeById(ctx context.Context, req *v1.GetNodeTypeByIdRequest) (resp *v1.GetNodeTypeResponse, err error) {

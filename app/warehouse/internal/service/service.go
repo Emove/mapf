@@ -13,17 +13,24 @@ var ProviderSet = wire.NewSet(NewWarehouseService)
 type WarehouseService struct {
 	v1.UnimplementedWarehouseServiceServer
 
-	wuc  *biz.WarehouseUsecase
-	ntuc *biz.NodeTypeUsecase
-	nuc  *biz.NodeUsecase
+	wuc   *biz.WarehouseUsecase
+	ntuc  *biz.NodeTypeUsecase
+	nuc   *biz.NodeUsecase
+	nciuc *biz.NodeConfigItemUsecase
 }
 
 // NewWarehouseService new a warehouse service.
-func NewWarehouseService(wuc *biz.WarehouseUsecase, ntuc *biz.NodeTypeUsecase, nuc *biz.NodeUsecase) *WarehouseService {
+func NewWarehouseService(
+	wuc *biz.WarehouseUsecase,
+	ntuc *biz.NodeTypeUsecase,
+	nuc *biz.NodeUsecase,
+	nciuc *biz.NodeConfigItemUsecase,
+) *WarehouseService {
 	return &WarehouseService{
-		wuc:  wuc,
-		ntuc: ntuc,
-		nuc:  nuc,
+		wuc:   wuc,
+		ntuc:  ntuc,
+		nuc:   nuc,
+		nciuc: nciuc,
 	}
 }
 
@@ -39,4 +46,11 @@ func ConvertModelIsDefault2protoIsDefaultEnum(isDefault int) v1.DefaultStatus {
 		return v1.DefaultStatus_NOT_DEFAULT
 	}
 	return v1.DefaultStatus_IS_DEFAULT
+}
+
+func ConvertProtobufEnableStatus2modelStatus(status v1.EnableStatus) int {
+	if status == v1.EnableStatus_ENABLE {
+		return data.EnableStatus
+	}
+	return data.DisableStatus
 }
