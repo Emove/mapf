@@ -2,6 +2,8 @@ package biz
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
 	"github.com/go-kratos/kratos/v2/log"
 	"mapf/internal/data"
 	"mapf/internal/data/tx"
@@ -34,21 +36,40 @@ func (item *NodeConfigItem) SetName(name string) {
 }
 
 func (item *NodeConfigItem) SetValueType(valueType string) error {
-	// FIXME validate value type
+	if !utils.IsValidBuiltinType(valueType) {
+		return dataerrors.NewInvalidArgumentError("illegal ValueType: [%s]", valueType)
+	}
 	item.ValueType = valueType
 	item.Update("value_type", valueType)
 	return nil
 }
 
 func (item *NodeConfigItem) SetDefaultValue(defaultValue string) error {
-	// FIXME validate value
+	if utils.IsEmpty(item.ValueType) {
+		return errors.New("unknown value type")
+	}
+	if !utils.IsValidValue(item.ValueType, defaultValue) {
+		return dataerrors.NewInvalidArgumentError("illegal DefaultValue: [%s]", defaultValue)
+	}
 	item.DefaultValue = defaultValue
 	item.Update("default_value", defaultValue)
 	return nil
 }
 
 func (item *NodeConfigItem) SetOptionalValues(optionalValues string) error {
-	// FIXME validate optional values
+	if utils.IsEmpty(item.ValueType) {
+		return errors.New("unknown value type")
+	}
+	var values []string
+	err := json.Unmarshal([]byte(optionalValues), &values)
+	if err != nil {
+		return err
+	}
+	for _, value := range values {
+		if !utils.IsValidValue(item.ValueType, value) {
+			return dataerrors.NewInvalidArgumentError("illegal optionalValue: [%s]", value)
+		}
+	}
 	item.OptionalValues = optionalValues
 	item.Update("optional_values", optionalValues)
 	return nil
