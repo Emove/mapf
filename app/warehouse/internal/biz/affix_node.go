@@ -182,7 +182,7 @@ func (uc *AffixNodeUsecase) UpdateAffixNode(ctx context.Context, affixNode *Affi
 	return uc.repo.UpdateAffixNode(ctx, originAffixNode)
 }
 
-func (uc *AffixNodeUsecase) GetAffixNodeById(ctx context.Context, id uint32) (*AffixNode, error) {
+func (uc *AffixNodeUsecase) GetAffixNodeById(ctx context.Context, id int) (*AffixNode, error) {
 	return uc.repo.GetAffixNodeById(ctx, id)
 }
 
