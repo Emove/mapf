@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"github.com/go-kratos/kratos/v2/log"
 	"mapf/app/warehouse/internal/event/publisher"
+	"mapf/app/warehouse/internal/event/subscriber"
 	"mapf/internal/data"
 	"mapf/internal/data/tx"
 	dataerrors "mapf/internal/errors"
@@ -25,6 +26,13 @@ const (
 	NodeTupleTypeRow    = 2
 )
 
+type AixType int
+
+const (
+	AixTypeX = AixType(1)
+	AixTypeY = AixType(2)
+)
+
 type NodeTuple []*Node
 
 func (*Node) TableName() string {
@@ -42,6 +50,8 @@ type NodeRepo interface {
 	GetNodesByIds(context.Context, []int) ([]*Node, error)
 	// GetNodesByWarehouseId 根据仓库ID获取节点信息列表
 	GetNodesByWarehouseId(context.Context, int) ([]*Node, error)
+	// GetNodeByWarehouseAndCoordinate 根据仓库ID和坐标查询节点
+	GetNodeByWarehouseAndCoordinate(context.Context, int, int, int) (*Node, error)
 	// SelectNodeTupleByCoorRange 根据坐标范围查询节点信息
 	SelectNodeTupleByCoorRange(context.Context, int, int, int, int, NodeTupleType) (NodeTuple, error)
 }
@@ -58,10 +68,24 @@ func NewNodeUsecase(
 	tm tx.Transaction,
 	repo NodeRepo,
 	warehouseRepo WarehouseRepo,
-	createNodePublisher internalevent.Publisher,
-	createNodeSubscriber internalevent.Subscriber,
+	eventCenterConfig internalevent.Configuration,
 	logger log.Logger,
 ) (*NodeUsecase, error) {
+	var err error
+	var cleans []func()
+	defer func() {
+		if err != nil {
+			for _, clean := range cleans {
+				clean()
+			}
+		}
+	}()
+
+	createNodePublisher, clean, err := publisher.NewCreateNodeEventPublisher(eventCenterConfig)
+	if err != nil {
+		return nil, nil
+	}
+	cleans = append(cleans, clean)
 	uc := &NodeUsecase{
 		tm:                  tm,
 		repo:                repo,
@@ -69,7 +93,12 @@ func NewNodeUsecase(
 		createNodePublisher: createNodePublisher,
 		logger:              log.NewHelper(logger),
 	}
-	err := createNodeSubscriber.Subscribe(uc.consumeCreateNodesEvent)
+	eventSubscriber, clean, err := subscriber.NewCreateNodeEventSubscriber(eventCenterConfig)
+	if err != nil {
+		return nil, err
+	}
+	cleans = append(cleans, clean)
+	err = eventSubscriber.Subscribe(uc.consumeCreateNodesEvent)
 	return uc, err
 }
 
@@ -168,4 +197,8 @@ func generateNodeTuple(warehouseId, start, end, auxAix int, tupleType NodeTupleT
 		tuple = append(tuple, node)
 	}
 	return tuple
+}
+
+func RoundUpAix(x, y int) int {
+	return y*10000 + x
 }

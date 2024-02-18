@@ -6,5 +6,9 @@ import (
 )
 
 func NewCreateNodeEventSubscriber(config internalevent.Configuration) (internalevent.Subscriber, func(), error) {
-	return internalevent.NewRabbitMqSubscriber(config, event.CreateNodeExchange, event.CreateNodeKey, event.CreateNodeQueue)
+	return internalevent.NewRabbitMqSubscriber(config, event.WarehouseExchange, event.CreateNodeKey, event.CreateNodeQueue)
+}
+
+func NewCreateAffixNodeEventSubscriber(config internalevent.Configuration) (internalevent.Subscriber, func(), error) {
+	return internalevent.NewRabbitMqSubscriber(config, event.WarehouseExchange, event.CreateAffixNodeKey, event.CreateAffixNodeQueue)
 }

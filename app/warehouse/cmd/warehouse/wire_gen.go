@@ -12,8 +12,6 @@ import (
 	"mapf/app/warehouse/internal/biz"
 	"mapf/app/warehouse/internal/conf"
 	"mapf/app/warehouse/internal/data"
-	"mapf/app/warehouse/internal/event/publisher"
-	"mapf/app/warehouse/internal/event/subscriber"
 	"mapf/app/warehouse/internal/server"
 	"mapf/app/warehouse/internal/service"
 )
@@ -53,34 +51,36 @@ func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 		cleanup()
 		return nil, nil, err
 	}
-	eventPublisher, cleanup3, err := publisher.NewCreateNodeEventPublisher(configuration)
+	nodeUsecase, err := biz.NewNodeUsecase(transaction, nodeRepo, warehouseRepo, configuration, logger)
 	if err != nil {
 		cleanup2()
 		cleanup()
 		return nil, nil, err
 	}
-	eventSubscriber, cleanup4, err := subscriber.NewCreateNodeEventSubscriber(configuration)
+	nodeConfigItemRepo, err := data.NewNodeConfigItemRepo(dataData, logger)
 	if err != nil {
-		cleanup3()
 		cleanup2()
 		cleanup()
 		return nil, nil, err
 	}
-	nodeUsecase, err := biz.NewNodeUsecase(transaction, nodeRepo, warehouseRepo, eventPublisher, eventSubscriber, logger)
+	nodeConfigItemUsecase := biz.NewNodeConfigItemUsecase(transaction, nodeConfigItemRepo, warehouseRepo, nodeTypeRepo, logger)
+	affixNodeRepo, err := data.NewAffixNodeRepo(dataData, logger)
 	if err != nil {
-		cleanup4()
-		cleanup3()
 		cleanup2()
 		cleanup()
 		return nil, nil, err
 	}
-	warehouseService := service.NewWarehouseService(warehouseUsecase, nodeTypeUsecase, nodeUsecase)
+	affixNodeUsecase, err := biz.NewAffixNodeUsecase(transaction, affixNodeRepo, warehouseRepo, nodeRepo, nodeTypeRepo, configuration, logger)
+	if err != nil {
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
+	warehouseService := service.NewWarehouseService(warehouseUsecase, nodeTypeUsecase, nodeUsecase, nodeConfigItemUsecase, affixNodeUsecase)
 	grpcServer := server.NewGRPCServer(confServer, warehouseService, logger)
 	httpServer := server.NewHTTPServer(confServer, warehouseService, logger)
 	app := newApp(logger, grpcServer, httpServer)
 	return app, func() {
-		cleanup4()
-		cleanup3()
 		cleanup2()
 		cleanup()
 	}, nil

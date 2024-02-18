@@ -64,6 +64,12 @@ func (repo *nodeRepo) GetNodesByWarehouseId(ctx context.Context, warehouseId int
 	return
 }
 
+// GetNodeByWarehouseAndCoordinate 根据仓库ID和坐标查询节点
+func (repo *nodeRepo) GetNodeByWarehouseAndCoordinate(ctx context.Context, warehouseId, x, y int) (node *biz.Node, err error) {
+	err = repo.data.DB(ctx).Where(biz.Node{WarehouseId: warehouseId, X: x, Y: y}).Find(&node).Error
+	return
+}
+
 // SelectNodeTupleByCoorRange 根据坐标范围查询节点信息
 func (repo *nodeRepo) SelectNodeTupleByCoorRange(ctx context.Context, warehouseId, start, end, auxAix int, tupleType biz.NodeTupleType) (biz.NodeTuple, error) {
 	db := repo.data.DB(ctx).Where(biz.Node{WarehouseId: warehouseId})

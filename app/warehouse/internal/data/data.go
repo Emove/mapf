@@ -18,13 +18,11 @@ import (
 
 // ProviderSet is data providers.
 var ProviderSet = wire.NewSet(NewData, NewTransaction, NewEventCenterConfiguration, NewWarehouseRepo,
-	NewNodeRepo, NewNodeConfigRepo, NewNodeConfigItemRepo,
-	NewNodeTypeRepo, NewAffixNodeRepo, NewNodeRelationRepo,
+	NewNodeRepo, NewNodeConfigRepo, NewNodeConfigItemRepo, NewNodeTypeRepo, NewAffixNodeRepo, NewNodeRelationRepo,
 	NewNodeTagRepo, NewNodeDiagramRepo)
 
-var models = []interface{}{&biz.Warehouse{}, &biz.Node{}, &biz.NodeConfig{},
-	&biz.NodeConfigItem{}, &biz.NodeType{}, &biz.AffixNode{},
-	&biz.NodeRelation{}, &biz.NodeTag{}, &biz.NodeDiagram{}}
+var models = []interface{}{&biz.Warehouse{}, &biz.Node{}, &biz.NodeConfig{}, &biz.NodeConfigItem{}, &biz.NodeType{},
+	&biz.AffixNode{}, &biz.NodeRelation{}, &biz.NodeTag{}, &biz.NodeDiagram{}}
 
 // Data .
 type Data struct {

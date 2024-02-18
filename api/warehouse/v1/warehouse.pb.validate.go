@@ -3458,6 +3458,599 @@ var _ interface {
 	ErrorName() string
 } = UpdateNodeConfigItemRequestValidationError{}
 
+// Validate checks the field values on CreateAffixNodeRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateAffixNodeRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateAffixNodeRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateAffixNodeRequestMultiError, or nil if none found.
+func (m *CreateAffixNodeRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateAffixNodeRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetWarehouseId() < 1 {
+		err := CreateAffixNodeRequestValidationError{
+			field:  "WarehouseId",
+			reason: "value must be greater than or equal to 1",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetNodeTypeId() < 1 {
+		err := CreateAffixNodeRequestValidationError{
+			field:  "NodeTypeId",
+			reason: "value must be greater than or equal to 1",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if val := m.GetX(); val < 1 || val > 1000 {
+		err := CreateAffixNodeRequestValidationError{
+			field:  "X",
+			reason: "value must be inside range [1, 1000]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if val := m.GetY(); val < 1 || val > 1000 {
+		err := CreateAffixNodeRequestValidationError{
+			field:  "Y",
+			reason: "value must be inside range [1, 1000]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetName() != "" {
+
+		if l := utf8.RuneCountInString(m.GetName()); l < 3 || l > 63 {
+			err := CreateAffixNodeRequestValidationError{
+				field:  "Name",
+				reason: "value length must be between 3 and 63 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.Remark != nil {
+
+		if m.GetRemark() != "" {
+
+			if l := utf8.RuneCountInString(m.GetRemark()); l < 3 || l > 254 {
+				err := CreateAffixNodeRequestValidationError{
+					field:  "Remark",
+					reason: "value length must be between 3 and 254 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return CreateAffixNodeRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateAffixNodeRequestMultiError is an error wrapping multiple validation
+// errors returned by CreateAffixNodeRequest.ValidateAll() if the designated
+// constraints aren't met.
+type CreateAffixNodeRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateAffixNodeRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateAffixNodeRequestMultiError) AllErrors() []error { return m }
+
+// CreateAffixNodeRequestValidationError is the validation error returned by
+// CreateAffixNodeRequest.Validate if the designated constraints aren't met.
+type CreateAffixNodeRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateAffixNodeRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateAffixNodeRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateAffixNodeRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateAffixNodeRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateAffixNodeRequestValidationError) ErrorName() string {
+	return "CreateAffixNodeRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateAffixNodeRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateAffixNodeRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateAffixNodeRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateAffixNodeRequestValidationError{}
+
+// Validate checks the field values on GetAffixNodeByIdRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetAffixNodeByIdRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetAffixNodeByIdRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetAffixNodeByIdRequestMultiError, or nil if none found.
+func (m *GetAffixNodeByIdRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetAffixNodeByIdRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetId() < 1 {
+		err := GetAffixNodeByIdRequestValidationError{
+			field:  "Id",
+			reason: "value must be greater than or equal to 1",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return GetAffixNodeByIdRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetAffixNodeByIdRequestMultiError is an error wrapping multiple validation
+// errors returned by GetAffixNodeByIdRequest.ValidateAll() if the designated
+// constraints aren't met.
+type GetAffixNodeByIdRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetAffixNodeByIdRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetAffixNodeByIdRequestMultiError) AllErrors() []error { return m }
+
+// GetAffixNodeByIdRequestValidationError is the validation error returned by
+// GetAffixNodeByIdRequest.Validate if the designated constraints aren't met.
+type GetAffixNodeByIdRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetAffixNodeByIdRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetAffixNodeByIdRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetAffixNodeByIdRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetAffixNodeByIdRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetAffixNodeByIdRequestValidationError) ErrorName() string {
+	return "GetAffixNodeByIdRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetAffixNodeByIdRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetAffixNodeByIdRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetAffixNodeByIdRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetAffixNodeByIdRequestValidationError{}
+
+// Validate checks the field values on UpdateAffixNodeRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *UpdateAffixNodeRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on UpdateAffixNodeRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// UpdateAffixNodeRequestMultiError, or nil if none found.
+func (m *UpdateAffixNodeRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *UpdateAffixNodeRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetId() < 1 {
+		err := UpdateAffixNodeRequestValidationError{
+			field:  "Id",
+			reason: "value must be greater than or equal to 1",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetNodeTypeId() < 1 {
+		err := UpdateAffixNodeRequestValidationError{
+			field:  "NodeTypeId",
+			reason: "value must be greater than or equal to 1",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetNodeId() < 1 {
+		err := UpdateAffixNodeRequestValidationError{
+			field:  "NodeId",
+			reason: "value must be greater than or equal to 1",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetName() != "" {
+
+		if l := utf8.RuneCountInString(m.GetName()); l < 3 || l > 63 {
+			err := UpdateAffixNodeRequestValidationError{
+				field:  "Name",
+				reason: "value length must be between 3 and 63 runes, inclusive",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	}
+
+	if m.Remark != nil {
+
+		if m.GetRemark() != "" {
+
+			if l := utf8.RuneCountInString(m.GetRemark()); l < 3 || l > 254 {
+				err := UpdateAffixNodeRequestValidationError{
+					field:  "Remark",
+					reason: "value length must be between 3 and 254 runes, inclusive",
+				}
+				if !all {
+					return err
+				}
+				errors = append(errors, err)
+			}
+
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return UpdateAffixNodeRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// UpdateAffixNodeRequestMultiError is an error wrapping multiple validation
+// errors returned by UpdateAffixNodeRequest.ValidateAll() if the designated
+// constraints aren't met.
+type UpdateAffixNodeRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UpdateAffixNodeRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UpdateAffixNodeRequestMultiError) AllErrors() []error { return m }
+
+// UpdateAffixNodeRequestValidationError is the validation error returned by
+// UpdateAffixNodeRequest.Validate if the designated constraints aren't met.
+type UpdateAffixNodeRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UpdateAffixNodeRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UpdateAffixNodeRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UpdateAffixNodeRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UpdateAffixNodeRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UpdateAffixNodeRequestValidationError) ErrorName() string {
+	return "UpdateAffixNodeRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e UpdateAffixNodeRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUpdateAffixNodeRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UpdateAffixNodeRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UpdateAffixNodeRequestValidationError{}
+
+// Validate checks the field values on SimpleAffixNodeResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *SimpleAffixNodeResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SimpleAffixNodeResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SimpleAffixNodeResponseMultiError, or nil if none found.
+func (m *SimpleAffixNodeResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SimpleAffixNodeResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetAffixNode()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, SimpleAffixNodeResponseValidationError{
+					field:  "AffixNode",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, SimpleAffixNodeResponseValidationError{
+					field:  "AffixNode",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetAffixNode()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return SimpleAffixNodeResponseValidationError{
+				field:  "AffixNode",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return SimpleAffixNodeResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// SimpleAffixNodeResponseMultiError is an error wrapping multiple validation
+// errors returned by SimpleAffixNodeResponse.ValidateAll() if the designated
+// constraints aren't met.
+type SimpleAffixNodeResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SimpleAffixNodeResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SimpleAffixNodeResponseMultiError) AllErrors() []error { return m }
+
+// SimpleAffixNodeResponseValidationError is the validation error returned by
+// SimpleAffixNodeResponse.Validate if the designated constraints aren't met.
+type SimpleAffixNodeResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SimpleAffixNodeResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SimpleAffixNodeResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SimpleAffixNodeResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SimpleAffixNodeResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SimpleAffixNodeResponseValidationError) ErrorName() string {
+	return "SimpleAffixNodeResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e SimpleAffixNodeResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSimpleAffixNodeResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SimpleAffixNodeResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SimpleAffixNodeResponseValidationError{}
+
 // Validate checks the field values on Warehouse with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -3895,3 +4488,116 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = NodeConfigItemValidationError{}
+
+// Validate checks the field values on AffixNode with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *AffixNode) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AffixNode with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in AffixNodeMultiError, or nil
+// if none found.
+func (m *AffixNode) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AffixNode) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for WarehouseId
+
+	// no validation rules for NodeId
+
+	// no validation rules for NodeTypeId
+
+	// no validation rules for Name
+
+	// no validation rules for Remark
+
+	// no validation rules for Status
+
+	if len(errors) > 0 {
+		return AffixNodeMultiError(errors)
+	}
+
+	return nil
+}
+
+// AffixNodeMultiError is an error wrapping multiple validation errors returned
+// by AffixNode.ValidateAll() if the designated constraints aren't met.
+type AffixNodeMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AffixNodeMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AffixNodeMultiError) AllErrors() []error { return m }
+
+// AffixNodeValidationError is the validation error returned by
+// AffixNode.Validate if the designated constraints aren't met.
+type AffixNodeValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AffixNodeValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AffixNodeValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AffixNodeValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AffixNodeValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AffixNodeValidationError) ErrorName() string { return "AffixNodeValidationError" }
+
+// Error satisfies the builtin error interface
+func (e AffixNodeValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAffixNode.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AffixNodeValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AffixNodeValidationError{}

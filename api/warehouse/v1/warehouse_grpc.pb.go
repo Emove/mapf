@@ -37,6 +37,9 @@ const (
 	WarehouseService_GetNodeConfigItemById_FullMethodName     = "/warehouse.v1.WarehouseService/GetNodeConfigItemById"
 	WarehouseService_SelectNodeConfigItems_FullMethodName     = "/warehouse.v1.WarehouseService/SelectNodeConfigItems"
 	WarehouseService_UpdateNodeConfigItem_FullMethodName      = "/warehouse.v1.WarehouseService/UpdateNodeConfigItem"
+	WarehouseService_CreateAffixNode_FullMethodName           = "/warehouse.v1.WarehouseService/CreateAffixNode"
+	WarehouseService_GetAffixNodeById_FullMethodName          = "/warehouse.v1.WarehouseService/GetAffixNodeById"
+	WarehouseService_UpdateAffixNode_FullMethodName           = "/warehouse.v1.WarehouseService/UpdateAffixNode"
 )
 
 // WarehouseServiceClient is the client API for WarehouseService service.
@@ -64,6 +67,10 @@ type WarehouseServiceClient interface {
 	GetNodeConfigItemById(ctx context.Context, in *GetNodeConfigItemByIdRequest, opts ...grpc.CallOption) (*SimpleNodeConfigItemResponse, error)
 	SelectNodeConfigItems(ctx context.Context, in *SelectNodeConfigItemRequest, opts ...grpc.CallOption) (*SelectNodeConfigItemResponse, error)
 	UpdateNodeConfigItem(ctx context.Context, in *UpdateNodeConfigItemRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error)
+	// -------------------------------------------------  AffixNode  -----------------------------------------------------
+	CreateAffixNode(ctx context.Context, in *CreateAffixNodeRequest, opts ...grpc.CallOption) (*SimpleAffixNodeResponse, error)
+	GetAffixNodeById(ctx context.Context, in *GetAffixNodeByIdRequest, opts ...grpc.CallOption) (*SimpleAffixNodeResponse, error)
+	UpdateAffixNode(ctx context.Context, in *UpdateAffixNodeRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error)
 }
 
 type warehouseServiceClient struct {
@@ -227,6 +234,33 @@ func (c *warehouseServiceClient) UpdateNodeConfigItem(ctx context.Context, in *U
 	return out, nil
 }
 
+func (c *warehouseServiceClient) CreateAffixNode(ctx context.Context, in *CreateAffixNodeRequest, opts ...grpc.CallOption) (*SimpleAffixNodeResponse, error) {
+	out := new(SimpleAffixNodeResponse)
+	err := c.cc.Invoke(ctx, WarehouseService_CreateAffixNode_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *warehouseServiceClient) GetAffixNodeById(ctx context.Context, in *GetAffixNodeByIdRequest, opts ...grpc.CallOption) (*SimpleAffixNodeResponse, error) {
+	out := new(SimpleAffixNodeResponse)
+	err := c.cc.Invoke(ctx, WarehouseService_GetAffixNodeById_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *warehouseServiceClient) UpdateAffixNode(ctx context.Context, in *UpdateAffixNodeRequest, opts ...grpc.CallOption) (*v1.SimpleResponse, error) {
+	out := new(v1.SimpleResponse)
+	err := c.cc.Invoke(ctx, WarehouseService_UpdateAffixNode_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WarehouseServiceServer is the server API for WarehouseService service.
 // All implementations must embed UnimplementedWarehouseServiceServer
 // for forward compatibility
@@ -252,6 +286,10 @@ type WarehouseServiceServer interface {
 	GetNodeConfigItemById(context.Context, *GetNodeConfigItemByIdRequest) (*SimpleNodeConfigItemResponse, error)
 	SelectNodeConfigItems(context.Context, *SelectNodeConfigItemRequest) (*SelectNodeConfigItemResponse, error)
 	UpdateNodeConfigItem(context.Context, *UpdateNodeConfigItemRequest) (*v1.SimpleResponse, error)
+	// -------------------------------------------------  AffixNode  -----------------------------------------------------
+	CreateAffixNode(context.Context, *CreateAffixNodeRequest) (*SimpleAffixNodeResponse, error)
+	GetAffixNodeById(context.Context, *GetAffixNodeByIdRequest) (*SimpleAffixNodeResponse, error)
+	UpdateAffixNode(context.Context, *UpdateAffixNodeRequest) (*v1.SimpleResponse, error)
 	mustEmbedUnimplementedWarehouseServiceServer()
 }
 
@@ -309,6 +347,15 @@ func (UnimplementedWarehouseServiceServer) SelectNodeConfigItems(context.Context
 }
 func (UnimplementedWarehouseServiceServer) UpdateNodeConfigItem(context.Context, *UpdateNodeConfigItemRequest) (*v1.SimpleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateNodeConfigItem not implemented")
+}
+func (UnimplementedWarehouseServiceServer) CreateAffixNode(context.Context, *CreateAffixNodeRequest) (*SimpleAffixNodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAffixNode not implemented")
+}
+func (UnimplementedWarehouseServiceServer) GetAffixNodeById(context.Context, *GetAffixNodeByIdRequest) (*SimpleAffixNodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAffixNodeById not implemented")
+}
+func (UnimplementedWarehouseServiceServer) UpdateAffixNode(context.Context, *UpdateAffixNodeRequest) (*v1.SimpleResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAffixNode not implemented")
 }
 func (UnimplementedWarehouseServiceServer) mustEmbedUnimplementedWarehouseServiceServer() {}
 
@@ -629,6 +676,60 @@ func _WarehouseService_UpdateNodeConfigItem_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WarehouseService_CreateAffixNode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAffixNodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WarehouseServiceServer).CreateAffixNode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WarehouseService_CreateAffixNode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WarehouseServiceServer).CreateAffixNode(ctx, req.(*CreateAffixNodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WarehouseService_GetAffixNodeById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAffixNodeByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WarehouseServiceServer).GetAffixNodeById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WarehouseService_GetAffixNodeById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WarehouseServiceServer).GetAffixNodeById(ctx, req.(*GetAffixNodeByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _WarehouseService_UpdateAffixNode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAffixNodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WarehouseServiceServer).UpdateAffixNode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WarehouseService_UpdateAffixNode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WarehouseServiceServer).UpdateAffixNode(ctx, req.(*UpdateAffixNodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WarehouseService_ServiceDesc is the grpc.ServiceDesc for WarehouseService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -703,6 +804,18 @@ var WarehouseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateNodeConfigItem",
 			Handler:    _WarehouseService_UpdateNodeConfigItem_Handler,
+		},
+		{
+			MethodName: "CreateAffixNode",
+			Handler:    _WarehouseService_CreateAffixNode_Handler,
+		},
+		{
+			MethodName: "GetAffixNodeById",
+			Handler:    _WarehouseService_GetAffixNodeById_Handler,
+		},
+		{
+			MethodName: "UpdateAffixNode",
+			Handler:    _WarehouseService_UpdateAffixNode_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

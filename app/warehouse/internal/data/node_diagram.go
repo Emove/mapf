@@ -3,9 +3,11 @@ package data
 import (
 	"github.com/go-kratos/kratos/v2/log"
 	"mapf/app/warehouse/internal/biz"
+	"mapf/internal/data"
 )
 
 type nodeDiagramRepo struct {
+	*data.Pager
 	data   *Data
 	logger *log.Helper
 }

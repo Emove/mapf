@@ -17,6 +17,7 @@ type WarehouseService struct {
 	ntuc  *biz.NodeTypeUsecase
 	nuc   *biz.NodeUsecase
 	nciuc *biz.NodeConfigItemUsecase
+	anuc  *biz.AffixNodeUsecase
 }
 
 // NewWarehouseService new a warehouse service.
@@ -25,12 +26,14 @@ func NewWarehouseService(
 	ntuc *biz.NodeTypeUsecase,
 	nuc *biz.NodeUsecase,
 	nciuc *biz.NodeConfigItemUsecase,
+	anuc *biz.AffixNodeUsecase,
 ) *WarehouseService {
 	return &WarehouseService{
 		wuc:   wuc,
 		ntuc:  ntuc,
 		nuc:   nuc,
 		nciuc: nciuc,
+		anuc:  anuc,
 	}
 }
 

@@ -6,6 +6,68 @@ info:
     title: ""
     version: 0.0.1
 paths:
+    /affix_node:
+        post:
+            tags:
+                - WarehouseService
+            description: '-------------------------------------------------  AffixNode  -----------------------------------------------------'
+            operationId: WarehouseService_CreateAffixNode
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/warehouse.v1.CreateAffixNodeRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/warehouse.v1.SimpleAffixNodeResponse'
+    /affix_node/{id}:
+        get:
+            tags:
+                - WarehouseService
+            operationId: WarehouseService_GetAffixNodeById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/warehouse.v1.SimpleAffixNodeResponse'
+        put:
+            tags:
+                - WarehouseService
+            operationId: WarehouseService_UpdateAffixNode
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: uint32
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/warehouse.v1.UpdateAffixNodeRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/common.v1.SimpleResponse'
     /node:
         post:
             tags:
@@ -426,6 +488,47 @@ components:
             properties:
                 msg:
                     type: string
+        warehouse.v1.AffixNode:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+                warehouseId:
+                    type: integer
+                    format: uint32
+                nodeId:
+                    type: integer
+                    format: uint32
+                nodeTypeId:
+                    type: integer
+                    format: uint32
+                name:
+                    type: string
+                remark:
+                    type: string
+                status:
+                    type: integer
+                    format: enum
+        warehouse.v1.CreateAffixNodeRequest:
+            type: object
+            properties:
+                warehouseId:
+                    type: integer
+                    format: uint32
+                nodeTypeId:
+                    type: integer
+                    format: uint32
+                x:
+                    type: integer
+                    format: uint32
+                y:
+                    type: integer
+                    format: uint32
+                name:
+                    type: string
+                remark:
+                    type: string
         warehouse.v1.CreateNodeConfigItemRequest:
             type: object
             properties:
@@ -555,6 +658,11 @@ components:
                         $ref: '#/components/schemas/warehouse.v1.NodeConfigItem'
                 page:
                     $ref: '#/components/schemas/common.v1.Page'
+        warehouse.v1.SimpleAffixNodeResponse:
+            type: object
+            properties:
+                affixNode:
+                    $ref: '#/components/schemas/warehouse.v1.AffixNode'
         warehouse.v1.SimpleNodeConfigItemResponse:
             type: object
             properties:
@@ -570,6 +678,22 @@ components:
             properties:
                 warehouse:
                     $ref: '#/components/schemas/warehouse.v1.Warehouse'
+        warehouse.v1.UpdateAffixNodeRequest:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    format: uint32
+                nodeTypeId:
+                    type: integer
+                    format: uint32
+                nodeId:
+                    type: integer
+                    format: uint32
+                name:
+                    type: string
+                remark:
+                    type: string
         warehouse.v1.UpdateNodeConfigItemRequest:
             type: object
             properties:

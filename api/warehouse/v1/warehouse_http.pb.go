@@ -20,12 +20,14 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationWarehouseServiceCreateAffixNode = "/warehouse.v1.WarehouseService/CreateAffixNode"
 const OperationWarehouseServiceCreateNodeConfigItem = "/warehouse.v1.WarehouseService/CreateNodeConfigItem"
 const OperationWarehouseServiceCreateNodeType = "/warehouse.v1.WarehouseService/CreateNodeType"
 const OperationWarehouseServiceCreateNodes = "/warehouse.v1.WarehouseService/CreateNodes"
 const OperationWarehouseServiceCreateWarehouse = "/warehouse.v1.WarehouseService/CreateWarehouse"
 const OperationWarehouseServiceDeleteNodeTypeById = "/warehouse.v1.WarehouseService/DeleteNodeTypeById"
 const OperationWarehouseServiceDeleteWarehouseById = "/warehouse.v1.WarehouseService/DeleteWarehouseById"
+const OperationWarehouseServiceGetAffixNodeById = "/warehouse.v1.WarehouseService/GetAffixNodeById"
 const OperationWarehouseServiceGetNodeById = "/warehouse.v1.WarehouseService/GetNodeById"
 const OperationWarehouseServiceGetNodeConfigItemById = "/warehouse.v1.WarehouseService/GetNodeConfigItemById"
 const OperationWarehouseServiceGetNodeTypeById = "/warehouse.v1.WarehouseService/GetNodeTypeById"
@@ -33,12 +35,15 @@ const OperationWarehouseServiceGetNodesByWarehouseId = "/warehouse.v1.WarehouseS
 const OperationWarehouseServiceGetWarehouseById = "/warehouse.v1.WarehouseService/GetWarehouseById"
 const OperationWarehouseServiceGetWarehouseByName = "/warehouse.v1.WarehouseService/GetWarehouseByName"
 const OperationWarehouseServiceSelectNodeConfigItems = "/warehouse.v1.WarehouseService/SelectNodeConfigItems"
+const OperationWarehouseServiceUpdateAffixNode = "/warehouse.v1.WarehouseService/UpdateAffixNode"
 const OperationWarehouseServiceUpdateNodeConfigItem = "/warehouse.v1.WarehouseService/UpdateNodeConfigItem"
 const OperationWarehouseServiceUpdateNodeTypeById = "/warehouse.v1.WarehouseService/UpdateNodeTypeById"
 const OperationWarehouseServiceUpdateWarehouseById = "/warehouse.v1.WarehouseService/UpdateWarehouseById"
 const OperationWarehouseServiceUpdateWarehouseStatusById = "/warehouse.v1.WarehouseService/UpdateWarehouseStatusById"
 
 type WarehouseServiceHTTPServer interface {
+	// CreateAffixNode -------------------------------------------------  AffixNode  -----------------------------------------------------
+	CreateAffixNode(context.Context, *CreateAffixNodeRequest) (*SimpleAffixNodeResponse, error)
 	// CreateNodeConfigItem -------------------------------------------------  NodeConfigItem  ------------------------------------------------
 	CreateNodeConfigItem(context.Context, *CreateNodeConfigItemRequest) (*SimpleNodeConfigItemResponse, error)
 	// CreateNodeType -------------------------------------------------  NodeType  ------------------------------------------------------
@@ -49,6 +54,7 @@ type WarehouseServiceHTTPServer interface {
 	CreateWarehouse(context.Context, *CreateWarehouseRequest) (*SimpleWarehouseResponse, error)
 	DeleteNodeTypeById(context.Context, *DeleteNodeTypeByIdRequest) (*v1.SimpleResponse, error)
 	DeleteWarehouseById(context.Context, *DeleteWarehouseByIdRequest) (*v1.SimpleResponse, error)
+	GetAffixNodeById(context.Context, *GetAffixNodeByIdRequest) (*SimpleAffixNodeResponse, error)
 	GetNodeById(context.Context, *GetNodeByIdRequest) (*GetNodeResponse, error)
 	GetNodeConfigItemById(context.Context, *GetNodeConfigItemByIdRequest) (*SimpleNodeConfigItemResponse, error)
 	GetNodeTypeById(context.Context, *GetNodeTypeByIdRequest) (*SimpleNodeTypeResponse, error)
@@ -56,6 +62,7 @@ type WarehouseServiceHTTPServer interface {
 	GetWarehouseById(context.Context, *GetWarehouseByIdRequest) (*SimpleWarehouseResponse, error)
 	GetWarehouseByName(context.Context, *GetWarehouseByNameRequest) (*SimpleWarehouseResponse, error)
 	SelectNodeConfigItems(context.Context, *SelectNodeConfigItemRequest) (*SelectNodeConfigItemResponse, error)
+	UpdateAffixNode(context.Context, *UpdateAffixNodeRequest) (*v1.SimpleResponse, error)
 	UpdateNodeConfigItem(context.Context, *UpdateNodeConfigItemRequest) (*v1.SimpleResponse, error)
 	UpdateNodeTypeById(context.Context, *UpdateNodeTypeByIdRequest) (*v1.SimpleResponse, error)
 	UpdateWarehouseById(context.Context, *UpdateWarehouseByIdRequest) (*v1.SimpleResponse, error)
@@ -81,6 +88,9 @@ func RegisterWarehouseServiceHTTPServer(s *http.Server, srv WarehouseServiceHTTP
 	r.GET("/node_config_item/{id}", _WarehouseService_GetNodeConfigItemById0_HTTP_Handler(srv))
 	r.GET("/node_config_items", _WarehouseService_SelectNodeConfigItems0_HTTP_Handler(srv))
 	r.PUT("/node_config_item/{id}", _WarehouseService_UpdateNodeConfigItem0_HTTP_Handler(srv))
+	r.POST("/affix_node", _WarehouseService_CreateAffixNode0_HTTP_Handler(srv))
+	r.GET("/affix_node/{id}", _WarehouseService_GetAffixNodeById0_HTTP_Handler(srv))
+	r.PUT("/affix_node/{id}", _WarehouseService_UpdateAffixNode0_HTTP_Handler(srv))
 }
 
 func _WarehouseService_CreateWarehouse0_HTTP_Handler(srv WarehouseServiceHTTPServer) func(ctx http.Context) error {
@@ -466,13 +476,84 @@ func _WarehouseService_UpdateNodeConfigItem0_HTTP_Handler(srv WarehouseServiceHT
 	}
 }
 
+func _WarehouseService_CreateAffixNode0_HTTP_Handler(srv WarehouseServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CreateAffixNodeRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationWarehouseServiceCreateAffixNode)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.CreateAffixNode(ctx, req.(*CreateAffixNodeRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*SimpleAffixNodeResponse)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _WarehouseService_GetAffixNodeById0_HTTP_Handler(srv WarehouseServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetAffixNodeByIdRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationWarehouseServiceGetAffixNodeById)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetAffixNodeById(ctx, req.(*GetAffixNodeByIdRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*SimpleAffixNodeResponse)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _WarehouseService_UpdateAffixNode0_HTTP_Handler(srv WarehouseServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UpdateAffixNodeRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationWarehouseServiceUpdateAffixNode)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateAffixNode(ctx, req.(*UpdateAffixNodeRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*v1.SimpleResponse)
+		return ctx.Result(200, reply)
+	}
+}
+
 type WarehouseServiceHTTPClient interface {
+	CreateAffixNode(ctx context.Context, req *CreateAffixNodeRequest, opts ...http.CallOption) (rsp *SimpleAffixNodeResponse, err error)
 	CreateNodeConfigItem(ctx context.Context, req *CreateNodeConfigItemRequest, opts ...http.CallOption) (rsp *SimpleNodeConfigItemResponse, err error)
 	CreateNodeType(ctx context.Context, req *CreateNodeTypeRequest, opts ...http.CallOption) (rsp *SimpleNodeTypeResponse, err error)
 	CreateNodes(ctx context.Context, req *CreateNodesRequest, opts ...http.CallOption) (rsp *v1.SimpleResponse, err error)
 	CreateWarehouse(ctx context.Context, req *CreateWarehouseRequest, opts ...http.CallOption) (rsp *SimpleWarehouseResponse, err error)
 	DeleteNodeTypeById(ctx context.Context, req *DeleteNodeTypeByIdRequest, opts ...http.CallOption) (rsp *v1.SimpleResponse, err error)
 	DeleteWarehouseById(ctx context.Context, req *DeleteWarehouseByIdRequest, opts ...http.CallOption) (rsp *v1.SimpleResponse, err error)
+	GetAffixNodeById(ctx context.Context, req *GetAffixNodeByIdRequest, opts ...http.CallOption) (rsp *SimpleAffixNodeResponse, err error)
 	GetNodeById(ctx context.Context, req *GetNodeByIdRequest, opts ...http.CallOption) (rsp *GetNodeResponse, err error)
 	GetNodeConfigItemById(ctx context.Context, req *GetNodeConfigItemByIdRequest, opts ...http.CallOption) (rsp *SimpleNodeConfigItemResponse, err error)
 	GetNodeTypeById(ctx context.Context, req *GetNodeTypeByIdRequest, opts ...http.CallOption) (rsp *SimpleNodeTypeResponse, err error)
@@ -480,6 +561,7 @@ type WarehouseServiceHTTPClient interface {
 	GetWarehouseById(ctx context.Context, req *GetWarehouseByIdRequest, opts ...http.CallOption) (rsp *SimpleWarehouseResponse, err error)
 	GetWarehouseByName(ctx context.Context, req *GetWarehouseByNameRequest, opts ...http.CallOption) (rsp *SimpleWarehouseResponse, err error)
 	SelectNodeConfigItems(ctx context.Context, req *SelectNodeConfigItemRequest, opts ...http.CallOption) (rsp *SelectNodeConfigItemResponse, err error)
+	UpdateAffixNode(ctx context.Context, req *UpdateAffixNodeRequest, opts ...http.CallOption) (rsp *v1.SimpleResponse, err error)
 	UpdateNodeConfigItem(ctx context.Context, req *UpdateNodeConfigItemRequest, opts ...http.CallOption) (rsp *v1.SimpleResponse, err error)
 	UpdateNodeTypeById(ctx context.Context, req *UpdateNodeTypeByIdRequest, opts ...http.CallOption) (rsp *v1.SimpleResponse, err error)
 	UpdateWarehouseById(ctx context.Context, req *UpdateWarehouseByIdRequest, opts ...http.CallOption) (rsp *v1.SimpleResponse, err error)
@@ -492,6 +574,19 @@ type WarehouseServiceHTTPClientImpl struct {
 
 func NewWarehouseServiceHTTPClient(client *http.Client) WarehouseServiceHTTPClient {
 	return &WarehouseServiceHTTPClientImpl{client}
+}
+
+func (c *WarehouseServiceHTTPClientImpl) CreateAffixNode(ctx context.Context, in *CreateAffixNodeRequest, opts ...http.CallOption) (*SimpleAffixNodeResponse, error) {
+	var out SimpleAffixNodeResponse
+	pattern := "/affix_node"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationWarehouseServiceCreateAffixNode))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
 }
 
 func (c *WarehouseServiceHTTPClientImpl) CreateNodeConfigItem(ctx context.Context, in *CreateNodeConfigItemRequest, opts ...http.CallOption) (*SimpleNodeConfigItemResponse, error) {
@@ -566,6 +661,19 @@ func (c *WarehouseServiceHTTPClientImpl) DeleteWarehouseById(ctx context.Context
 	opts = append(opts, http.Operation(OperationWarehouseServiceDeleteWarehouseById))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *WarehouseServiceHTTPClientImpl) GetAffixNodeById(ctx context.Context, in *GetAffixNodeByIdRequest, opts ...http.CallOption) (*SimpleAffixNodeResponse, error) {
+	var out SimpleAffixNodeResponse
+	pattern := "/affix_node/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationWarehouseServiceGetAffixNodeById))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -657,6 +765,19 @@ func (c *WarehouseServiceHTTPClientImpl) SelectNodeConfigItems(ctx context.Conte
 	opts = append(opts, http.Operation(OperationWarehouseServiceSelectNodeConfigItems))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *WarehouseServiceHTTPClientImpl) UpdateAffixNode(ctx context.Context, in *UpdateAffixNodeRequest, opts ...http.CallOption) (*v1.SimpleResponse, error) {
+	var out v1.SimpleResponse
+	pattern := "/affix_node/{id}"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationWarehouseServiceUpdateAffixNode))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
