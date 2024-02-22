@@ -7,7 +7,6 @@ import (
 	"gorm.io/gorm"
 	"mapf/app/warehouse/internal/biz"
 	"mapf/internal/data"
-	"mapf/internal/data/tx"
 )
 
 var _ biz.NodeRepo = (*nodeRepo)(nil)
@@ -32,14 +31,7 @@ func (repo *nodeRepo) CreateNode(ctx context.Context, node *biz.Node) (*biz.Node
 
 // BatchCreateNode 批量创建节点
 func (repo *nodeRepo) BatchCreateNode(ctx context.Context, nodes []*biz.Node) ([]*biz.Node, error) {
-	err := repo.data.InTx(ctx, func(ctx context.Context) error {
-		db := tx.GetTxFromContext(ctx)
-		if err := db.Create(nodes).Error; err != nil {
-			return err
-		}
-		return nil
-	})
-
+	err := repo.data.DB(ctx).Create(nodes).Error
 	return nodes, err
 }
 

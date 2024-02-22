@@ -123,6 +123,11 @@ func (uc *WarehouseUsecase) DeleteWarehouseById(ctx context.Context, id int) err
 	return nil
 }
 
+func (uc *WarehouseUsecase) CreateWarehouseMap(ctx context.Context, id int) error {
+	// TODO 主动创建仓库地图
+	return nil
+}
+
 func (uc *WarehouseUsecase) getWarehouseById(ctx context.Context, id int) (*Warehouse, error) {
 	warehouse, err := uc.repo.GetWarehouseById(ctx, id)
 	if err != nil {

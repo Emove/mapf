@@ -7,7 +7,6 @@ import (
 	"gorm.io/gorm"
 	"mapf/app/warehouse/internal/biz"
 	"mapf/internal/data"
-	"mapf/internal/data/tx"
 	dataerrors "mapf/internal/errors"
 )
 
@@ -35,14 +34,7 @@ func (repo *affixNodeRepo) CreateAffixNode(ctx context.Context, affixNode *biz.A
 
 // BatchCreateAffixNode 批量创建用户节点
 func (repo *affixNodeRepo) BatchCreateAffixNode(ctx context.Context, affixNodes []*biz.AffixNode) ([]*biz.AffixNode, error) {
-	err := repo.data.InTx(ctx, func(ctx context.Context) error {
-		db := tx.GetTxFromContext(ctx)
-		if err := db.Create(affixNodes).Error; err != nil {
-			return err
-		}
-		return nil
-	})
-
+	err := repo.data.DB(ctx).Create(affixNodes).Error
 	return affixNodes, err
 }
 

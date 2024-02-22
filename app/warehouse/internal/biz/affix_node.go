@@ -222,6 +222,8 @@ func (uc *AffixNodeUsecase) consumeCreateAffixNodeEvent(ctx context.Context, msg
 		if err != nil {
 			return err
 		}
+
+		// FIXME create node relation
 	}
 	return nil
 }
