@@ -60,6 +60,9 @@ type NodeUsecase struct {
 	tm                  tx.Transaction
 	repo                NodeRepo
 	warehouseRepo       WarehouseRepo
+	nodeTypeRepo        NodeTypeRepo
+	nodeConfigItemRepo  NodeConfigItemRepo
+	nodeConfigRepo      NodeConfigRepo
 	createNodePublisher internalevent.Publisher
 	logger              *log.Helper
 }
@@ -132,6 +135,36 @@ func (uc *NodeUsecase) GetNodesByIds(ctx context.Context, ids []int) ([]*Node, e
 
 func (uc *NodeUsecase) GetNodesByWarehouseId(ctx context.Context, warehouseId int) ([]*Node, error) {
 	return uc.repo.GetNodesByWarehouseId(ctx, warehouseId)
+}
+
+// AddNodeConfig 添加用户节点配置项
+func (uc *NodeUsecase) AddNodeConfig(ctx context.Context, id int, config *NodeConfig) error {
+	return nil
+}
+
+// GetNodeConfigsById 获取用户节点的配置信息
+func (uc *NodeUsecase) GetNodeConfigsById(ctx context.Context, id int) ([]*NodeConfig, error) {
+	return nil, nil
+}
+
+// UpdateNodeConfig 更新用户节点配置信息
+func (uc *NodeUsecase) UpdateNodeConfig(ctx context.Context, config *NodeConfig) (*NodeConfig, error) {
+	return nil, nil
+}
+
+// EnableNodeConfig 启用用户节点配置
+func (uc *NodeUsecase) EnableNodeConfig(ctx context.Context, nodeConfigId int) error {
+	return nil
+}
+
+// DisableNodeConfig 禁用用户节点配置
+func (uc *NodeUsecase) DisableNodeConfig(ctx context.Context, nodeConfigId int) error {
+	return nil
+}
+
+// DeleteNodeConfig 删除用户节点配置
+func (uc *NodeUsecase) DeleteNodeConfig(ctx context.Context, nodeConfigId int) error {
+	return nil
 }
 
 func (uc *NodeUsecase) consumeCreateNodesEvent(ctx context.Context, msg []byte) error {

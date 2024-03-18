@@ -5,6 +5,7 @@ import (
 )
 
 // NodeDiagram 节点连通关系
+// 默认每个相邻节点都是联通的
 type NodeDiagram struct {
 	*data.Model
 	WarehouseId     int `gorm:"index:idx_warehouse_node;index:idx_warehouse_relation;not null"`

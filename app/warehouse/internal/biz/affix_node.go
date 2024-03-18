@@ -73,6 +73,8 @@ type AffixNodeUsecase struct {
 	warehouseRepo            WarehouseRepo
 	nodeRepo                 NodeRepo
 	nodeTypeRepo             NodeTypeRepo
+	nodeConfigItemRepo       NodeConfigItemRepo
+	nodeConfigRepo           NodeConfigRepo
 	logger                   *log.Helper
 	createAffixNodePublisher internalevent.Publisher
 }
@@ -83,6 +85,8 @@ func NewAffixNodeUsecase(
 	warehouseRepo WarehouseRepo,
 	nodeRepo NodeRepo,
 	nodeTypeRepo NodeTypeRepo,
+	nodeConfigRepo NodeConfigRepo,
+	nodeConfigItemRepo NodeConfigItemRepo,
 	eventCenterConfig internalevent.Configuration,
 	logger log.Logger,
 ) (*AffixNodeUsecase, error) {
@@ -106,6 +110,8 @@ func NewAffixNodeUsecase(
 		warehouseRepo:            warehouseRepo,
 		nodeRepo:                 nodeRepo,
 		nodeTypeRepo:             nodeTypeRepo,
+		nodeConfigRepo:           nodeConfigRepo,
+		nodeConfigItemRepo:       nodeConfigItemRepo,
 		createAffixNodePublisher: createAffixNodePublisher,
 		logger:                   log.NewHelper(logger),
 	}
@@ -184,6 +190,36 @@ func (uc *AffixNodeUsecase) UpdateAffixNode(ctx context.Context, affixNode *Affi
 
 func (uc *AffixNodeUsecase) GetAffixNodeById(ctx context.Context, id int) (*AffixNode, error) {
 	return uc.repo.GetAffixNodeById(ctx, id)
+}
+
+// AddNodeConfig 添加用户节点配置项
+func (uc *AffixNodeUsecase) AddNodeConfig(ctx context.Context, id int, config *NodeConfig) error {
+	return nil
+}
+
+// GetNodeConfigsById 获取用户节点的配置信息
+func (uc *AffixNodeUsecase) GetNodeConfigsById(ctx context.Context, id int) ([]*NodeConfig, error) {
+	return nil, nil
+}
+
+// UpdateNodeConfig 更新用户节点配置信息
+func (uc *AffixNodeUsecase) UpdateNodeConfig(ctx context.Context, config *NodeConfig) (*NodeConfig, error) {
+	return nil, nil
+}
+
+// EnableNodeConfig 启用用户节点配置
+func (uc *AffixNodeUsecase) EnableNodeConfig(ctx context.Context, nodeConfigId int) error {
+	return nil
+}
+
+// DisableNodeConfig 禁用用户节点配置
+func (uc *AffixNodeUsecase) DisableNodeConfig(ctx context.Context, nodeConfigId int) error {
+	return nil
+}
+
+// DeleteNodeConfig 删除用户节点配置
+func (uc *AffixNodeUsecase) DeleteNodeConfig(ctx context.Context, nodeConfigId int) error {
+	return nil
 }
 
 // TODO

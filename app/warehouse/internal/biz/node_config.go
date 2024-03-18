@@ -5,15 +5,23 @@ import (
 	"mapf/internal/data"
 )
 
+type SystemNodeType int
+
+const (
+	DefaultNodeType = SystemNodeType(1) // 栅格地图默认节点类型
+	AffixNodeType   = SystemNodeType(2) // 用户节点类型
+)
+
 // NodeConfig 节点配置表
 type NodeConfig struct {
 	*data.Model
-	WarehouseId    int    `gorm:"uniqueIndex:uidx_warehouse_x_y;not null"`
-	NodeRelationId int    `gorm:"uniqueIndex:uidx_warehouse_x_y;not null"`
-	ConfigItemId   int    `gorm:"uniqueIndex:uidx_config_item;not null"`
-	Value          string `gorm:"type:varchar(1023)"`
-	IsDefault      int    `gorm:"type:smallint;default:2;not null"`
-	Status         int    `gorm:"type:smallint;default:1;not null"`
+	WarehouseId    int            `gorm:"uniqueIndex:uidx_warehouse_node;not null"`
+	NodeRelationId int            `gorm:"uniqueIndex:uidx_warehouse_node;not null"`
+	NodeType       SystemNodeType `gorm:"uniqueIndex:uidx_warehouse_node;not null"`
+	ConfigItemId   int            `gorm:"uniqueIndex:uidx_config_item;not null"`
+	Value          string         `gorm:"type:varchar(1023)"`
+	IsDefault      int            `gorm:"type:smallint;default:2;not null"`
+	Status         int            `gorm:"type:smallint;default:1;not null"`
 }
 
 func (*NodeConfig) TableName() string {
